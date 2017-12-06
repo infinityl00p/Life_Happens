@@ -6,7 +6,7 @@ const ImageButton = ({ imageUrl, name, date }) => {
   return (
     <Card>
       <TouchableOpacity>
-        <View style={{ flex: 1 }}>
+        <View>
           <Image
             style={styles.imageStyle}
             source={imageUrl}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import Header from './src/containers/Header';
 import CountdownList from './src/containers/CountdownList';
 
