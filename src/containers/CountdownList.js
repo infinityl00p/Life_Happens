@@ -70,7 +70,7 @@ class CountdownList extends Component {
           );
         })}
         <View style={styles.iconStyle}>
-          <Icon name="plus-circle" size={60} color='#3498db' />
+          <Icon name="plus-circle" size={60} color='#bdc3c7' />
         </View>
       </ScrollView>
     );
@@ -80,7 +80,7 @@ class CountdownList extends Component {
 const styles = {
   iconStyle: {
     marginTop: 20,
-    marginBottom: 60,
+    marginBottom: 80,
     justifyContent: 'center',
     alignItems: 'center'
   }
