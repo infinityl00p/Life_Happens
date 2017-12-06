@@ -45,7 +45,7 @@ const styles = {
   },
   dateStyle: {
     color: '#fff',
-    fontWeight: '300',
+    fontWeight: '400',
     fontSize: 15
   }
 };

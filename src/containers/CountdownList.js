@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import ImageButton from './ImageButton';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const countdownList = [
   {
@@ -68,8 +69,20 @@ class CountdownList extends Component {
             <ImageButton key={event.id} imageUrl={event.image} name={event.name} date={this.daysSincePost(event.date)}/>
           );
         })}
+        <View style={styles.iconStyle}>
+          <Icon name="plus-circle" size={60} color='#3498db' />
+        </View>
       </ScrollView>
     );
+  }
+}
+
+const styles = {
+  iconStyle: {
+    marginTop: 20,
+    marginBottom: 60,
+    justifyContent: "center",
+    alignItems: "center"
   }
 }
 
