@@ -13,7 +13,7 @@ export default class App extends Component {
       <Provider store={createStore(reducers)}>
         <View>
           <Header headerText='Life Happens' />
-          <AddCountdown />
+          <CountdownList />
         </View>
       </Provider>
     );

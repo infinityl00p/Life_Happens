@@ -7,8 +7,15 @@ import ImageButton from './ImageButton';
 class CountdownList extends Component {
   state = { countdownList: [] };
 
+  componentWillReceiveProps() {
+    //TODO: this can be done better
+    const countdownList = this.sortByDate(this.props.countdowns.countdowns);
+    this.setState({ countdownList });
+  }
+
   componentWillMount() {
-    const countdownList = this.sortByDate(this.props.countdowns);
+    //TODO: this as well, shouldn't be named countdowns.countdowns
+    const countdownList = this.sortByDate(this.props.countdowns.countdowns);
     this.setState({ countdownList });
   }
 

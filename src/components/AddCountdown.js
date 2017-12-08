@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { eventNameChanged } from '../actions';
-import { eventDateChanged } from '../actions';
-import DatePicker from 'react-native-datepicker'
+import DatePicker from 'react-native-datepicker';
+import { eventNameChanged, eventDateChanged, addEvent } from '../actions';
 import Card from './Card';
 import CardSection from './CardSection';
 import Input from './Input';
@@ -17,6 +16,10 @@ class AddCountdown extends Component {
 
   onDateChange = (date) => {
     this.props.eventDateChanged(date);
+  }
+
+  onSubmit = () => {
+    this.props.addEvent({ name: this.props.eventName, date: this.props.eventDate });
   }
 
   render() {
@@ -35,7 +38,7 @@ class AddCountdown extends Component {
           <View style={styles.containerStyle}>
             <Text style={styles.labelStyle}>Date</Text>
             <DatePicker
-              style={{width: 210}}
+              style={{ width: 210 }}
               mode="date"
               placeholder="Select Date"
               format="YYYY-MM-DD"
@@ -51,7 +54,6 @@ class AddCountdown extends Component {
                   fontSize: 18,
                   lineHeight: 23,
                   flex: 2,
-                  fontSize: 18,
                   paddingTop: 8
                 },
                 placeholderText: {
@@ -69,7 +71,7 @@ class AddCountdown extends Component {
         </CardSection>
 
         <CardSection>
-          <Button>
+          <Button onPress={this.onSubmit}>
            Add Event
           </Button>
         </CardSection>
@@ -96,9 +98,10 @@ const styles = {
 const mapStateToProps = state => {
   return {
     eventName: state.addEventReducer.eventName,
-    eventDate: state.addEventReducer.eventDate
+    eventDate: state.addEventReducer.eventDate,
   };
 };
 
 
-export default connect(mapStateToProps, { eventNameChanged, eventDateChanged })(AddCountdown);
+export default connect(mapStateToProps,
+  { eventNameChanged, eventDateChanged, addEvent })(AddCountdown);
