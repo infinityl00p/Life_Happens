@@ -9,7 +9,7 @@ const ImageButton = ({ imageUrl, name, date }) => {
         <View>
           <Image
             style={styles.imageStyle}
-            source={imageUrl}
+            source={{ uri: imageUrl }}
           />
         </View>
         <View style={styles.container}>
@@ -24,7 +24,7 @@ const ImageButton = ({ imageUrl, name, date }) => {
 const styles = {
   imageStyle: {
     flex: 1,
-    height: 200,
+    height: 400,
     width: null,
     borderRadius: 10
   },
