@@ -61,7 +61,7 @@ class CountdownList extends Component {
 
 styles = {
   listStyle: {
-    marginBottom: 90
+    paddingBottom: 90
   }
 }
 
