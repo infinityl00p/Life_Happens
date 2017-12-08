@@ -5,6 +5,7 @@ import { createStore } from 'redux';
 import reducers from './src/reducers';
 import Header from './src/components/Header';
 import CountdownList from './src/components/CountdownList';
+import AddCountdown from './src/components/AddCountdown';
 
 export default class App extends Component {
   render() {
@@ -12,7 +13,7 @@ export default class App extends Component {
       <Provider store={createStore(reducers)}>
         <View>
           <Header headerText='Life Happens' />
-          <CountdownList />
+          <AddCountdown />
         </View>
       </Provider>
     );

@@ -24,7 +24,7 @@ const ImageButton = ({ imageUrl, name, date }) => {
 const styles = {
   imageStyle: {
     flex: 1,
-    height: 200,
+    height: 400,
     width: null,
     borderRadius: 10
   },

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import ImageButton from './ImageButton';
-import IconButton from './IconButton';
 
 /* Display a list of all of the countdowns */
 class CountdownList extends Component {
@@ -46,11 +45,16 @@ class CountdownList extends Component {
     })
 
     return (
-      <ScrollView>
+      <ScrollView style={styles.listStyle}>
         {imageButtons}
-        <IconButton name='plus-circle' size={60} color='#bdc3c7' />
       </ScrollView>
     );
+  }
+}
+
+styles = {
+  listStyle: {
+    marginBottom: 90
   }
 }
 
