@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
+import { Actions } from 'react-native-router-flux';
 import { eventNameChanged, eventDateChanged, addEvent } from '../actions';
 import Card from './Card';
 import CardSection from './CardSection';
@@ -19,7 +20,13 @@ class AddCountdown extends Component {
   }
 
   onSubmit = () => {
-    this.props.addEvent({ name: this.props.eventName, date: this.props.eventDate });
+    if(this.props.eventName !== '' && this.props.eventDate !== null) {
+      this.props.addEvent({ name: this.props.eventName, date: this.props.eventDate });
+      //TODO: This should be changed automatically
+      this.props.eventNameChanged('');
+      this.props.eventDateChanged(null);
+      Actions.pop();
+    }
   }
 
   render() {

@@ -7,9 +7,9 @@ import ImageButton from './ImageButton';
 class CountdownList extends Component {
   state = { countdownList: [] };
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(props) {
     //TODO: this can be done better
-    const countdownList = this.sortByDate(this.props.countdowns.countdowns);
+    const countdownList = this.sortByDate(props.countdowns.countdowns);
     this.setState({ countdownList });
   }
 
@@ -35,8 +35,16 @@ class CountdownList extends Component {
   /* Sort an array of objects with the date property by soonest to latest*/
   sortByDate = (dataArray) => {
     return dataArray.sort((a, b) => {
-      return a.date > b.date;
+      const aDate = this.parseDateString(a.date);
+      const bDate = this.parseDateString(b.date);
+
+      return aDate > bDate;
     });
+  }
+
+  parseDateString = (dateString) => {
+    const [year, month, day] = dateString.split("-");
+    return new Date(year, month - 1, day);
   }
 
   render() {
@@ -52,16 +60,10 @@ class CountdownList extends Component {
     })
 
     return (
-      <ScrollView style={styles.listStyle}>
+      <ScrollView>
         {imageButtons}
       </ScrollView>
     );
-  }
-}
-
-styles = {
-  listStyle: {
-    paddingBottom: 90
   }
 }
 

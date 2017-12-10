@@ -1,21 +1,32 @@
 import React from 'react';
 import { Image, Text, View, TouchableOpacity } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import Card from './Card';
 
 const ImageButton = ({ imageUrl, name, date }) => {
   return (
     <Card>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          Actions.EventOverview({
+          imageUrl: imageUrl,
+          eventName: name,
+          date: date
+        })
+      }}
+      >
         <View>
           <Image
             style={styles.imageStyle}
             source={{ uri: imageUrl }}
           />
         </View>
+
         <View style={styles.container}>
           <Text style={styles.nameStyle}>{name}</Text>
           <Text style={styles.dateStyle}>{date} days left</Text>
         </View>
+
       </TouchableOpacity>
     </Card>
   );
@@ -24,9 +35,9 @@ const ImageButton = ({ imageUrl, name, date }) => {
 const styles = {
   imageStyle: {
     flex: 1,
-    height: 400,
+    height: 175,
     width: null,
-    borderRadius: 10
+    borderRadius: 5
   },
   container: {
     backgroundColor: 'transparent',
