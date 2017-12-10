@@ -109,6 +109,5 @@ const mapStateToProps = state => {
   };
 };
 
-
 export default connect(mapStateToProps,
   { eventNameChanged, eventDateChanged, addEvent })(AddCountdown);

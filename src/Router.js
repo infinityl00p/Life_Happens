@@ -31,9 +31,6 @@ const RouterComponent = () => {
           title='Your Event'
           headerTintColor='#fff'
           navTransparent={true}
-          rightTitle={<Icon name='ios-trash' size={30} color='#fff' />}
-          rightButtonStyle={{ top: 5 }}
-          onRight={() => console.log("Are you sure you want to remove")}
         />
       </Scene>
     </Router>

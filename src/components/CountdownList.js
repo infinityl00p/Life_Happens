@@ -52,6 +52,7 @@ class CountdownList extends Component {
       return (
         <ImageButton
           key={event.id}
+          id={event.id}
           imageUrl={event.image}
           name={event.name}
           date={this.daysSincePost(event.date)}

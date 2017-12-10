@@ -1,8 +1,35 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Image, Text, StatusBar, Dimensions } from 'react-native';
+import { ScrollView,
+          View,
+          Image,
+          Text,
+          StatusBar,
+          Dimensions,
+          TouchableOpacity,
+          Alert
+        } from 'react-native';
+import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { deleteEvent } from '../actions';
 
 class EventOverview extends Component {
+  handleDelete = () => {
+    this.props.deleteEvent(this.props.id);
+    Actions.CountdownList();
+  }
+
+  onTrashPress = () => {
+    Alert.alert(
+      'Are you sure you want to delete this event?',
+      'Cannot be undone',
+      [
+        { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+        { text: 'Delete', onPress: () => this.handleDelete() }
+      ]
+    );
+  }
+
   render() {
     return (
       <ScrollView>
@@ -18,22 +45,30 @@ class EventOverview extends Component {
             <Text style={styles.imageNameStyle}>{this.props.eventName}</Text>
             <Text style={styles.imageDateStyle}>{this.props.date} days left</Text>
           </View>
-          <View style={styles.iconContainer}>
+          <TouchableOpacity style={styles.arrowContainer}>
             <Icon
               name='md-arrow-down'
               size={40}
               color='#fff'
             />
-          </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.trashContainer}>
+            <Icon
+              name='ios-trash'
+              size={40}
+              color='#fff'
+              onPress={this.onTrashPress}
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.detailView}>
-          <View style={styles.nameStyle}>
+          <View>
             <Text>{this.props.eventName}</Text>
           </View>
-          <View style={styles.dateStyle}>
+          <View>
             <Text style={styles.imageDateStyle}>{this.props.date} days left</Text>
           </View>
-          <View style={styles.detailStyle}>
+          <View>
             <Text>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</Text>
           </View>
         </View>
@@ -76,7 +111,7 @@ const styles = {
     fontWeight: '300',
     fontSize: 20
   },
-  iconContainer: {
+  arrowContainer: {
     backgroundColor: 'transparent',
     position: 'absolute',
     top: 0,
@@ -86,22 +121,20 @@ const styles = {
     justifyContent: 'flex-end',
     alignItems: 'center'
   },
+  trashContainer: {
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 10,
+    bottom: 20,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end'
+  },
   detailView: {
     flex: 2,
     height: Dimensions.get("window").height
-  },
-  nameStyle: {
-    paddingTop: 20,
-    fontSize: 40
-  },
-  dateStyle: {
-    paddingTop: 20,
-    fontSize: 40
-  },
-  detailStyle: {
-
   }
 };
 
-
-export default EventOverview;
+export default connect(null, { deleteEvent })(EventOverview);

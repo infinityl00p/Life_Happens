@@ -3,12 +3,13 @@ import { Image, Text, View, TouchableOpacity } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import Card from './Card';
 
-const ImageButton = ({ imageUrl, name, date }) => {
+const ImageButton = ({ id, imageUrl, name, date }) => {
   return (
     <Card>
       <TouchableOpacity
         onPress={() => {
           Actions.EventOverview({
+          id: id,
           imageUrl: imageUrl,
           eventName: name,
           date: date
