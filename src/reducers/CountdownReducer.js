@@ -16,7 +16,7 @@ export default (state = INITIAL_STATE, action) => {
         countdowns: state.countdowns.filter((countdown) => {
           return countdown.id !== action.payload;
         })
-      }
+      };
 
     default:
       return state;

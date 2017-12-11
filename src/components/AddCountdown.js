@@ -20,7 +20,7 @@ class AddCountdown extends Component {
   }
 
   onSubmit = () => {
-    if(this.props.eventName !== '' && this.props.eventDate !== null) {
+    if (this.props.eventName !== '' && this.props.eventDate !== null) {
       this.props.addEvent({ name: this.props.eventName, date: this.props.eventDate });
       //TODO: This should be changed automatically
       this.props.eventNameChanged('');

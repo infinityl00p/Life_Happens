@@ -7,14 +7,7 @@ const ImageButton = ({ id, imageUrl, name, date }) => {
   return (
     <Card>
       <TouchableOpacity
-        onPress={() => {
-          Actions.EventOverview({
-          id: id,
-          imageUrl: imageUrl,
-          eventName: name,
-          date: date
-        })
-      }}
+        onPress={() => Actions.EventOverview({ id, imageUrl, eventName: name, date })}
       >
         <View>
           <Image
