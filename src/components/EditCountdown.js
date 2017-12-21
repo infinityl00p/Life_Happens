@@ -4,7 +4,6 @@ import DatePicker from 'react-native-datepicker';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { eventNameChanged, eventDateChanged, editEvent } from '../actions';
-import Helper from '../utils/helpers';
 import Card from './Card';
 import CardSection from './CardSection';
 import Input from './Input';
@@ -12,8 +11,6 @@ import Button from './Button';
 
 
 class EditCountdown extends Component {
-  componentWillMount() {}
-
   componentWillMount() {
     this.props.eventNameChanged(this.props.initialName);
     this.props.eventDateChanged(this.props.initialDate);
@@ -114,8 +111,8 @@ const styles = {
 
 const mapStateToProps = state => {
   return {
-    eventName: state.addEventReducer.eventName,
-    eventDate: state.addEventReducer.eventDate,
+    eventName: state.EventFieldReducer.eventName,
+    eventDate: state.EventFieldReducer.eventDate,
   };
 };
 

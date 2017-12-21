@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import CountdownReducer from './CountdownReducer';
-import AddEventReducer from './AddEventReducer';
+import EventActionReducer from './EventActionReducer';
+import EventFieldReducer from './EventFieldReducer';
 
 export default combineReducers({
-  countdowns: CountdownReducer,
-  addEventReducer: AddEventReducer
+  countdowns: EventActionReducer,
+  EventFieldReducer: EventFieldReducer
 });
