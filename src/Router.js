@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import CountdownList from './components/CountdownList';
 import AddCountdown from './components/AddCountdown';
 import EventOverview from './components/EventOverview';
+import EditCountdown from './components/EditCountdown';
 
 const RouterComponent = () => {
   return (
@@ -26,11 +27,17 @@ const RouterComponent = () => {
           headerTintColor='#000'
         />
         <Scene
+          key='EditCountdown'
+          component={EditCountdown}
+          title='Modify Countdown'
+          headerTintColor='#000'
+        />
+        <Scene
           key='EventOverview'
           component={EventOverview}
           title='Your Event'
           headerTintColor='#fff'
-          navTransparent={true}
+          navTransparent={'true'}
         />
       </Scene>
     </Router>

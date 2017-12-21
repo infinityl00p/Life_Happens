@@ -1,7 +1,8 @@
 import { EVENT_NAME_CHANGED,
         EVENT_DATE_CHANGED,
         ADD_EVENT,
-        DELETE_EVENT
+        DELETE_EVENT,
+        EDIT_EVENT
       } from './types';
 
 export const eventNameChanged = (text) => {
@@ -39,5 +40,12 @@ export const deleteEvent = (eventId) => {
   return {
     type: DELETE_EVENT,
     payload: eventId
-  }
+  };
+};
+
+export const editEvent = (eventObject) => {
+  return {
+    type: EDIT_EVENT,
+    payload: eventObject
+  };
 };

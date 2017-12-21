@@ -1,5 +1,5 @@
 import data from './CountdownList.json';
-import { ADD_EVENT, DELETE_EVENT } from '../actions/types';
+import { ADD_EVENT, DELETE_EVENT, EDIT_EVENT } from '../actions/types';
 
 const INITIAL_STATE = { countdowns: data };
 
@@ -17,6 +17,23 @@ export default (state = INITIAL_STATE, action) => {
           return countdown.id !== action.payload;
         })
       };
+
+    case EDIT_EVENT:
+    return {
+      ...state,
+      countdowns: state.countdowns.map((countdown) => {
+        if (countdown.id !== action.payload.id) {
+          return countdown;
+        } else if (countdown.id === action.payload.id) {
+          return {
+            id: action.payload.id,
+            name: action.payload.eventName,
+            date: action.payload.eventDate,
+            image: action.payload.image
+          };
+        }
+      })
+    };
 
     default:
       return state;
