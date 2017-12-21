@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, Dimensions } from 'react-native';
+import { View, Text } from 'react-native';
 import Helper from '../utils/helpers';
 
 

@@ -55,8 +55,8 @@ class EventOverview extends Component {
           source={{ uri: this.props.imageUrl }}
         />
         <Swiper
-          dot={<View style={{backgroundColor: 'rgba(255,255,255,.3)', width: 13, height: 13, borderRadius: 7, marginLeft: 7, marginRight: 7}} />}
-          activeDot={<View style={{backgroundColor: '#fff', width: 13, height: 13, borderRadius: 7, marginLeft: 7, marginRight: 7}} />}
+          dot={<View style={styles.dotStyle} />}
+          activeDot={<View style={styles.activeDotStyle} />}
           paginationStyle={{
             bottom: 70
           }}
@@ -103,6 +103,22 @@ const styles = {
     flex: 1,
     backgroundColor: 'transparent'
   },
+  dotStyle: {
+    backgroundColor: 'rgba(255,255,255,.3)',
+    width: 13,
+    height: 13,
+    borderRadius: 7,
+    marginLeft: 7,
+    marginRight: 7
+  },
+  activeDotStyle: {
+    backgroundColor: '#fff',
+    width: 13,
+    height: 13,
+    borderRadius: 7,
+    marginLeft: 7,
+    marginRight: 7
+  }
 };
 
 export default connect(null, { deleteEvent })(EventOverview);
