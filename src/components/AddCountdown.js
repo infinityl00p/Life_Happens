@@ -11,6 +11,11 @@ import Button from './Button';
 
 
 class AddCountdown extends Component {
+  componentWillMount() {
+    this.props.eventNameChanged('');
+    this.props.eventDateChanged(null);
+  }
+
   onEventNameChange = (text) => {
     this.props.eventNameChanged(text);
   }
@@ -20,7 +25,7 @@ class AddCountdown extends Component {
   }
 
   onSubmit = () => {
-    if(this.props.eventName !== '' && this.props.eventDate !== null) {
+    if (this.props.eventName !== '' && this.props.eventDate !== null) {
       this.props.addEvent({ name: this.props.eventName, date: this.props.eventDate });
       //TODO: This should be changed automatically
       this.props.eventNameChanged('');
@@ -104,11 +109,10 @@ const styles = {
 
 const mapStateToProps = state => {
   return {
-    eventName: state.addEventReducer.eventName,
-    eventDate: state.addEventReducer.eventDate,
+    eventName: state.EventFields.eventName,
+    eventDate: state.EventFields.eventDate,
   };
 };
-
 
 export default connect(mapStateToProps,
   { eventNameChanged, eventDateChanged, addEvent })(AddCountdown);
