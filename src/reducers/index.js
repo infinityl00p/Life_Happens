@@ -4,5 +4,5 @@ import EventFieldReducer from './EventFieldReducer';
 
 export default combineReducers({
   countdowns: EventActionReducer,
-  EventFieldReducer: EventFieldReducer
+  EventFields: EventFieldReducer
 });

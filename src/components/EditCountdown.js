@@ -111,8 +111,8 @@ const styles = {
 
 const mapStateToProps = state => {
   return {
-    eventName: state.EventFieldReducer.eventName,
-    eventDate: state.EventFieldReducer.eventDate,
+    eventName: state.EventFields.eventName,
+    eventDate: state.EventFields.eventDate,
   };
 };
 
