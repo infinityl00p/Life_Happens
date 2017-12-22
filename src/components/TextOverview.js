@@ -4,15 +4,18 @@ import Helper from '../utils/helpers';
 
 const TextOverview = ({ eventName, eventDate }) => {
   return (
-    <View>
+    <View style={{ paddingTop: 100, paddingLeft: 10, paddingRight: 10 }}>
       <View>
-        <Text>{eventName}</Text>
+        <Text style={{ color: '#fff', fontSize: 30 }}>{eventName}</Text>
       </View>
       <View>
-        <Text>{Helper.daysSincePost(eventDate)} days left</Text>
+        <Text style={{ color: '#fff', fontSize: 25, paddingTop: 10 }}>
+          {Helper.daysSincePost(eventDate)} days left
+        </Text>
       </View>
       <View>
-        <Text>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        <Text style={{ color: '#fff', fontSize: 18, paddingTop: 10 }}>
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry.
           Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
           when an unknown printer took a galley of type and scrambled it to make a type
           specimen book. It has survived not only five centuries, but also the leap into

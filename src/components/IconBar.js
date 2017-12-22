@@ -5,7 +5,7 @@ import FAIcon from 'react-native-vector-icons/FontAwesome';
 
 const IconBar = ({ onEditPress, onTrashPress }) => {
   return (
-    <View>
+    <View style={{ flex: 1 }}>
 
       <TouchableOpacity style={styles.editContainer}>
         <FAIcon
@@ -13,14 +13,6 @@ const IconBar = ({ onEditPress, onTrashPress }) => {
           size={30}
           color='#fff'
           onPress={onEditPress}
-        />
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.arrowContainer}>
-        <Icon
-          name='md-arrow-down'
-          size={40}
-          color='#fff'
         />
       </TouchableOpacity>
 
