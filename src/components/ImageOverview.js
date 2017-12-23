@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import Helper from '../utils/helpers';
 
 
 const ImageOverview = ({ eventName, eventDate }) => {
@@ -10,7 +9,7 @@ const ImageOverview = ({ eventName, eventDate }) => {
     <View style={textContainer}>
       <Text style={imageNameStyle}>{eventName}</Text>
       <Text style={imageDateStyle}>
-        {Helper.daysSincePost(eventDate)} days left
+        {eventDate}
       </Text>
     </View>
   );
