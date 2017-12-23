@@ -14,18 +14,22 @@ class ImageOverview extends Component {
   componentWillMount() {
     const diffDateObject = Helpers.getDateObject(this.props.eventDate, this.props.eventTime);
     const timeLeft = Helpers.getTimeLeft(diffDateObject);
-    this.setState({ timeLeft })
+    this.setState({ timeLeft });
   }
 
   componentDidMount() {
-    setInterval(this.updateTime, 1000);
+    this.forceUpdateTime = setInterval(this.updateTime, 1000);
   }
+
+  componentWillUnmount() {
+    clearInterval(this.forceUpdateTime);
+ }
 
   updateTime = () => {
     const diffDateObject = Helpers.getDateObject(this.props.eventDate, this.props.eventTime);
     const timeLeft = Helpers.getTimeLeft(diffDateObject);
 
-    this.setState({ timeLeft })
+    this.setState({ timeLeft });
   }
 
 
@@ -49,7 +53,7 @@ class ImageOverview extends Component {
       </View>
     );
   }
-};
+}
 
 const styles = {
   container: {
@@ -73,7 +77,6 @@ const styles = {
   },
   dateStyle: {
     color: '#fff',
-    fontWeight: '300',
     fontSize: 25,
     fontWeight: '700'
   },
