@@ -29,5 +29,11 @@ module.exports = {
       minutes: diffDuration.minutes(),
       seconds: diffDuration.seconds()
     };
+  },
+
+  getShorthandDateTime: (eventDate) => {
+    return (
+      eventDate.format('MMM') + ' ' + eventDate.format('DD') + ' @ ' + eventDate.format('hh A')
+    );
   }
 };

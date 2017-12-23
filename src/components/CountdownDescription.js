@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import CountdownTime from './CountdownTime';
+import Helpers from '../utils/helpers';
 
 const CountdownDescription = ({ eventDate, eventName }) => {
   const { container, date, name } = styles;
@@ -9,7 +9,7 @@ const CountdownDescription = ({ eventDate, eventName }) => {
     <View style={container}>
       <View>
         <Text style={date}>
-          {eventDate}
+          {Helpers.getShorthandDateTime(eventDate)}
         </Text>
       </View>
 
@@ -20,7 +20,7 @@ const CountdownDescription = ({ eventDate, eventName }) => {
       </View>
     </View>
   );
-}
+};
 
 const styles = {
   container: {
@@ -38,7 +38,7 @@ const styles = {
     fontWeight: '700',
     fontSize: 22
   }
-}
+};
 
 export default CountdownDescription;
 

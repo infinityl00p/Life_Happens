@@ -1,13 +1,14 @@
 import React from 'react';
-import { Image, Text, View, TouchableOpacity } from 'react-native';
+import { Image, View, TouchableOpacity } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import Moment from 'moment';
 import Card from './Card';
 import Helpers from '../utils/helpers';
 import CountdownTime from './CountdownTime';
 import CountdownDescription from './CountdownDescription';
 
 const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime }) => {
-  const { imageStyle, timeContainer, infoContainer, days, daysText, time, nameStyle } = styles;
+  const { imageStyle, container, timeContainer, infoContainer } = styles;
 
   const dateObject = Helpers.getDateObject(eventDate, eventTime);
   const timeLeft = Helpers.getTimeLeft(dateObject);
@@ -15,7 +16,10 @@ const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime }) => {
   return (
     <Card>
       <TouchableOpacity
-        onPress={() => Actions.EventOverview({ id, imageUrl, eventName, eventDate, timeLeft })}
+        onPress={() => {
+            Actions.EventOverview({ id, imageUrl, eventName, eventTime, dateObject, eventDate });
+          }
+        }
       >
 
         <Image
@@ -23,7 +27,7 @@ const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime }) => {
           source={{ uri: imageUrl }}
         />
 
-        <View style={{ flexDirection: 'row', flex: 1, position: 'absolute'}}>
+        <View style={container}>
           <View style={timeContainer}>
             <CountdownTime
               days={timeLeft.days}
@@ -32,11 +36,11 @@ const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime }) => {
             />
           </View>
 
-          <View style={{ borderWidth: 0.5, borderColor: '#fff'}}></View>
+          <View style={{ borderWidth: 0.5, borderColor: '#fff' }} />
 
           <View style={infoContainer}>
             <CountdownDescription
-              eventDate={eventDate}
+              eventDate={Moment(dateObject)}
               eventName={eventName}
             />
           </View>
@@ -53,6 +57,11 @@ const styles = {
     height: 120,
     width: null,
     borderRadius: 5
+  },
+  container: {
+    flexDirection: 'row',
+    flex: 1,
+    position: 'absolute'
   },
   timeContainer: {
     backgroundColor: 'transparent',

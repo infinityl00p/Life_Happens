@@ -9,6 +9,7 @@ import { ScrollView,
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import Swiper from 'react-native-swiper';
+import Moment from 'moment';
 import ImageOverview from './ImageOverview';
 import IconBar from './IconBar';
 import TextOverview from './TextOverview';
@@ -47,27 +48,34 @@ class EventOverview extends Component {
   }
 
   render() {
+    const { imageUrl, eventName, eventDate, eventTime, dateObject } = this.props;
+    console.log(eventDate);
+    console.log(dateObject);
+    console.log(eventTime);
+
+
     return (
       <ScrollView style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Image
           style={styles.imageStyle}
-          source={{ uri: this.props.imageUrl }}
+          source={{ uri: imageUrl }}
         />
         <Swiper
           dot={<View style={styles.dotStyle} />}
           activeDot={<View style={styles.activeDotStyle} />}
           paginationStyle={{
-            bottom: 70
+            bottom: 30
           }}
           loop={false}
         >
 
           <View style={styles.slide}>
             <ImageOverview
-              imageUrl={this.props.imageUrl}
-              eventName={this.props.eventName}
-              eventDate={this.props.eventDate}
+              eventName={eventName}
+              eventDate={eventDate}
+              dateObject={Moment(dateObject)}
+              eventTime={eventTime}
             />
             <IconBar
               onEditPress={this.onEditPress}
@@ -77,8 +85,8 @@ class EventOverview extends Component {
 
           <View style={styles.slide}>
             <TextOverview
-              eventName={this.props.eventName}
-              eventDate={this.props.eventDate}
+              eventName={eventName}
+              eventDate={eventDate}
             />
           </View>
 

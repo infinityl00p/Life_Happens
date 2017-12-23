@@ -45,7 +45,7 @@ class CountdownList extends Component {
     });
 
     return (
-      <ScrollView>
+      <ScrollView style={{ backgroundColor: '#fff' }}>
         {imageButtons}
       </ScrollView>
     );
