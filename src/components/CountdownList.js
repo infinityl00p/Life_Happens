@@ -39,6 +39,7 @@ class CountdownList extends Component {
           imageUrl={event.image}
           eventName={event.name}
           eventDate={event.date}
+          eventTime={event.time}
         />
       );
     });
