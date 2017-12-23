@@ -1,31 +1,54 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import Moment from 'moment';
 import Helpers from '../utils/helpers';
 import TimeElement from './TimeElement';
 
 
-const ImageOverview = ({ eventName, eventDate, eventTime, dateObject }) => {
-  const { container, textContainer, nameStyle, dateStyle, timeContainer } = styles;
+class ImageOverview extends Component {
+  constructor() {
+    super();
 
-  const diffDateObject = Helpers.getDateObject(eventDate, eventTime);
-  const timeLeft = Helpers.getTimeLeft(diffDateObject);
+    this.state = { timeLeft: {} };
+  }
 
-  return (
-    <View style={container}>
-      <View style={textContainer}>
-        <Text style={dateStyle}>{Helpers.getShorthandDateTime(dateObject)}</Text>
-        <Text style={nameStyle}>{eventName}</Text>
+  componentWillMount() {
+    const diffDateObject = Helpers.getDateObject(this.props.eventDate, this.props.eventTime);
+    const timeLeft = Helpers.getTimeLeft(diffDateObject);
+    this.setState({ timeLeft })
+  }
+
+  componentDidMount() {
+    setInterval(this.updateTime, 1000);
+  }
+
+  updateTime = () => {
+    const diffDateObject = Helpers.getDateObject(this.props.eventDate, this.props.eventTime);
+    const timeLeft = Helpers.getTimeLeft(diffDateObject);
+
+    this.setState({ timeLeft })
+  }
+
+
+  render() {
+    const { container, textContainer, nameStyle, dateStyle, timeContainer } = styles;
+    const { eventName, dateObject } = this.props;
+
+    return (
+      <View style={container}>
+        <View style={textContainer}>
+          <Text style={dateStyle}>{Helpers.getShorthandDateTime(dateObject)}</Text>
+          <Text style={nameStyle}>{eventName}</Text>
+        </View>
+        <View style={{ borderWidth: 0.5, borderColor: '#fff' }} />
+        <View style={timeContainer}>
+          <TimeElement name='days' value={this.state.timeLeft.days} />
+          <TimeElement name='hours' value={this.state.timeLeft.hours} />
+          <TimeElement name='minutes' value={this.state.timeLeft.minutes} />
+          <TimeElement name='seconds' value={this.state.timeLeft.seconds} />
+        </View>
       </View>
-      <View style={{ borderWidth: 0.5, borderColor: '#fff' }} />
-      <View style={timeContainer}>
-        <TimeElement name='days' value={timeLeft.days} />
-        <TimeElement name='hours' value={timeLeft.hours} />
-        <TimeElement name='minutes' value={timeLeft.minutes} />
-        <TimeElement name='seconds' value={timeLeft.seconds} />
-      </View>
-    </View>
-  );
+    );
+  }
 };
 
 const styles = {
