@@ -49,10 +49,6 @@ class EventOverview extends Component {
 
   render() {
     const { imageUrl, eventName, eventDate, eventTime, dateObject } = this.props;
-    console.log(eventDate);
-    console.log(dateObject);
-    console.log(eventTime);
-
 
     return (
       <ScrollView style={styles.container}>

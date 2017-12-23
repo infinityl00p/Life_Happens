@@ -5,6 +5,8 @@ import Helper from '../utils/helpers';
 import ImageButton from './ImageButton';
 
 /* Display a list of all of the countdowns */
+const gradients = ['https://i.imgur.com/xFGDOzV.png', 'https://i.imgur.com/lyjyPbm.png', 'https://i.imgur.com/ja1wrNe.png']
+
 class CountdownList extends Component {
   state = { countdownList: [] };
 
@@ -31,7 +33,7 @@ class CountdownList extends Component {
   }
 
   render() {
-    const imageButtons = this.state.countdownList.map((event) => {
+    const imageButtons = this.state.countdownList.map((event, i) => {
       return (
         <ImageButton
           key={event.id}
@@ -40,6 +42,7 @@ class CountdownList extends Component {
           eventName={event.name}
           eventDate={event.date}
           eventTime={event.time}
+          gradientImage={gradients[i%3]}
         />
       );
     });

@@ -7,7 +7,7 @@ import Helpers from '../utils/helpers';
 import CountdownTime from './CountdownTime';
 import CountdownDescription from './CountdownDescription';
 
-const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime }) => {
+const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime, gradientImage }) => {
   const { imageStyle, container, timeContainer, infoContainer } = styles;
 
   const dateObject = Helpers.getDateObject(eventDate, eventTime);
@@ -24,7 +24,7 @@ const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime }) => {
 
         <Image
           style={imageStyle}
-          source={{ uri: imageUrl }}
+          source={{ uri: gradientImage }}
         />
 
         <View style={container}>
