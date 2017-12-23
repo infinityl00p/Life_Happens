@@ -17,20 +17,22 @@ const CountdownTime = ({ days, hours, minutes }) => {
 const styles = {
   daysStyle: {
     color: '#fff',
-    fontSize: 60,
+    fontSize: 50,
     fontWeight: '100',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   textStyle: {
     color: '#fff',
-    fontSize: 15,
-    textAlign: 'center'
+    fontSize: 20,
+
+    textAlign: 'center',
+    fontWeight: '400'
   },
   timeStyle: {
     color: '#fff',
     borderRadius: 15,
     textAlign: 'center'
   },
-}
+};
 
 export default CountdownTime;

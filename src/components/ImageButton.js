@@ -4,6 +4,7 @@ import { Actions } from 'react-native-router-flux';
 import Card from './Card';
 import Helpers from '../utils/helpers';
 import CountdownTime from './CountdownTime';
+import CountdownDescription from './CountdownDescription';
 
 const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime }) => {
   const { imageStyle, timeContainer, infoContainer, days, daysText, time, nameStyle } = styles;
@@ -34,6 +35,10 @@ const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime }) => {
           <View style={{ borderWidth: 0.5, borderColor: '#fff'}}></View>
 
           <View style={infoContainer}>
+            <CountdownDescription
+              eventDate={eventDate}
+              eventName={eventName}
+            />
           </View>
         </View>
 
