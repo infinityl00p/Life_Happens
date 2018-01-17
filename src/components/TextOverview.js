@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import Helper from '../utils/helpers';
 
 const TextOverview = ({ eventName, eventDate }) => {
   return (
@@ -10,7 +9,7 @@ const TextOverview = ({ eventName, eventDate }) => {
       </View>
       <View>
         <Text style={{ color: '#fff', fontSize: 25, paddingTop: 10 }}>
-          {Helper.daysSincePost(eventDate)} days left
+          {eventDate}
         </Text>
       </View>
       <View>

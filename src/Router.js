@@ -14,9 +14,8 @@ const RouterComponent = () => {
         <Scene
           key='CountdownList'
           component={CountdownList}
-          title='Your Countdowns'
           onRight={() => Actions.AddCountdown()}
-          rightTitle={<Icon name='ios-add' size={40} color='#000' />}
+          rightTitle={<Icon name='md-add-circle' size={35} color='#000' />}
           rightButtonStyle={{ top: 5 }}
           initial
         />
@@ -35,7 +34,6 @@ const RouterComponent = () => {
         <Scene
           key='EventOverview'
           component={EventOverview}
-          title='Your Event'
           headerTintColor='#fff'
           navTransparent={'true'}
         />

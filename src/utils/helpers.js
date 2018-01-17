@@ -1,18 +1,39 @@
+import Moment from 'moment';
+
 module.exports = {
   parseDateString: (dateString) => {
     const [year, month, day] = dateString.split('-');
     return new Date(year, month - 1, day);
   },
 
-  daysSincePost: (datePostedString) => {
-    const datePosted = new Date(datePostedString);
-    datePosted.setDate(datePosted.getDate() + 1);
+  getDateObject: (date, time) => {
+    const [year, month, day] = date.split('-');
+    const dateObject = new Date(year, month - 1, day);
 
-    const today = new Date();
+    const [hours, minutes] = time.split(':');
+    dateObject.setHours(hours);
+    dateObject.setMinutes(minutes);
 
-    const timeDiff = Math.abs(today.getTime() - datePosted.getTime());
-    const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    return dateObject;
+  },
 
-    return diffDays;
+  getTimeLeft: (dateObject) => {
+    const now = Moment(new Date());
+    const eventDate = Moment(dateObject);
+
+    const diffDuration = Moment.duration(eventDate.diff(now));
+
+    return {
+      days: diffDuration.days(),
+      hours: diffDuration.hours(),
+      minutes: diffDuration.minutes(),
+      seconds: diffDuration.seconds()
+    };
+  },
+
+  getShorthandDateTime: (eventDate) => {
+    return (
+      eventDate.format('MMM') + ' ' + eventDate.format('DD') + ' @ ' + eventDate.format('hh A')
+    );
   }
 };

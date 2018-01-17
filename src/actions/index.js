@@ -1,5 +1,6 @@
 import { EVENT_NAME_CHANGED,
         EVENT_DATE_CHANGED,
+        EVENT_TIME_CHANGED,
         ADD_EVENT,
         DELETE_EVENT,
         EDIT_EVENT
@@ -22,6 +23,14 @@ export const eventDateChanged = (date) => {
   };
 };
 
+
+export const eventTimeChanged = (time) => {
+  //TODO: only change if server response received
+  return {
+    type: EVENT_TIME_CHANGED,
+    payload: time
+  }
+}
 
 export const addEvent = (eventObject) => {
   //TODO: black for default, otherwise choose a pic

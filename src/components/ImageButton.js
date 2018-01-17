@@ -1,28 +1,49 @@
 import React from 'react';
-import { Image, Text, View, TouchableOpacity } from 'react-native';
+import { Image, View, TouchableOpacity } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import Helper from '../utils/helpers';
+import Moment from 'moment';
 import Card from './Card';
+import Helpers from '../utils/helpers';
+import CountdownTime from './CountdownTime';
+import CountdownDescription from './CountdownDescription';
 
-const ImageButton = ({ id, imageUrl, eventName, eventDate }) => {
-  const { imageStyle, textContainer, nameStyle, dateStyle } = styles;
+const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime, gradientImage }) => {
+  const { imageStyle, container, timeContainer, infoContainer } = styles;
+
+  const dateObject = Helpers.getDateObject(eventDate, eventTime);
+  const timeLeft = Helpers.getTimeLeft(dateObject);
 
   return (
     <Card>
       <TouchableOpacity
-        onPress={() => Actions.EventOverview({ id, imageUrl, eventName, eventDate })}
+        onPress={() => {
+            Actions.EventOverview({ id, imageUrl, eventName, eventTime, dateObject, eventDate });
+          }
+        }
       >
 
-        <View>
-          <Image
-            style={imageStyle}
-            source={{ uri: imageUrl }}
-          />
-        </View>
+        <Image
+          style={imageStyle}
+          source={{ uri: gradientImage }}
+        />
 
-        <View style={textContainer}>
-          <Text style={nameStyle}>{eventName}</Text>
-          <Text style={dateStyle}>{Helper.daysSincePost(eventDate)} days left</Text>
+        <View style={container}>
+          <View style={timeContainer}>
+            <CountdownTime
+              days={timeLeft.days}
+              hours={timeLeft.hours}
+              minutes={timeLeft.minutes}
+            />
+          </View>
+
+          <View style={{ borderWidth: 0.5, borderColor: '#fff' }} />
+
+          <View style={infoContainer}>
+            <CountdownDescription
+              eventDate={Moment(dateObject)}
+              eventName={eventName}
+            />
+          </View>
         </View>
 
       </TouchableOpacity>
@@ -32,20 +53,25 @@ const ImageButton = ({ id, imageUrl, eventName, eventDate }) => {
 
 const styles = {
   imageStyle: {
-    flex: 1,
-    height: 175,
+    flex: 2,
+    height: 120,
     width: null,
     borderRadius: 5
   },
-  textContainer: {
+  container: {
+    flexDirection: 'row',
+    flex: 1,
+    position: 'absolute'
+  },
+  timeContainer: {
     backgroundColor: 'transparent',
-    position: 'absolute',
-    top: 0,
-    bottom: 20,
-    left: 10,
-    right: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'flex-start'
+    width: 100,
+    height: 120,
+  },
+  infoContainer: {
+    backgroundColor: 'transparent',
+    width: 235,
+    height: 120
   },
   nameStyle: {
     color: '#fff',
