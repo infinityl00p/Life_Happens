@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, CameraRoll } from 'react-native';
 import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
 import { Actions } from 'react-native-router-flux';
@@ -41,6 +41,22 @@ class AddCountdown extends Component {
       this.props.eventTimeChanged('');
       Actions.pop();
     }
+  }
+
+  handleImageButtonClick = () => {
+    CameraRoll.getPhotos({
+      first: 20,
+      groupTypes: 'All',
+      assetType: 'Photos',
+    })
+    .then(r => {
+      console.log(r)
+      this.setState({ photos: r.edges });
+    })
+    .catch((err) => {
+      console.log(err)
+       //Error Loading Images
+    });
   }
 
   render() {
@@ -122,6 +138,15 @@ class AddCountdown extends Component {
             onDateChange={this.onTimeChange}
             />
           </View>
+        </CardSection>
+
+        <CardSection>
+          <Button
+            label="Image"
+            onPress={this.handleImageButtonClick}
+          >
+            Select a Background Image
+          </Button>
         </CardSection>
 
         <CardSection>
