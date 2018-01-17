@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, CameraRoll } from 'react-native';
+import { View, Text, CameraRoll, ScrollView, Image } from 'react-native';
 import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
 import { Actions } from 'react-native-router-flux';
@@ -11,6 +11,14 @@ import Button from './Button';
 
 
 class AddCountdown extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      photos: []
+    };
+  }
+
   componentWillMount() {
     this.props.eventNameChanged('');
     this.props.eventDateChanged(null);
@@ -50,12 +58,11 @@ class AddCountdown extends Component {
       assetType: 'Photos',
     })
     .then(r => {
-      console.log(r)
       this.setState({ photos: r.edges });
     })
     .catch((err) => {
-      console.log(err)
        //Error Loading Images
+       console.log(err);
     });
   }
 
@@ -154,6 +161,21 @@ class AddCountdown extends Component {
            Add Event
           </Button>
         </CardSection>
+            <ScrollView>
+              {this.state.photos.map((p, i) => {
+                return (
+                  <Image
+                    key={i}
+                    style={{
+                      width: 300,
+                      height: 100,
+                    }}
+                    source={{ uri: p.node.image.uri }}
+                  />
+                );
+              })}
+            </ScrollView>
+
       </Card>
     );
   }

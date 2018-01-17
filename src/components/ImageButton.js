@@ -24,7 +24,7 @@ const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime, gradientIm
 
         <Image
           style={imageStyle}
-          source={{ uri: gradientImage }}
+          source={require(gradientImage)}
         />
 
         <View style={container}>

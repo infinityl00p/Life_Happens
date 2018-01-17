@@ -5,7 +5,9 @@ import Helper from '../utils/helpers';
 import ImageButton from './ImageButton';
 
 /* Display a list of all of the countdowns */
-const gradients = ['https://i.imgur.com/xFGDOzV.png', 'https://i.imgur.com/lyjyPbm.png', 'https://i.imgur.com/ja1wrNe.png']
+const gradients = ['../stock_images/Atlas.jpg',
+                    '../stock_images/Atlas.jpg',
+                    '../stock_images/Atlas.jpg'];
 
 class CountdownList extends Component {
   state = { countdownList: [] };
@@ -42,7 +44,7 @@ class CountdownList extends Component {
           eventName={event.name}
           eventDate={event.date}
           eventTime={event.time}
-          gradientImage={gradients[i%3]}
+          gradientImage={gradients[i % 3]}
         />
       );
     });
