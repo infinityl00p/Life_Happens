@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
-import { eventNameChanged, eventDateChanged, editEvent } from '../actions';
+import { eventNameChanged, eventDateChanged, eventTimeChanged, editEvent } from '../actions';
 import Card from './Card';
 import CardSection from './CardSection';
 import Input from './Input';
@@ -14,6 +14,7 @@ class EditCountdown extends Component {
   componentWillMount() {
     this.props.eventNameChanged(this.props.initialName);
     this.props.eventDateChanged(this.props.initialDate);
+    this.props.eventTimeChanged(this.props.initialTime);
   }
 
   onEventNameChange = (text) => {
@@ -24,15 +25,20 @@ class EditCountdown extends Component {
     this.props.eventDateChanged(date);
   }
 
+  onTimeChange = (time) => {
+    this.props.eventTimeChanged(time);
+  }
+
   onSubmit = () => {
-    const { id, eventDate, imageUrl, eventName } = this.props;
+    const { id, eventDate, imageUrl, eventName, eventTime } = this.props;
 
     if (eventName !== '' && eventDate !== null) {
-      this.props.editEvent({ id, eventName, eventDate, imageUrl });
+      this.props.editEvent({ id, eventName, eventDate, eventTime, imageUrl });
       this.props.eventNameChanged('');
       this.props.eventDateChanged(null);
+      this.props.eventTimeChanged('');
 
-      Actions.pop({ refresh: { id, imageUrl, eventName, eventDate } });
+      Actions.pop({ refresh: { id, imageUrl, eventName, eventDate, eventTime } });
     }
   }
 
@@ -85,6 +91,40 @@ class EditCountdown extends Component {
       </CardSection>
 
       <CardSection>
+          <View style={styles.containerStyle}>
+            <Text style={styles.labelStyle}>Time</Text>
+            <DatePicker
+              style={{ width: 210 }}
+              date={this.props.eventTime}
+              mode="time"
+              placeholder="Select Time"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              showIcon={false}
+              customStyles={{
+                dateText: {
+                  color: '#000',
+                  fontSize: 18,
+                  lineHeight: 23,
+                  flex: 2,
+                  paddingTop: 8
+                },
+                placeholderText: {
+                  color: '#bfbfbf',
+                  fontSize: 18
+                },
+                dateInput: {
+                  borderColor: 'transparent',
+                  alignItems: 'flex-start',
+                }
+              }}
+            onDateChange={this.onTimeChange}
+            />
+          </View>
+        </CardSection>
+
+
+      <CardSection>
         <Button onPress={this.onSubmit}>
          Update
         </Button>
@@ -113,8 +153,9 @@ const mapStateToProps = state => {
   return {
     eventName: state.EventFields.eventName,
     eventDate: state.EventFields.eventDate,
+    eventTime: state.EventFields.eventTime
   };
 };
 
 export default connect(mapStateToProps,
-  { eventNameChanged, eventDateChanged, editEvent })(EditCountdown);
+  { eventNameChanged, eventDateChanged, eventTimeChanged, editEvent })(EditCountdown);

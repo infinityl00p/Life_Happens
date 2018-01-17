@@ -32,12 +32,13 @@ class EventOverview extends Component {
   }
 
   handleEdit = () => {
-    const { id, eventName, eventDate, imageUrl } = this.props;
+    const { id, eventName, eventDate, eventTime, imageUrl } = this.props;
 
     Actions.EditCountdown({
       id,
       initialName: eventName,
       initialDate: eventDate,
+      initialTime: eventTime,
       imageUrl
     });
   }

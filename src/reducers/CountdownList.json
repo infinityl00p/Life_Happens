@@ -10,27 +10,27 @@
     "id": 2,
     "name": "Visit San Francisco",
     "date": "2017-12-28",
-    "time": "02:56",
+    "time": "16:30",
     "image": "https://image.ibb.co/mo6ZUb/san_francisco.jpg"
   },
   {
     "id": 3,
     "name": "Celebrate Christmas",
-    "date": "2017-12-25",
+    "date": "2018-12-25",
     "time": "00:00",
     "image": "https://image.ibb.co/iBcV2w/christmas.jpg"
   },
   {
     "id": 4,
     "name": "New Years Goals",
-    "date": "2018-01-01",
+    "date": "2019-01-01",
     "time": "00:00",
     "image": "https://image.ibb.co/equzvG/new_years.jpg"
   },
   {
     "id": 5,
     "name": "Visit Barcelona",
-    "date": "2018-01-15",
+    "date": "2019-01-15",
     "time": "12:10",
     "image": "https://image.ibb.co/cM5Hhw/barcelona.jpg"
   }

@@ -29,6 +29,7 @@ export default (state = INITIAL_STATE, action) => {
             id: action.payload.id,
             name: action.payload.eventName,
             date: action.payload.eventDate,
+            time: action.payload.eventTime,
             image: countdown.image
           };
         }

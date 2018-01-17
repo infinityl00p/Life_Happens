@@ -1,5 +1,6 @@
 export const EVENT_NAME_CHANGED = 'event_name_changed';
 export const EVENT_DATE_CHANGED = 'event_date_changed';
+export const EVENT_TIME_CHANGED = 'event_time_changed';
 export const ADD_EVENT = 'add-event';
 export const DELETE_EVENT = 'delete-event';
 export const EDIT_EVENT = 'edit-event';
