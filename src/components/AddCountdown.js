@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, CameraRoll, ScrollView, Image } from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
 import { Actions } from 'react-native-router-flux';
@@ -9,16 +9,7 @@ import CardSection from './CardSection';
 import Input from './Input';
 import Button from './Button';
 
-
 class AddCountdown extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      photos: []
-    };
-  }
-
   componentWillMount() {
     this.props.eventNameChanged('');
     this.props.eventDateChanged(null);
@@ -51,132 +42,106 @@ class AddCountdown extends Component {
     }
   }
 
-  handleImageButtonClick = () => {
-    CameraRoll.getPhotos({
-      first: 20,
-      groupTypes: 'All',
-      assetType: 'Photos',
-    })
-    .then(r => {
-      this.setState({ photos: r.edges });
-    })
-    .catch((err) => {
-       //Error Loading Images
-       console.log(err);
-    });
-  }
-
   render() {
     return (
-      <Card>
-        <CardSection>
-          <Input
-            label="Name"
-            placeholder="New Years"
-            onChangeText={this.onEventNameChange}
-            value={this.props.eventName}
-          />
-        </CardSection>
-
-        <CardSection>
-          <View style={styles.containerStyle}>
-            <Text style={styles.labelStyle}>Date</Text>
-            <DatePicker
-              style={{ width: 210 }}
-              mode="date"
-              placeholder="Select Date"
-              format="YYYY-MM-DD"
-              date={this.props.eventDate || null}
-              minDate={new Date()}
-              maxDate="2100-01-01"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              showIcon={false}
-              customStyles={{
-                dateText: {
-                  color: '#000',
-                  fontSize: 18,
-                  lineHeight: 23,
-                  flex: 2,
-                  paddingTop: 8
-                },
-                placeholderText: {
-                  color: '#bfbfbf',
-                  fontSize: 18
-                },
-                dateInput: {
-                  borderColor: 'transparent',
-                  alignItems: 'flex-start',
-                }
-              }}
-              onDateChange={this.onDateChange}
+      <View style={{ backgroundColor: '#fff', height: Dimensions.get('window').height }}>
+        <Card>
+          <CardSection>
+            <Input
+              label="Name"
+              placeholder="New Years"
+              onChangeText={this.onEventNameChange}
+              value={this.props.eventName}
             />
-          </View>
-        </CardSection>
+          </CardSection>
 
-        <CardSection>
-          <View style={styles.containerStyle}>
-            <Text style={styles.labelStyle}>Time</Text>
-            <DatePicker
-              style={{ width: 210 }}
-              date={this.props.eventTime}
-              mode="time"
-              placeholder="Select Time"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              showIcon={false}
-              customStyles={{
-                dateText: {
-                  color: '#000',
-                  fontSize: 18,
-                  lineHeight: 23,
-                  flex: 2,
-                  paddingTop: 8
-                },
-                placeholderText: {
-                  color: '#bfbfbf',
-                  fontSize: 18
-                },
-                dateInput: {
-                  borderColor: 'transparent',
-                  alignItems: 'flex-start',
-                }
+          <CardSection>
+            <View style={styles.containerStyle}>
+              <Text style={styles.labelStyle}>Date</Text>
+              <DatePicker
+                style={{ width: 210 }}
+                mode="date"
+                placeholder="Select Date"
+                format="YYYY-MM-DD"
+                date={this.props.eventDate || null}
+                minDate={new Date()}
+                maxDate="2100-01-01"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                showIcon={false}
+                customStyles={{
+                  dateText: {
+                    color: '#000',
+                    fontSize: 18,
+                    lineHeight: 23,
+                    flex: 2,
+                    paddingTop: 8
+                  },
+                  placeholderText: {
+                    color: '#bfbfbf',
+                    fontSize: 18
+                  },
+                  dateInput: {
+                    borderColor: 'transparent',
+                    alignItems: 'flex-start',
+                  }
+                }}
+                onDateChange={this.onDateChange}
+              />
+            </View>
+          </CardSection>
+
+          <CardSection>
+            <View style={styles.containerStyle}>
+              <Text style={styles.labelStyle}>Time</Text>
+              <DatePicker
+                style={{ width: 210 }}
+                date={this.props.eventTime}
+                mode="time"
+                placeholder="Select Time"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                showIcon={false}
+                customStyles={{
+                  dateText: {
+                    color: '#000',
+                    fontSize: 18,
+                    lineHeight: 23,
+                    flex: 2,
+                    paddingTop: 8
+                  },
+                  placeholderText: {
+                    color: '#bfbfbf',
+                    fontSize: 18
+                  },
+                  dateInput: {
+                    borderColor: 'transparent',
+                    alignItems: 'flex-start',
+                  }
+                }}
+              onDateChange={this.onTimeChange}
+              />
+            </View>
+          </CardSection>
+
+          <CardSection>
+            <Button
+              label="Image"
+              onPress={() => {
+                Actions.ImageGallery()
               }}
-            onDateChange={this.onTimeChange}
-            />
-          </View>
-        </CardSection>
+            >
+              Select a Background
+            </Button>
+          </CardSection>
 
-        <CardSection>
-          <Button
-            label="Image"
-            onPress={this.handleImageButtonClick}
-          >
-            Select a Background Image
-          </Button>
-        </CardSection>
-
-        <CardSection>
-          <Button onPress={this.onSubmit}>
-           Add Event
-          </Button>
-        </CardSection>
-            <ScrollView>
-              {this.state.photos.map((p, i) => {
-                return (
-                  <Image
-                    key={i}
-                    style={{
-                      width: 300,
-                      height: 100,
-                    }}
-                    source={{ uri: p.node.image.uri }}
-                  />
-                );
-              })}
-            </ScrollView>
-
-      </Card>
+          <CardSection>
+            <Button onPress={this.onSubmit}>
+            Add Event
+            </Button>
+          </CardSection>
+        </Card>
+      </View>
     );
   }
 }

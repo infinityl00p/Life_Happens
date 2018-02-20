@@ -5,9 +5,9 @@ import Helper from '../utils/helpers';
 import ImageButton from './ImageButton';
 
 /* Display a list of all of the countdowns */
-const gradients = ['../stock_images/Atlas.jpg',
-                    '../stock_images/Atlas.jpg',
-                    '../stock_images/Atlas.jpg'];
+const gradients = [require('../stock_images/BetweenNightandDay.jpg'),
+                    require('../stock_images/ClearSky.jpg'),
+                    require('../stock_images/Curiosityblue.jpg')];
 
 class CountdownList extends Component {
   state = { countdownList: [] };
@@ -50,10 +50,17 @@ class CountdownList extends Component {
     });
 
     return (
-      <ScrollView style={{ backgroundColor: '#fff' }}>
+      <ScrollView style={styles.containerStyle}>
         {imageButtons}
       </ScrollView>
     );
+  }
+}
+
+const styles = {
+  containerStyle: {
+    backgroundColor: '#fff',
+    flex: 1
   }
 }
 

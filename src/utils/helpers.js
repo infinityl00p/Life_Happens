@@ -24,7 +24,7 @@ module.exports = {
     const diffDuration = Moment.duration(eventDate.diff(now));
 
     return {
-      days: diffDuration.days(),
+      days: Math.floor(diffDuration.asDays()),
       hours: diffDuration.hours(),
       minutes: diffDuration.minutes(),
       seconds: diffDuration.seconds()

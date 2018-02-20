@@ -6,6 +6,7 @@ import CountdownList from './components/CountdownList';
 import AddCountdown from './components/AddCountdown';
 import EventOverview from './components/EventOverview';
 import EditCountdown from './components/EditCountdown';
+import ImageGallery from './components/ImageGallery';
 
 const RouterComponent = () => {
   return (
@@ -36,6 +37,11 @@ const RouterComponent = () => {
           component={EventOverview}
           headerTintColor='#fff'
           navTransparent={'true'}
+        />
+        <Scene
+          key='ImageGallery'
+          component={ImageGallery}
+          title="Select an Image"
         />
       </Scene>
     </Router>
