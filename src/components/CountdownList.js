@@ -5,9 +5,10 @@ import Helper from '../utils/helpers';
 import ImageButton from './ImageButton';
 
 /* Display a list of all of the countdowns */
-const gradients = [require('../stock_images/BetweenNightandDay.jpg'),
-                    require('../stock_images/ClearSky.jpg'),
-                    require('../stock_images/Curiosityblue.jpg')];
+/*Displaying a Local Image (add to array) {uri: 'assets-library://asset/asset.PNG?id=CE45FFCC-7C26-43AD-B09F-61D2DA7DBB8D&ext=PNG'}*/
+const gradients = [require('../stock_images/SweetMorning.jpg'),
+                    require('../stock_images/Hazel.jpg'),
+                    require('../stock_images/HarmonicEnergy.jpg')];
 
 class CountdownList extends Component {
   state = { countdownList: [] };

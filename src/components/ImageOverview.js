@@ -67,11 +67,12 @@ const styles = {
   },
   textContainer: {
     backgroundColor: 'transparent',
-    left: 40
+    paddingLeft: 40,
+    right: 0
   },
   nameStyle: {
     color: '#fff',
-    fontSize: 45,
+    fontSize: 40,
     fontWeight: '700',
     paddingBottom: 10
   },

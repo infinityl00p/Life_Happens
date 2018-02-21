@@ -40,6 +40,7 @@ class ImageGallery extends Component {
           <View style={styles.imageContainer}>
           {
             this.state.photos.map((p, i) => {
+              console.log(p.node.image.uri);
               return (
                 <Image
                   key={i}

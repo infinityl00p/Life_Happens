@@ -7,6 +7,7 @@ import AddCountdown from './components/AddCountdown';
 import EventOverview from './components/EventOverview';
 import EditCountdown from './components/EditCountdown';
 import ImageGallery from './components/ImageGallery';
+import Logo from './components/common/Logo';
 
 const RouterComponent = () => {
   return (
@@ -15,9 +16,13 @@ const RouterComponent = () => {
         <Scene
           key='CountdownList'
           component={CountdownList}
+          navigationBarStyle={{ height: 100, paddingTop: 10, backgroundColor: '#fff', borderBottomColor: 'transparent' }}
           onRight={() => Actions.AddCountdown()}
-          rightTitle={<Icon name='md-add-circle' size={35} color='#000' />}
-          rightButtonStyle={{ top: 5 }}
+          rightTitle={<Icon name='md-add-circle' size={50} color='#000' />}
+          leftTitle={<Logo />}
+          onLeft={() => { }}
+          title={'Hi! James'}
+          titleStyle={{ fontSize: 35 }}
           initial
         />
         <Scene
