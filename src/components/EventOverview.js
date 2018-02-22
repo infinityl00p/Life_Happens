@@ -4,7 +4,8 @@ import { ScrollView,
           StatusBar,
           Dimensions,
           Alert,
-          Image
+          Image,
+          StyleSheet
         } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
@@ -50,24 +51,27 @@ class EventOverview extends Component {
 
   render() {
     const { imageUrl, eventName, eventDate, eventTime, dateObject } = this.props;
+    const { container, imageStyle, dotStyle, slide } = styles;
 
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView style={container}>
         <StatusBar barStyle="light-content" />
         <Image
-          style={styles.imageStyle}
+          style={imageStyle}
           source={{ uri: imageUrl }}
         />
         <Swiper
-          dot={<View style={styles.dotStyle} />}
+          dot={<View style={dotStyle} />}
           activeDot={<View style={styles.activeDotStyle} />}
           paginationStyle={{
             bottom: 30
           }}
           loop={false}
+          height={Dimensions.get('window').height}
+          width={Dimensions.get('window').width}
         >
 
-          <View style={styles.slide}>
+          <View style={slide}>
             <ImageOverview
               eventName={eventName}
               eventDate={eventDate}
@@ -94,8 +98,8 @@ class EventOverview extends Component {
   }
 }
 
-const styles = {
-  imageContainer: {
+const styles = StyleSheet.create({
+  container: {
     flex: 1
   },
   imageStyle: {
@@ -124,6 +128,6 @@ const styles = {
     marginLeft: 7,
     marginRight: 7
   }
-};
+});
 
 export default connect(null, { deleteEvent })(EventOverview);

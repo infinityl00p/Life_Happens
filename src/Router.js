@@ -1,5 +1,6 @@
 //All the different routes/screens user can route to
 import React from 'react';
+import { Platform } from 'react-native';
 import { Scene, Router, Actions } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CountdownList from './components/CountdownList';
@@ -7,7 +8,7 @@ import AddCountdown from './components/AddCountdown';
 import EventOverview from './components/EventOverview';
 import EditCountdown from './components/EditCountdown';
 import ImageGallery from './components/ImageGallery';
-import Logo from './components/common/Logo';
+import { Logo } from './components/common';
 
 const RouterComponent = () => {
   return (
@@ -16,13 +17,22 @@ const RouterComponent = () => {
         <Scene
           key='CountdownList'
           component={CountdownList}
-          navigationBarStyle={{ height: 100, paddingTop: 10, backgroundColor: '#fff', borderBottomColor: 'transparent' }}
+          navigationBarStyle={{
+            height: 100,
+            paddingTop: 10,
+            backgroundColor: '#fff',
+            borderBottomColor: 'transparent'
+          }}
           onRight={() => Actions.AddCountdown()}
           rightTitle={<Icon name='md-add-circle' size={50} color='#000' />}
+          rightButtonStyle={{ right: 0 }}
           leftTitle={<Logo />}
           onLeft={() => { }}
-          title={'Hi! James'}
-          titleStyle={{ fontSize: 35 }}
+          title={'Hi Name!'}
+          titleStyle={{
+            fontSize: Platform.OS === 'ios' ? 35 : 30,
+            alignSelf: 'flex-start'
+          }}
           initial
         />
         <Scene

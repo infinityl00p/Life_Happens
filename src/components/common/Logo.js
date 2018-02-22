@@ -1,10 +1,18 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { StyleSheet, Image, Platform } from 'react-native';
 
 const Logo = () => {
   return (
-    <Image source={require('../../stock_images/Logo.png')} style={{ height: 60, width: 60 }} />
+    <Image source={require('../../stock_images/Logo.png')} style={styles.logoStyle} />
   );
 };
 
-export default Logo;
+const styles = StyleSheet.create({
+  logoStyle: {
+    height: Platform.OS === 'ios' ? 60 : 140,
+    width: Platform.OS === 'ios' ? 60 : 140
+  }
+});
+
+
+export { Logo };

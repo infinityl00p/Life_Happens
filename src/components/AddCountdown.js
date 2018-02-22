@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, Dimensions } from 'react-native';
+import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
 import { Actions } from 'react-native-router-flux';
 import { eventNameChanged, eventDateChanged, eventTimeChanged, addEvent } from '../actions';
-import Card from './Card';
-import CardSection from './CardSection';
-import Input from './Input';
-import Button from './Button';
+import { Card, CardSection, Input, Button } from './common';
 
 class AddCountdown extends Component {
   componentWillMount() {
@@ -44,7 +41,7 @@ class AddCountdown extends Component {
 
   render() {
     return (
-      <View style={{ backgroundColor: '#fff', height: Dimensions.get('window').height }}>
+      <View style={styles.containerStyle}>
         <Card>
           <CardSection>
             <Input
@@ -56,7 +53,7 @@ class AddCountdown extends Component {
           </CardSection>
 
           <CardSection>
-            <View style={styles.containerStyle}>
+            <View style={styles.rowStyle}>
               <Text style={styles.labelStyle}>Date</Text>
               <DatePicker
                 style={{ width: 210 }}
@@ -92,7 +89,7 @@ class AddCountdown extends Component {
           </CardSection>
 
           <CardSection>
-            <View style={styles.containerStyle}>
+            <View style={styles.rowStyle}>
               <Text style={styles.labelStyle}>Time</Text>
               <DatePicker
                 style={{ width: 210 }}
@@ -146,19 +143,23 @@ class AddCountdown extends Component {
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
+  containerStyle: {
+    backgroundColor: '#fff',
+    height: Dimensions.get('window').height
+  },
   labelStyle: {
     fontSize: 18,
     paddingLeft: 20,
     flex: 1
   },
-  containerStyle: {
+  rowStyle: {
     height: 40,
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center'
   }
-};
+});
 
 
 const mapStateToProps = state => {

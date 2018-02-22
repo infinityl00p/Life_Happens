@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { eventNameChanged, eventDateChanged, eventTimeChanged, editEvent } from '../actions';
-import Card from './Card';
-import CardSection from './CardSection';
-import Input from './Input';
-import Button from './Button';
+import { Card, CardSection, Input, Button } from './common';
 
 
 class EditCountdown extends Component {
@@ -134,7 +131,7 @@ class EditCountdown extends Component {
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   labelStyle: {
     fontSize: 18,
     paddingLeft: 20,
@@ -146,7 +143,7 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center'
   }
-};
+});
 
 
 const mapStateToProps = state => {

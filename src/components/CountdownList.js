@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import Helper from '../utils/helpers';
 import ImageButton from './ImageButton';
@@ -25,13 +25,12 @@ class CountdownList extends Component {
     this.setState({ countdownList });
   }
 
-  /* Sort an array of objects with the date property by soonest to latest*/
   sortByDate = (dataArray) => {
     return dataArray.sort((a, b) => {
       const aDate = Helper.parseDateString(a.date);
       const bDate = Helper.parseDateString(b.date);
 
-      return aDate > bDate;
+      return aDate > bDate ? 1 : -1; //Syntax required for android, otherwise it won't sort
     });
   }
 
@@ -58,12 +57,12 @@ class CountdownList extends Component {
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   containerStyle: {
     backgroundColor: '#fff',
     flex: 1
   }
-}
+});
 
 const mapStateToProps = state => {
   return { countdowns: state.countdowns };

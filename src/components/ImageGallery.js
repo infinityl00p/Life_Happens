@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Image, ScrollView, CameraRoll, View } from 'react-native';
+import { Image, ScrollView, CameraRoll, View, StyleSheet } from 'react-native';
 
+//TODO: Add a list view here as it takes a while to load all of the images
 class ImageGallery extends Component {
   constructor() {
     super();
@@ -18,7 +19,6 @@ class ImageGallery extends Component {
   getPhotos = () => {
     CameraRoll.getPhotos({
       first: 1000000,
-      groupTypes: 'All',
       assetType: 'Photos',
     })
     .then(r => {
@@ -28,7 +28,6 @@ class ImageGallery extends Component {
       });
     })
     .catch((err) => {
-       //Error Loading Images
        console.log(err);
     });
   }
@@ -60,7 +59,7 @@ class ImageGallery extends Component {
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff'
@@ -75,6 +74,6 @@ const styles = {
       height: 178,
       marginTop: 8,
   }
-};
+});
 
 export default ImageGallery;
