@@ -1,5 +1,17 @@
 import React, { Component } from 'react';
-import { Image, ScrollView, CameraRoll, View, StyleSheet } from 'react-native';
+import {
+  Image,
+  ScrollView,
+  CameraRoll,
+  View,
+  StyleSheet,
+  TouchableHighlight,
+  Platform
+} from 'react-native';
+import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux';
+import { updateEventImage } from '../actions';
+import { Button, CardSection } from './common';
 
 //TODO: Add a list view here as it takes a while to load all of the images
 class ImageGallery extends Component {
@@ -8,7 +20,9 @@ class ImageGallery extends Component {
 
     this.state = {
       showGallery: false,
-      photos: []
+      photos: [],
+      selectedUri: '',
+      selectedImageKey: null
     };
   }
 
@@ -16,9 +30,18 @@ class ImageGallery extends Component {
     this.getPhotos();
   }
 
+  onImagePress = (selectedUri, selectedImageKey) => {
+    this.setState({ selectedUri, selectedImageKey });
+  }
+
+  onButtonPress = () => {
+    this.props.updateEventImage(this.state.selectedUri);
+    Actions.pop();
+  }
+
   getPhotos = () => {
     CameraRoll.getPhotos({
-      first: 1000000,
+      first: 100,
       assetType: 'Photos',
     })
     .then(r => {
@@ -32,25 +55,52 @@ class ImageGallery extends Component {
     });
   }
 
+  getImageStyle = (key) => {
+    if (key === this.state.selectedImageKey) {
+      return StyleSheet.create({
+        style: {
+          borderWidth: 4,
+          borderRadius: 5,
+          borderColor: '#007aff',
+          backgroundColor: '#fff',
+          marginTop: 8
+        }
+      });
+    } return StyleSheet.create({
+      style: {
+        marginTop: 8
+      }
+    });
+  }
+
   render() {
     if (this.state.showGallery) {
       return (
-        <ScrollView style={styles.container}>
-          <View style={styles.imageContainer}>
-          {
-            this.state.photos.map((p, i) => {
-              console.log(p.node.image.uri);
-              return (
-                <Image
-                  key={i}
-                  style={styles.imageStyle}
-                  source={{ uri: p.node.image.uri }}
-                />
-              );
-            })
-          }
-          </View>
-        </ScrollView>
+        <View style={{ flex: 1 }}>
+          <ScrollView style={styles.container}>
+            <View style={styles.imageContainer}>
+            {
+              this.state.photos.map((p, i) => {
+                const imageBorder = this.getImageStyle(i);
+
+                return (
+                  <TouchableHighlight style={imageBorder.style} key={i} onPress={() => this.onImagePress(p.node.image.uri, i)}>
+                    <Image
+                      style={styles.imageStyle}
+                      source={{ uri: p.node.image.uri }}
+                    />
+                  </TouchableHighlight>
+                );
+              })
+            }
+            </View>
+          </ScrollView>
+          <CardSection style={{ height: 20 }}>
+            <Button onPress={this.onButtonPress}>
+              Save Image
+            </Button>
+          </CardSection>
+        </View>
     );
     }
     return (
@@ -70,10 +120,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   imageStyle: {
-      width: 178,
-      height: 178,
-      marginTop: 8,
+    width: Platform.OS === 'ios' ? 178 : 170,
+    height: Platform.OS === 'ios' ? 178 : 170,
   }
 });
 
-export default ImageGallery;
+
+export default connect(null, { updateEventImage })(ImageGallery);

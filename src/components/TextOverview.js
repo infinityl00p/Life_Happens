@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import Helpers from '../utils/helpers';
 
-const TextOverview = ({ eventName, eventDate }) => {
+const TextOverview = ({ eventName, dateObject }) => {
   return (
     <View style={{ paddingTop: 100, paddingLeft: 10, paddingRight: 10 }}>
       <View>
@@ -9,7 +10,7 @@ const TextOverview = ({ eventName, eventDate }) => {
       </View>
       <View>
         <Text style={{ color: '#fff', fontSize: 25, paddingTop: 10 }}>
-          {eventDate}
+          {Helpers.getShorthandDateTime(dateObject)}
         </Text>
       </View>
       <View>

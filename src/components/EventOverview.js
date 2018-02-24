@@ -87,7 +87,7 @@ class EventOverview extends Component {
           <View style={styles.slide}>
             <TextOverview
               eventName={eventName}
-              eventDate={eventDate}
+              dateObject={Moment(dateObject)}
             />
           </View>
 

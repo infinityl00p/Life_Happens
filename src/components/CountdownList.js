@@ -6,9 +6,20 @@ import ImageButton from './ImageButton';
 
 /* Display a list of all of the countdowns */
 /*Displaying a Local Image (add to array) {uri: 'assets-library://asset/asset.PNG?id=CE45FFCC-7C26-43AD-B09F-61D2DA7DBB8D&ext=PNG'}*/
-const gradients = [require('../stock_images/SweetMorning.jpg'),
-                    require('../stock_images/Hazel.jpg'),
-                    require('../stock_images/HarmonicEnergy.jpg')];
+const gradients = [
+  {
+    image: require('../stock_images/SweetMorning.jpg'),
+    textColor: '#ff5f6d'
+  },
+  {
+    image: require('../stock_images/Hazel.jpg'),
+    textColor: '#77a1d3'
+  },
+  {
+    image: require('../stock_images/HarmonicEnergy.jpg'),
+    textColor: '#16A085'
+  }
+];
 
 class CountdownList extends Component {
   state = { countdownList: [] };
@@ -44,7 +55,7 @@ class CountdownList extends Component {
           eventName={event.name}
           eventDate={event.date}
           eventTime={event.time}
-          gradientImage={gradients[i % 3]}
+          gradient={gradients[i % 3]}
         />
       );
     });

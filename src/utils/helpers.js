@@ -33,7 +33,7 @@ module.exports = {
 
   getShorthandDateTime: (eventDate) => {
     return (
-      eventDate.format('MMM') + ' ' + eventDate.format('DD') + ' @ ' + eventDate.format('hh A')
+      `${eventDate.format('MMM')} ${eventDate.format('DD')} @ ${eventDate.format('hh A')}`
     );
   }
 };

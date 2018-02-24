@@ -5,7 +5,7 @@ const TimeElement = ({ name, value }) => {
   const { valueStyle, nameStyle } = styles;
 
   return (
-    <View style={{paddingLeft: 10, paddingRight: 10}}>
+    <View style={{ paddingLeft: 10, paddingRight: 10 }}>
       <Text style={valueStyle}>{Math.abs(value)}</Text>
       <Text style={nameStyle}>{name}</Text>
     </View>
@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
   },
   nameStyle: {
     color: '#fff',
-    fontSize: 18,
+    fontWeight: '700',
+    fontSize: 16,
     textAlign: 'center'
   }
 });

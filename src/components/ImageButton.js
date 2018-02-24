@@ -7,7 +7,7 @@ import Helpers from '../utils/helpers';
 import CountdownTime from './CountdownTime';
 import CountdownDescription from './CountdownDescription';
 
-const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime, gradientImage }) => {
+const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime, gradient }) => {
   const { imageStyle, container, timeContainer, infoContainer } = styles;
 
   const dateObject = Helpers.getDateObject(eventDate, eventTime);
@@ -24,7 +24,7 @@ const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime, gradientIm
 
         <Image
           style={imageStyle}
-          source={gradientImage}
+          source={gradient.image}
         />
 
         <View style={container}>
@@ -33,6 +33,7 @@ const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime, gradientIm
               days={timeLeft.days}
               hours={timeLeft.hours}
               minutes={timeLeft.minutes}
+              timeColor={gradient.textColor}
             />
           </View>
 

@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
-import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux';
 import { Card, CardSection, Input, Button, Spinner } from './common';
-import { emailChanged, passwordChanged, loginUser } from '../actions';
 
 
-class LoginForm extends Component {
+class SignupForm extends Component {
   onEmailChange = (text) => {
     this.props.emailChanged(text);
   }
@@ -38,6 +35,15 @@ class LoginForm extends Component {
       <Card>
         <CardSection>
           <Input
+            label="Name"
+            placeholder="James Gill"
+            onChangeText={this.onNameChange}
+            value={this.props.fullName}
+          />
+        </CardSection>
+
+        <CardSection>
+          <Input
             label="Email"
             placeholder="email@gmail.com"
             onChangeText={this.onEmailChange}
@@ -64,16 +70,11 @@ class LoginForm extends Component {
               <Spinner size="large" />
             :
               <Button onPress={this.onButtonPress}>
-                Login
+                Create Account
               </Button>
           }
         </CardSection>
 
-        <CardSection>
-          <Button onPress={() => Actions.signup()}>
-            Sign Up
-          </Button>
-        </CardSection>
       </Card>
     );
   }
@@ -87,13 +88,4 @@ const styles = {
   }
 };
 
-const mapStateToProps = state => {
-  return {
-    email: state.auth.email,
-    password: state.auth.password,
-    error: state.auth.error,
-    isLoading: state.auth.isLoading
-  };
-};
-
-export default connect(mapStateToProps, { emailChanged, passwordChanged, loginUser })(LoginForm);
+export default SignupForm;

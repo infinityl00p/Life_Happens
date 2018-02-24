@@ -1,17 +1,33 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 
 
-const CountdownTime = ({ days, hours, minutes }) => {
-  const { containerStyle, daysStyle, textStyle, timeContainer, timeStyle } = styles;
-  const dayString = (days < 0) ? "days ago" : "days";
+const CountdownTime = ({ days, hours, minutes, timeColor }) => {
+  const { containerStyle, daysStyle, textStyle, timeContainer } = styles;
+
+  const timeStyle = StyleSheet.create({
+    style: {
+      marginRight: 7,
+      marginLeft: 7,
+      fontWeight: '700',
+      textAlign: 'center',
+      color: timeColor
+    }
+  });
+
+  const timeLeftDescription = (days < 1) ? 'hours' : 'days';
+  let timeLeft = Math.abs(days);
+
+  if (timeLeftDescription === 'hours') {
+    timeLeft = Math.abs(hours);
+  }
 
   return (
     <View style={containerStyle}>
-      <Text style={daysStyle}>{Math.abs(days)}</Text>
-      <Text style={textStyle}>{dayString}</Text>
+      <Text style={daysStyle}>{timeLeft}</Text>
+      <Text style={textStyle}>{timeLeftDescription}</Text>
       <View style={timeContainer}>
-        <Text style={timeStyle}>{Math.abs(hours)}h {Math.abs(minutes)}m</Text>
+        <Text style={timeStyle.style}>{Math.abs(hours)}h {Math.abs(minutes)}m</Text>
       </View>
     </View>
   );
@@ -23,28 +39,24 @@ const styles = StyleSheet.create({
   },
   daysStyle: {
     color: '#fff',
-    fontSize: 50,
-    fontWeight: '100',
+    fontSize: Platform.OS === 'ios' ? 50 : 40,
+    fontWeight: Platform.OS === 'ios' ? '200' : '100',
     textAlign: 'center',
-    top: 10
+    top: Platform.OS === 'ios' ? 3 : 0
   },
   textStyle: {
     color: '#fff',
-    fontSize: 20,
     textAlign: 'center',
-    fontWeight: '400'
+    fontWeight: Platform.OS === 'ios' ? '600' : '300',
+    fontSize: 20,
+    letterSpacing: Platform.OS === 'ios' ? 3 : 0,
+    paddingBottom: Platform.OS === 'ios' ? 6 : 4
   },
   timeContainer: {
     backgroundColor: '#fff',
     alignItems: 'center',
     borderRadius: 100
-  },
-  timeStyle: {
-    marginRight: 7,
-    marginLeft: 7,
-    fontWeight: '700',
-    textAlign: 'center',
-  },
+  }
 });
 
 export default CountdownTime;
