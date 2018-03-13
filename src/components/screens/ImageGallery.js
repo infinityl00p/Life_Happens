@@ -43,7 +43,7 @@ class ImageGallery extends Component {
   getPhotos = () => {
     if (this.props.fromGallery) {
       CameraRoll.getPhotos({
-        first: 100,
+        first: 30,
         assetType: 'Photos',
       })
       .then(r => {

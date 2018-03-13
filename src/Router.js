@@ -65,7 +65,7 @@ const RouterComponent = () => {
             rightTitle="From Gallery"
             onRight={() => {
               Actions.pop();
-              Actions.ImageGallery({ fromGallery: true })
+              Actions.ImageGallery({ fromGallery: true });
             }}
           />
         </Scene>
