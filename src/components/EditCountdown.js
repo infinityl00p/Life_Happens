@@ -59,6 +59,7 @@ class EditCountdown extends Component {
           date={this.props.eventDate}
           onTimeChange={this.onTimeChange}
           time={this.props.eventTime}
+          imageUri={this.props.imageUri}
           onSubmit={this.onSubmit}
         />
       </View>

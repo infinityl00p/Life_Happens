@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     marginLeft: 15,
     marginRight: 15,
-    marginTop: 20
+    marginTop: 20,
+    backgroundColor: 'transparent'
   }
 });
 

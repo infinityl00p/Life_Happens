@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import Helpers from '../utils/helpers';
-import TimeElement from './TimeElement';
+import Helpers from '../../utils/helpers';
+import TimeElement from '../TimeElement';
 
 
 class ImageOverview extends Component {

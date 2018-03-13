@@ -12,9 +12,9 @@ import { Actions } from 'react-native-router-flux';
 import Swiper from 'react-native-swiper';
 import Moment from 'moment';
 import ImageOverview from './ImageOverview';
-import IconBar from './IconBar';
-import TextOverview from './TextOverview';
-import { deleteEvent } from '../actions';
+import IconBar from '../IconBar';
+import TextOverview from '../TextOverview';
+import { deleteEvent } from '../../actions';
 
 class EventOverview extends Component {
   onEditPress = () => {

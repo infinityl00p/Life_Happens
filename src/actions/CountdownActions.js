@@ -35,7 +35,6 @@ export const updateEventTime = (time) => {
 };
 
 export const updateEventImage = (imageUri) => {
-  console.log(imageUri);
   return {
     type: EVENT_IMAGE_CHANGED,
     payload: imageUri

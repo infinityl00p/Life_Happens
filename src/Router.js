@@ -5,29 +5,17 @@ import { Scene, Router, Actions } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CountdownList from './components/CountdownList';
 import AddCountdown from './components/AddCountdown';
-import EventOverview from './components/EventOverview';
+import EventOverview from './components/screens/EventOverview';
 import EditCountdown from './components/EditCountdown';
-import ImageGallery from './components/ImageGallery';
-import LoginForm from './components/LoginForm';
-import SignupForm from './components/SignupForm';
+import ImageGallery from './components/screens/ImageGallery';
+import LoginForm from './components/screens/LoginForm';
+import SignupForm from './components/screens/SignupForm';
 import { Logo } from './components/common';
 
 const RouterComponent = () => {
   return (
     <Router>
       <Scene key='root' tabBar='hide' hideNavBar>
-        <Scene key="auth">
-            <Scene
-              key="login"
-              title="Please Login"
-              component={LoginForm}
-            />
-            <Scene
-              key="signup"
-              title="Create an Account"
-              component={SignupForm}
-            />
-        </Scene>
 
         <Scene key='main'>
 
@@ -74,6 +62,11 @@ const RouterComponent = () => {
             key='ImageGallery'
             component={ImageGallery}
             title="Select an Image"
+            rightTitle="From Gallery"
+            onRight={() => {
+              Actions.pop();
+              Actions.ImageGallery({ fromGallery: true })
+            }}
           />
         </Scene>
 

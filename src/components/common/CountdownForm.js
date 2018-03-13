@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Dimensions, StyleSheet } from 'react-native';
+import { View, Text, Dimensions, StyleSheet, Image } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker';
 import {
@@ -16,10 +16,39 @@ const CountdownForm = ({
   date,
   onTimeChange,
   time,
+  imageUri,
   onSubmit
 }) => {
+  const color = imageUri ? "#fff" : "#000";
+
+  const datePickerStyles = StyleSheet.create({
+    dateText: {
+      color,
+      fontSize: 18,
+      lineHeight: 23,
+      flex: 2,
+      paddingTop: 8
+    },
+    placeholderText: {
+      color: '#bfbfbf',
+      fontSize: 18
+    },
+    dateInput: {
+      borderColor: 'transparent',
+      alignItems: 'flex-start',
+    }
+  });
+
+
   return (
     <View style={styles.containerStyle}>
+      {imageUri ?
+        <Image
+          style={styles.imageStyle}
+          source={{ uri: imageUri }}
+        /> :
+        <View />
+      }
       <Card>
         <CardSection>
           <Input
@@ -27,12 +56,13 @@ const CountdownForm = ({
             placeholder="New Years"
             onChangeText={onNameChange}
             value={name}
+            fontColor={color}
           />
         </CardSection>
 
         <CardSection>
             <View style={styles.rowStyle}>
-              <Text style={styles.labelStyle}>Date</Text>
+              <Text style={[styles.labelStyle, { color }]}>Date</Text>
               <DatePicker
                 style={{ width: 210 }}
                 mode="date"
@@ -52,7 +82,7 @@ const CountdownForm = ({
 
           <CardSection>
             <View style={styles.rowStyle}>
-              <Text style={styles.labelStyle}>Time</Text>
+              <Text style={[styles.labelStyle, { color }]}>Time</Text>
               <DatePicker
                 style={{ width: 210 }}
                 date={time}
@@ -70,14 +100,27 @@ const CountdownForm = ({
         <CardSection>
           <Button
             label="Image"
-            onPress={() => { Actions.ImageGallery(); }}
+            onPress={() => { Actions.ImageGallery({ fromGallery: false }); }}
+            colors={imageUri ? {
+              fontColor: "#fff",
+              backgroundColor: "transparent",
+              borderColor: "#fff"
+            } : null}
           >
             Select a Background
           </Button>
         </CardSection>
 
         <CardSection>
-          <Button onPress={onSubmit}>
+          <Button
+            onPress={onSubmit}
+            colors={imageUri ? {
+                fontColor: "#fff",
+                backgroundColor: "transparent",
+                borderColor: "#fff"
+              } : null
+            }
+          >
             Save Event
           </Button>
         </CardSection>
@@ -91,6 +134,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     height: Dimensions.get('window').height
   },
+  imageStyle: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+    backgroundColor: 'transparent',
+    position: 'absolute'
+  },
   labelStyle: {
     fontSize: 18,
     paddingLeft: 20,
@@ -101,24 +150,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center'
-  }
-});
-
-const datePickerStyles = StyleSheet.create({
-  dateText: {
-    color: '#000',
-    fontSize: 18,
-    lineHeight: 23,
-    flex: 2,
-    paddingTop: 8
-  },
-  placeholderText: {
-    color: '#bfbfbf',
-    fontSize: 18
-  },
-  dateInput: {
-    borderColor: 'transparent',
-    alignItems: 'flex-start',
   }
 });
 
