@@ -1,13 +1,13 @@
 import React from 'react';
-import { Image, View, TouchableOpacity } from 'react-native';
+import { Image, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import Moment from 'moment';
-import Card from './Card';
+import { Card } from './common';
 import Helpers from '../utils/helpers';
 import CountdownTime from './CountdownTime';
 import CountdownDescription from './CountdownDescription';
 
-const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime, gradientImage }) => {
+const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime, gradient }) => {
   const { imageStyle, container, timeContainer, infoContainer } = styles;
 
   const dateObject = Helpers.getDateObject(eventDate, eventTime);
@@ -24,7 +24,7 @@ const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime, gradientIm
 
         <Image
           style={imageStyle}
-          source={{ uri: gradientImage }}
+          source={gradient.image}
         />
 
         <View style={container}>
@@ -33,6 +33,7 @@ const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime, gradientIm
               days={timeLeft.days}
               hours={timeLeft.hours}
               minutes={timeLeft.minutes}
+              timeColor={gradient.textColor}
             />
           </View>
 
@@ -51,7 +52,7 @@ const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime, gradientIm
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
   imageStyle: {
     flex: 2,
     height: 120,
@@ -83,6 +84,6 @@ const styles = {
     fontWeight: '400',
     fontSize: 15
   }
-};
+});
 
 export default ImageButton;

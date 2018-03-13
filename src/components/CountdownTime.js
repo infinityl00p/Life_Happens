@@ -1,46 +1,62 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 
 
-const CountdownTime = ({ days, hours, minutes }) => {
-  const { daysStyle, textStyle, timeContainer, timeStyle } = styles;
+const CountdownTime = ({ days, hours, minutes, timeColor }) => {
+  const { containerStyle, daysStyle, textStyle, timeContainer } = styles;
+
+  const timeStyle = StyleSheet.create({
+    style: {
+      marginRight: 7,
+      marginLeft: 7,
+      fontWeight: '700',
+      textAlign: 'center',
+      color: timeColor
+    }
+  });
+
+  const timeLeftDescription = (days < 1) ? 'hours' : 'days';
+  let timeLeft = Math.abs(days);
+
+  if (timeLeftDescription === 'hours') {
+    timeLeft = Math.abs(hours);
+  }
 
   return (
-    <View style={{ alignItems: 'center' }}>
-      <Text style={daysStyle}>{days}</Text>
-      <Text style={textStyle}>days</Text>
+    <View style={containerStyle}>
+      <Text style={daysStyle}>{timeLeft}</Text>
+      <Text style={textStyle}>{timeLeftDescription}</Text>
       <View style={timeContainer}>
-        <Text style={timeStyle}>{hours}h {minutes}m</Text>
+        <Text style={timeStyle.style}>{Math.abs(hours)}h {Math.abs(minutes)}m</Text>
       </View>
     </View>
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
+  containerStyle: {
+    alignItems: 'center'
+  },
   daysStyle: {
     color: '#fff',
-    fontSize: 50,
-    fontWeight: '100',
+    fontSize: Platform.OS === 'ios' ? 50 : 40,
+    fontWeight: Platform.OS === 'ios' ? '200' : '100',
     textAlign: 'center',
-    top: 10
+    top: Platform.OS === 'ios' ? 3 : 0
   },
   textStyle: {
     color: '#fff',
-    fontSize: 20,
     textAlign: 'center',
-    fontWeight: '400'
+    fontWeight: Platform.OS === 'ios' ? '600' : '300',
+    fontSize: 20,
+    letterSpacing: Platform.OS === 'ios' ? 3 : 0,
+    paddingBottom: Platform.OS === 'ios' ? 6 : 4
   },
   timeContainer: {
-    width: 65,
     backgroundColor: '#fff',
     alignItems: 'center',
     borderRadius: 100
-  },
-  timeStyle: {
-    color: '#000',
-    fontWeight: '700',
-    textAlign: 'center',
-  },
-};
+  }
+});
 
 export default CountdownTime;

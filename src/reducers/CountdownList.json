@@ -2,16 +2,16 @@
   {
     "id": 1,
     "name": "Visit London",
-    "date": "2018-03-15",
+    "date": "2018-02-21",
     "time": "02:01",
     "image": "https://image.ibb.co/hHO3Nw/london.jpg"
   },
   {
     "id": 2,
-    "name": "Visit San Francisco",
-    "date": "2017-12-28",
-    "time": "16:30",
-    "image": "https://image.ibb.co/mo6ZUb/san_francisco.jpg"
+    "name": "Follow up on new years resolutions",
+    "date": "2019-02-20",
+    "time": "00:00",
+    "image": "https://image.ibb.co/equzvG/new_years.jpg"
   },
   {
     "id": 3,
@@ -22,15 +22,15 @@
   },
   {
     "id": 4,
-    "name": "New Years Goals",
-    "date": "2019-01-01",
-    "time": "00:00",
-    "image": "https://image.ibb.co/equzvG/new_years.jpg"
+    "name": "Visit San Francisco",
+    "date": "2018-02-28",
+    "time": "16:30",
+    "image": "https://image.ibb.co/mo6ZUb/san_francisco.jpg"
   },
   {
     "id": 5,
     "name": "Visit Barcelona",
-    "date": "2019-01-15",
+    "date": "2019-02-30",
     "time": "12:10",
     "image": "https://image.ibb.co/cM5Hhw/barcelona.jpg"
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Helpers from '../utils/helpers';
 
 const CountdownDescription = ({ eventDate, eventName }) => {
@@ -22,11 +22,11 @@ const CountdownDescription = ({ eventDate, eventName }) => {
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    marginLeft: 15
+    paddingLeft: 25
   },
   date: {
     color: '#fff',
@@ -38,7 +38,7 @@ const styles = {
     fontWeight: '700',
     fontSize: 22
   }
-};
+});
 
 export default CountdownDescription;
 

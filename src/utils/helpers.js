@@ -24,7 +24,7 @@ module.exports = {
     const diffDuration = Moment.duration(eventDate.diff(now));
 
     return {
-      days: diffDuration.days(),
+      days: Math.floor(diffDuration.asDays()),
       hours: diffDuration.hours(),
       minutes: diffDuration.minutes(),
       seconds: diffDuration.seconds()
@@ -33,7 +33,7 @@ module.exports = {
 
   getShorthandDateTime: (eventDate) => {
     return (
-      eventDate.format('MMM') + ' ' + eventDate.format('DD') + ' @ ' + eventDate.format('hh A')
+      `${eventDate.format('MMM')} ${eventDate.format('DD')} @ ${eventDate.format('hh A')}`
     );
   }
 };

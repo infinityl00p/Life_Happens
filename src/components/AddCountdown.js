@@ -1,161 +1,82 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
-import DatePicker from 'react-native-datepicker';
 import { Actions } from 'react-native-router-flux';
-import { eventNameChanged, eventDateChanged, eventTimeChanged, addEvent } from '../actions';
-import Card from './Card';
-import CardSection from './CardSection';
-import Input from './Input';
-import Button from './Button';
-
+import {
+  updateEventName,
+  updateEventDate,
+  updateEventTime,
+  resetCountdownFields,
+  addEvent
+} from '../actions';
+import { CountdownForm } from './common';
 
 class AddCountdown extends Component {
-  componentWillMount() {
-    this.props.eventNameChanged('');
-    this.props.eventDateChanged(null);
+  componentWillUnmount() {
+    this.props.resetCountdownFields();
   }
 
   onEventNameChange = (text) => {
-    this.props.eventNameChanged(text);
+    this.props.updateEventName(text);
   }
 
   onDateChange = (date) => {
-    this.props.eventDateChanged(date);
+    this.props.updateEventDate(date);
   }
 
   onTimeChange = (time) => {
-    this.props.eventTimeChanged(time);
+    this.props.updateEventTime(time);
   }
 
   onSubmit = () => {
-    if (this.props.eventName !== '' && this.props.eventDate !== null) {
+    const { eventName, eventDate, eventTime, imageUri } = this.props;
+
+    if (eventName !== '' && eventDate !== null) {
       this.props.addEvent({
-        name: this.props.eventName,
-        date: this.props.eventDate,
-        time: this.props.eventTime
+        name: eventName,
+        date: eventDate,
+        time: eventTime,
+        image: imageUri
       });
       //TODO: This should be changed automatically
-      this.props.eventNameChanged('');
-      this.props.eventDateChanged(null);
-      this.props.eventTimeChanged('');
+      this.props.resetCountdownFields();
       Actions.pop();
     }
   }
 
   render() {
     return (
-      <Card>
-        <CardSection>
-          <Input
-            label="Name"
-            placeholder="New Years"
-            onChangeText={this.onEventNameChange}
-            value={this.props.eventName}
-          />
-        </CardSection>
-
-        <CardSection>
-          <View style={styles.containerStyle}>
-            <Text style={styles.labelStyle}>Date</Text>
-            <DatePicker
-              style={{ width: 210 }}
-              mode="date"
-              placeholder="Select Date"
-              format="YYYY-MM-DD"
-              date={this.props.eventDate || null}
-              minDate={new Date()}
-              maxDate="2100-01-01"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              showIcon={false}
-              customStyles={{
-                dateText: {
-                  color: '#000',
-                  fontSize: 18,
-                  lineHeight: 23,
-                  flex: 2,
-                  paddingTop: 8
-                },
-                placeholderText: {
-                  color: '#bfbfbf',
-                  fontSize: 18
-                },
-                dateInput: {
-                  borderColor: 'transparent',
-                  alignItems: 'flex-start',
-                }
-              }}
-              onDateChange={this.onDateChange}
-            />
-          </View>
-        </CardSection>
-
-        <CardSection>
-          <View style={styles.containerStyle}>
-            <Text style={styles.labelStyle}>Time</Text>
-            <DatePicker
-              style={{ width: 210 }}
-              date={this.props.eventTime}
-              mode="time"
-              placeholder="Select Time"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              showIcon={false}
-              customStyles={{
-                dateText: {
-                  color: '#000',
-                  fontSize: 18,
-                  lineHeight: 23,
-                  flex: 2,
-                  paddingTop: 8
-                },
-                placeholderText: {
-                  color: '#bfbfbf',
-                  fontSize: 18
-                },
-                dateInput: {
-                  borderColor: 'transparent',
-                  alignItems: 'flex-start',
-                }
-              }}
-            onDateChange={this.onTimeChange}
-            />
-          </View>
-        </CardSection>
-
-        <CardSection>
-          <Button onPress={this.onSubmit}>
-           Add Event
-          </Button>
-        </CardSection>
-      </Card>
+      <View>
+        <CountdownForm
+          onNameChange={this.onEventNameChange}
+          name={this.props.eventName}
+          onDateChange={this.onDateChange}
+          date={this.props.eventDate}
+          onTimeChange={this.onTimeChange}
+          time={this.props.eventTime}
+          imageUri={this.props.imageUri}
+          onSubmit={this.onSubmit}
+        />
+      </View>
     );
   }
 }
-
-const styles = {
-  labelStyle: {
-    fontSize: 18,
-    paddingLeft: 20,
-    flex: 1
-  },
-  containerStyle: {
-    height: 40,
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center'
-  }
-};
-
 
 const mapStateToProps = state => {
   return {
     eventName: state.EventFields.eventName,
     eventDate: state.EventFields.eventDate,
-    eventTime: state.EventFields.eventTime
+    eventTime: state.EventFields.eventTime,
+    imageUri: state.EventFields.imageUri
   };
 };
 
 export default connect(mapStateToProps,
-  { eventNameChanged, eventDateChanged, eventTimeChanged, addEvent })(AddCountdown);
+  {
+    updateEventName,
+    updateEventDate,
+    updateEventTime,
+    resetCountdownFields,
+    addEvent
+  }
+)(AddCountdown);

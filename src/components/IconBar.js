@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 
@@ -29,7 +29,7 @@ const IconBar = ({ onEditPress, onTrashPress }) => {
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
   editContainer: {
     backgroundColor: 'transparent',
     position: 'absolute',
@@ -55,6 +55,6 @@ const styles = {
     justifyContent: 'flex-start',
     alignItems: 'flex-end'
   },
-};
+});
 
 export default IconBar;
