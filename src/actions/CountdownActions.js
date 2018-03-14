@@ -11,7 +11,6 @@ import { EVENT_NAME_CHANGED,
 import { Actions } from 'react-native-router-flux';
 
 export const updateEventName = (text) => {
-//TODO: confirm event name changed
   return {
     type: EVENT_NAME_CHANGED,
     payload: text
@@ -20,7 +19,6 @@ export const updateEventName = (text) => {
 
 
 export const updateEventDate = (date) => {
-//TODO: only change if server response received
   return {
     type: EVENT_DATE_CHANGED,
     payload: date
@@ -29,7 +27,6 @@ export const updateEventDate = (date) => {
 
 
 export const updateEventTime = (time) => {
-//TODO: only change if server response received
   return {
     type: EVENT_TIME_CHANGED,
     payload: time
@@ -50,8 +47,6 @@ export const resetCountdownFields = () => {
 };
 
 export const addEvent = (eventObject) => {
-  //TODO: id should be server response
-  //eventObject.id = Math.floor((Math.random() * 10000) + 1);
   const { name, date, time, image } = eventObject;
   const { currentUser } = firebase.auth();
 
@@ -87,9 +82,17 @@ export const deleteEvent = (eventId) => {
   };
 };
 
-export const editEvent = (eventObject) => {
-  return {
-    type: EDIT_EVENT,
-    payload: eventObject
+export const editEvent = ({ id, date, image, name, time }) => {
+  const { currentUser } = firebase.auth();
+
+  return () => {
+    firebase.database().ref(`/users/${currentUser.uid}/events/${id}`)
+      .update({ date, image, name, time })
+      .then(() => {
+        Actions.pop({ refresh: { id, imageUrl: image, eventName: name, eventDate: date, eventTime: time } });
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   };
 };

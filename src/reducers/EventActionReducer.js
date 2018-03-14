@@ -13,22 +13,7 @@ export default (state = INITIAL_STATE, action) => {
       return state;
 
     case EDIT_EVENT:
-    return {
-      ...state,
-      countdowns: state.countdowns.map((countdown) => {
-        if (countdown.id !== action.payload.id) {
-          return countdown;
-        } else if (countdown.id === action.payload.id) {
-          return {
-            id: action.payload.id,
-            name: action.payload.eventName,
-            date: action.payload.eventDate,
-            time: action.payload.eventTime,
-            image: action.payload.image
-          };
-        }
-      })
-    };
+      return state;
 
     default:
       return state;
