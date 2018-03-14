@@ -1,65 +1,85 @@
 import React from 'react';
-import { View, Text, LayoutAnimation } from 'react-native';
-import { Card, CardSection, Input, Button, Spinner } from './common';
-
+import { View, Text, LayoutAnimation, TextInput } from 'react-native';
+import { Button } from 'react-native-elements';
 
 const AuthForm = ({
   email,
   password,
+  confirmPassword,
   name,
   buttonText,
   onButtonPress,
   isLoading,
   errorMessage
 }) => {
-  LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+  const { subContainerStyle, inputStyle, buttonContainerStyle } = styles;
+
   return (
-    <Card>
+    <View style={{ marginLeft: 15, marginRight: 15 }}>
       {name ?
-        <CardSection>
-          <Input
-            label="Name"
-            placeholder="John Doe"
-            onChangeText={name.onChange}
+        <View style={subContainerStyle}>
+          <TextInput
+            underlineColorAndroid='rgba(0,0,0,0)'
+            placeholder={'Name'}
+            style={inputStyle}
             value={name.value}
+            onChangeText={name.onChange}
           />
-        </CardSection>
+        </View>
       :
         <View />
     }
 
-      <CardSection>
-        <Input
-          label="Email"
-          placeholder="email@gmail.com"
-          onChangeText={email.onChange}
+      <View style={subContainerStyle}>
+        <TextInput
+          underlineColorAndroid='rgba(0,0,0,0)'
+          placeholder={'Email'}
+          style={inputStyle}
           value={email.value}
+          onChangeText={email.onChange}
         />
-      </CardSection>
+      </View>
 
-      <CardSection>
-        <Input
+      <View style={subContainerStyle}>
+        <TextInput
           secureTextEntry
-          label="Password"
-          placeholder="password"
-          onChangeText={password.onChange}
+          underlineColorAndroid='rgba(0,0,0,0)'
+          placeholder={'Password'}
+          style={inputStyle}
           value={password.value}
+          onChangeText={password.onChange}
         />
-      </CardSection>
-
-      {renderError(errorMessage)}
-
-      <CardSection>
-        {
-          isLoading ?
-            <Spinner size="large" />
+      </View>
+      {name ?
+          <View style={subContainerStyle}>
+            <TextInput
+              secureTextEntry
+              underlineColorAndroid='rgba(0,0,0,0)'
+              placeholder={'Confirm Password'}
+              style={inputStyle}
+              value={confirmPassword.value}
+              onChangeText={confirmPassword.onChange}
+            />
+          </View>
           :
-            <Button onPress={onButtonPress}>
-              {buttonText}
-            </Button>
-        }
-      </CardSection>
-    </Card>
+          <View />
+      }
+
+      { renderError(errorMessage) }
+        <View style={buttonContainerStyle}>
+          <Button
+            loading={isLoading}
+            raised
+            disabled={isLoading}
+            borderRadius={5}
+            title={buttonText}
+            onPress={onButtonPress}
+            backgroundColor={'#45aaf2'}
+          />
+        </View>
+
+    </View>
 
   );
 };
@@ -81,6 +101,31 @@ const styles = {
     fontSize: 20,
     alignSelf: 'center',
     color: 'red'
+  },
+  inputStyle: {
+    paddingRight: 10,
+    paddingLeft: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    fontSize: 18,
+    lineHeight: 23,
+    flex: 1
+  },
+  subContainerStyle: {
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 5,
+    margin: 8,
+    backgroundColor: 'transparent',
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    borderColor: '#ddd',
+    position: 'relative'
+  },
+  buttonContainerStyle: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: 'stretch'
   }
 };
 

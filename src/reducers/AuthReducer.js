@@ -1,12 +1,14 @@
 import {
   EMAIL_CHANGED,
   PASSWORD_CHANGED,
+  CONFIRM_PASSWORD_CHANGED,
   NAME_CHANGED,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
   LOGIN_USER,
   CREATE_USER_FAIL,
   CREATE_USER,
+  CREATE_ERROR,
   RESET_ERROR
 } from '../actions/types';
 
@@ -27,6 +29,9 @@ export default (state = INITIAL_STATE, action) => {
     case PASSWORD_CHANGED:
       return { ...state, password: action.payload };
 
+    case CONFIRM_PASSWORD_CHANGED:
+      return { ...state, confirmPassword: action.payload };
+
     case NAME_CHANGED:
       return { ...state, name: action.payload };
 
@@ -45,8 +50,11 @@ export default (state = INITIAL_STATE, action) => {
     case CREATE_USER:
       return { ...state, isLoading: true };
 
+    case CREATE_ERROR:
+      return { ...state, error: action.payload };
+
     case RESET_ERROR:
-      return { ...state, error: '' }
+      return { ...state, error: '' };
 
     default:
       return state;

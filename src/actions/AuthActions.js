@@ -3,13 +3,15 @@ import { Actions } from 'react-native-router-flux';
 import {
   EMAIL_CHANGED,
   PASSWORD_CHANGED,
+  CONFIRM_PASSWORD_CHANGED,
   NAME_CHANGED,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
   LOGIN_USER,
   CREATE_USER_FAIL,
   CREATE_USER,
-  RESET_ERROR
+  RESET_ERROR,
+  CREATE_ERROR
 } from './types';
 
 export const emailChanged = (text) => {
@@ -26,12 +28,19 @@ export const passwordChanged = (text) => {
   };
 };
 
+export const confirmPasswordChanged = (text) => {
+  return {
+    type: CONFIRM_PASSWORD_CHANGED,
+    payload: text
+  };
+};
+
 export const nameChanged = (text) => {
   return {
     type: NAME_CHANGED,
     payload: text
   };
-}
+};
 
 export const loginUser = ({ email, password }) => {
   return (dispatch) => {
@@ -89,12 +98,19 @@ const loginUserFail = (dispatch) => {
 
 const createUserFail = (dispatch) => {
   dispatch({
-    type: CREATE_USER_FAIL,
+    type: CREATE_USER_FAIL
   });
 };
 
 export const resetError = () => {
   return {
-    type: RESET_ERROR,
+    type: RESET_ERROR
+  };
+};
+
+export const createError = (text) => {
+  return {
+    type: CREATE_ERROR,
+    payload: text
   };
 };

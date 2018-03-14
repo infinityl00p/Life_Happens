@@ -5,10 +5,12 @@ import { Logo } from '../common';
 import {
   emailChanged,
   passwordChanged,
+  confirmPasswordChanged,
   nameChanged,
   loginUser,
   createUser,
-  resetError
+  resetError,
+  createError
 } from '../../actions';
 import AuthForm from '../AuthForm';
 
@@ -23,6 +25,10 @@ class AuthContainer extends Component {
     this.props.passwordChanged(text);
   }
 
+  onConfirmPasswordChange = (text) => {
+    this.props.confirmPasswordChanged(text);
+  }
+
   onNameChange = (name) => {
     this.props.nameChanged(name);
   }
@@ -34,10 +40,41 @@ class AuthContainer extends Component {
   }
 
   signupUser = () => {
-    const { name, email, password } = this.props;
+    const { name, email, password, confirmPassword } = this.props;
 
-    this.props.createUser({ name, email, password });
+    if (this.validateSignup(name, email, password, confirmPassword)) {
+      this.props.createUser({ name, email, password });
+    }
   }
+
+  validateSignup = (name, email, password, confirmPassword) => {
+    const emailValid = this.validateEmail(email);
+    console.log(name);
+    console.log(email);
+    console.log(password);
+    console.log(confirmPassword);
+
+    if (!name || !email || !password || !confirmPassword) {
+      this.props.createError('Please complete all fields');
+      return false;
+    } else if (!emailValid) {
+      this.props.createError('Please enter a valid email');
+      return false;
+    } else if (password !== confirmPassword) {
+      this.props.createError('Passwords do not match');
+      return false;
+    } else if (password.length < 8) {
+      this.props.createError('Password must be at least 8 characters');
+      return false;
+    }
+
+    return true;
+  };
+
+  validateEmail = (email) => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
 
   renderTouchableText = () => {
     if (this.state.activeForm === 'login') {
@@ -56,7 +93,7 @@ class AuthContainer extends Component {
       );
     } else if (this.state.activeForm === 'signup') {
       return (
-        <View style={{ flexDirection: 'row', alignSelf: 'center', paddingTop: 20 }}>
+        <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
           <Text>Woops, take me back to</Text>
           <TouchableOpacity
             onPress={() => {
@@ -64,7 +101,7 @@ class AuthContainer extends Component {
               this.setState({ activeForm: 'login' });
             }}
           >
-            <Text style={{ fontWeight: '700' }}> login</Text>
+            <Text style={{ fontWeight: '700' }}> Login</Text>
           </TouchableOpacity>
         </View>
       );
@@ -72,14 +109,15 @@ class AuthContainer extends Component {
   }
 
   render() {
-    const email = { onChange: this.onEmailChange, value: this.props.email }
-    const password = { onChange: this.onPasswordChange, value: this.props.password }
-    const name = { onChange: this.onNameChange, value: this.props.name }
+    const email = { onChange: this.onEmailChange, value: this.props.email };
+    const password = { onChange: this.onPasswordChange, value: this.props.password };
+    const name = { onChange: this.onNameChange, value: this.props.name };
+    const confirmPassword = { onChange: this.onConfirmPasswordChange, value: this.props.confirmPassword }
 
     return (
       <View style={styles.containerStyle}>
         <View style={styles.headerStyle}>
-          <Logo iosWidth={130} androidWidth={150} />
+          <Logo iosWidth={130} androidWidth={130} />
           <View style={{ flexDirection: 'row', marginTop: 30, marginBottom: 30 }}>
             <Text style={{ fontSize: 40, color: '#bdc3c7', fontWeight: '900' }}>life</Text>
             <Text style={{ fontSize: 40, color: '#bdc3c7', fontWeight: '300' }}>happens</Text>
@@ -101,6 +139,7 @@ class AuthContainer extends Component {
           <AuthForm
             email={email}
             password={password}
+            confirmPassword={confirmPassword}
             name={name}
             isLoading={this.props.isLoading}
             buttonText="Create and Login"
@@ -129,6 +168,7 @@ const mapStateToProps = state => {
   return {
     email: state.auth.email,
     password: state.auth.password,
+    confirmPassword: state.auth.confirmPassword,
     name: state.auth.name,
     error: state.auth.error,
     isLoading: state.auth.isLoading
@@ -138,8 +178,10 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   emailChanged,
   passwordChanged,
+  confirmPasswordChanged,
   nameChanged,
   loginUser,
   createUser,
-  resetError
+  resetError,
+  createError
 })(AuthContainer);
