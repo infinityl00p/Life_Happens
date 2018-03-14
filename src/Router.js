@@ -9,13 +9,20 @@ import EventOverview from './components/screens/EventOverview';
 import EditCountdown from './components/EditCountdown';
 import ImageGallery from './components/screens/ImageGallery';
 import LoginForm from './components/screens/LoginForm';
-import SignupForm from './components/screens/SignupForm';
 import { Logo } from './components/common';
 
 const RouterComponent = () => {
   return (
     <Router>
       <Scene key='root' tabBar='hide' hideNavBar>
+        <Scene key='auth'>
+
+          <Scene
+            key='loginForm'
+            component={LoginForm}
+          />
+
+        </Scene>
 
         <Scene key='main'>
 
@@ -33,7 +40,7 @@ const RouterComponent = () => {
             rightButtonStyle={{ right: 0 }}
             leftTitle={<Logo />}
             onLeft={() => { }}
-            title={'Hi James!'}
+            title={'Life Happens'}
             titleStyle={{
               fontSize: Platform.OS === 'ios' ? 35 : 30,
               alignSelf: 'flex-start'

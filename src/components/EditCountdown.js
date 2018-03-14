@@ -39,13 +39,12 @@ class EditCountdown extends Component {
     if (eventName !== '' && eventDate !== null) {
       this.props.editEvent({
         id,
-        eventName,
-        eventDate,
-        eventTime,
+        name: eventName,
+        date: eventDate,
+        time: eventTime,
         image: imageUri
       });
       this.props.resetCountdownFields();
-      Actions.pop({ refresh: { id, imageUrl: imageUri, eventName, eventDate, eventTime } });
     }
   }
 
