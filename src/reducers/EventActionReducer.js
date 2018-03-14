@@ -1,22 +1,16 @@
-import data from './CountdownList.json';
-import { ADD_EVENT, DELETE_EVENT, EDIT_EVENT } from '../actions/types';
+import { ADD_EVENT, EDIT_EVENT, EVENTS_FETCH_SUCCESS } from '../actions/types';
 
-const INITIAL_STATE = { countdowns: data };
+const INITIAL_STATE = {};
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case ADD_EVENT:
+    case EVENTS_FETCH_SUCCESS:
       return {
-        countdowns: [...state.countdowns, action.payload]
+        countdowns: action.payload
       };
 
-    case DELETE_EVENT:
-      return {
-        ...state,
-        countdowns: state.countdowns.filter((countdown) => {
-          return countdown.id !== action.payload;
-        })
-      };
+    case ADD_EVENT:
+      return state;
 
     case EDIT_EVENT:
     return {

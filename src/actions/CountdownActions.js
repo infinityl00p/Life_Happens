@@ -1,12 +1,14 @@
+import firebase from 'firebase';
 import { EVENT_NAME_CHANGED,
   EVENT_DATE_CHANGED,
   EVENT_TIME_CHANGED,
   EVENT_IMAGE_CHANGED,
   ADD_EVENT,
-  DELETE_EVENT,
   EDIT_EVENT,
-  COUNTDOWN_FIELDS_RESET
+  COUNTDOWN_FIELDS_RESET,
+  EVENTS_FETCH_SUCCESS
 } from './types';
+import { Actions } from 'react-native-router-flux';
 
 export const updateEventName = (text) => {
 //TODO: confirm event name changed
@@ -49,19 +51,39 @@ export const resetCountdownFields = () => {
 
 export const addEvent = (eventObject) => {
   //TODO: id should be server response
-  eventObject.id = Math.floor((Math.random() * 10000) + 1);
+  //eventObject.id = Math.floor((Math.random() * 10000) + 1);
+  const { name, date, time, image } = eventObject;
+  const { currentUser } = firebase.auth();
 
-  return {
-    type: ADD_EVENT,
-    payload: eventObject
+  return (dispatch) => {
+    firebase.database().ref(`/users/${currentUser.uid}/events`)
+      .push({ name, date, time, image })
+      .then(() => {
+        dispatch({ type: ADD_EVENT, payload: eventObject });
+      });
+  };
+};
+
+export const eventsFetch = () => {
+  const { currentUser } = firebase.auth();
+
+  return (dispatch) => {
+    firebase.database().ref(`/users/${currentUser.uid}/events`)
+      .on('value', snapshot => {
+        dispatch({ type: EVENTS_FETCH_SUCCESS, payload: snapshot.val() });
+      });
   };
 };
 
 export const deleteEvent = (eventId) => {
-//TODO: get a server response
-  return {
-    type: DELETE_EVENT,
-    payload: eventId
+  const { currentUser } = firebase.auth();
+
+  return () => {
+    firebase.database().ref(`/users/${currentUser.uid}/events/${eventId}`)
+      .remove()
+      .then(() => {
+        Actions.pop();
+      });
   };
 };
 

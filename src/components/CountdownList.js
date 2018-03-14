@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { Text, ScrollView, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import _ from 'lodash';
+import { eventsFetch } from '../actions';
 import Helper from '../utils/helpers';
 import ImageButton from './ImageButton';
 
@@ -25,21 +27,36 @@ class CountdownList extends Component {
   state = { countdownList: [] };
 
   componentWillMount() {
-    //TODO: this as well, shouldn't be named countdowns.countdowns
-    const countdownList = this.sortByDate(this.props.countdowns.countdowns);
-    this.setState({ countdownList });
+    this.props.eventsFetch();
   }
 
   componentWillReceiveProps(props) {
-    //TODO: this can be done better
-    const countdownList = this.sortByDate(props.countdowns.countdowns);
+    this.handleListLoad(props.countdownList);
+  }
+
+  handleListLoad = (countdowns) => {
+    let countdownList = this.formatListData(countdowns);
+    countdownList = countdownList.length > 1 ? this.sortByDateTime(countdownList) : countdownList;
     this.setState({ countdownList });
   }
 
-  sortByDate = (dataArray) => {
-    return dataArray.sort((a, b) => {
-      const aDate = Helper.parseDateString(a.date);
-      const bDate = Helper.parseDateString(b.date);
+  formatListData = (countdownList) => {
+    const countdownArray = [];
+
+    _.forEach(countdownList, (eventObject, i) => {
+      _.forEach(eventObject, (event, key) => {
+        const { name, image, time, date } = event;
+        countdownArray.push({ id: key, name, image, time, date });
+      });
+    });
+
+    return countdownArray;
+  }
+
+  sortByDateTime = (countdownList) => {
+    return countdownList.sort((a, b) => {
+      const aDate = Helper.createDateObject(a.date, a.time);
+      const bDate = Helper.createDateObject(b.date, b.time);
 
       return aDate > bDate ? 1 : -1; //Syntax required for android, otherwise it won't sort
     });
@@ -76,7 +93,11 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  return { countdowns: state.countdowns };
+  const countdownList = _.map(state.countdowns, (val) => {
+    return { ...val };
+  });
+
+  return { countdownList };
 };
 
-export default connect(mapStateToProps)(CountdownList);
+export default connect(mapStateToProps, { eventsFetch })(CountdownList);
