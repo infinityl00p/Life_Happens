@@ -49,10 +49,6 @@ class AuthContainer extends Component {
 
   validateSignup = (name, email, password, confirmPassword) => {
     const emailValid = this.validateEmail(email);
-    console.log(name);
-    console.log(email);
-    console.log(password);
-    console.log(confirmPassword);
 
     if (!name || !email || !password || !confirmPassword) {
       this.props.createError('Please complete all fields');

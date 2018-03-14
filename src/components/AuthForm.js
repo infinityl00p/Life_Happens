@@ -51,7 +51,7 @@ const AuthForm = ({
           onChangeText={password.onChange}
         />
       </View>
-      {name ?
+      { name ?
           <View style={subContainerStyle}>
             <TextInput
               secureTextEntry
@@ -71,6 +71,9 @@ const AuthForm = ({
           <Button
             loading={isLoading}
             raised
+            containerViewStyle={{width: '100%'}}
+            fontWeight={'700'}
+            fontSize={18}
             disabled={isLoading}
             borderRadius={5}
             title={buttonText}
@@ -109,23 +112,26 @@ const styles = {
     paddingBottom: 5,
     fontSize: 18,
     lineHeight: 23,
-    flex: 1
+    flex: 1,
+    textAlign: 'center',
+    color: '#778ca3',
+    fontWeight: '700'
   },
   subContainerStyle: {
     borderWidth: 1,
     borderRadius: 5,
     padding: 5,
-    margin: 8,
-    backgroundColor: 'transparent',
+    marginTop: 8,
+    marginBottom: 8,
+    backgroundColor: '#d1d8e0',
     justifyContent: 'flex-start',
     flexDirection: 'row',
     borderColor: '#ddd',
     position: 'relative'
   },
   buttonContainerStyle: {
-    paddingTop: 5,
-    paddingBottom: 5,
-    alignItems: 'stretch'
+    marginTop: 8,
+    alignItems: 'center'
   }
 };
 
