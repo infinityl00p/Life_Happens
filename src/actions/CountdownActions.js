@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import { Actions } from 'react-native-router-flux';
 import { EVENT_NAME_CHANGED,
   EVENT_DATE_CHANGED,
   EVENT_TIME_CHANGED,
@@ -7,7 +8,6 @@ import { EVENT_NAME_CHANGED,
   COUNTDOWN_FIELDS_RESET,
   EVENTS_FETCH_SUCCESS
 } from './types';
-import { Actions } from 'react-native-router-flux';
 
 export const updateEventName = (text) => {
   return {
@@ -88,10 +88,16 @@ export const editEvent = ({ id, date, image, name, time }) => {
     firebase.database().ref(`/users/${currentUser.uid}/events/${id}`)
       .update({ date, image, name, time })
       .then(() => {
-        Actions.pop({ refresh: { id, imageUrl: image, eventName: name, eventDate: date, eventTime: time } });
+        Actions.pop({ refresh: {
+          id,
+          imageUrl: image,
+          eventName: name,
+          eventDate: date,
+          eventTime: time
+        } });
       })
       .catch((err) => {
         console.log(err);
-      })
+      });
   };
 };

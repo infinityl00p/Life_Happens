@@ -38,14 +38,14 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   daysStyle: {
-    color: '#fff',
+    color: 'rgba(255, 255, 255, 0.9)',
     fontSize: Platform.OS === 'ios' ? 50 : 40,
     fontWeight: Platform.OS === 'ios' ? '200' : '100',
     textAlign: 'center',
     top: Platform.OS === 'ios' ? 3 : 0
   },
   textStyle: {
-    color: '#fff',
+    color: 'rgba(255, 255, 255, 0.9)',
     textAlign: 'center',
     fontWeight: Platform.OS === 'ios' ? '600' : '300',
     fontSize: 20,

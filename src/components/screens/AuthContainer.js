@@ -108,7 +108,10 @@ class AuthContainer extends Component {
     const email = { onChange: this.onEmailChange, value: this.props.email };
     const password = { onChange: this.onPasswordChange, value: this.props.password };
     const name = { onChange: this.onNameChange, value: this.props.name };
-    const confirmPassword = { onChange: this.onConfirmPasswordChange, value: this.props.confirmPassword }
+    const confirmPassword = {
+      onChange: this.onConfirmPasswordChange,
+      value: this.props.confirmPassword
+    };
 
     return (
       <View style={styles.containerStyle}>
@@ -118,7 +121,6 @@ class AuthContainer extends Component {
             <Text style={{ fontSize: 40, color: '#bdc3c7', fontWeight: '900' }}>life</Text>
             <Text style={{ fontSize: 40, color: '#bdc3c7', fontWeight: '300' }}>happens</Text>
           </View>
-
         </View>
 
         {

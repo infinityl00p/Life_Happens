@@ -71,7 +71,7 @@ const AuthForm = ({
           <Button
             loading={isLoading}
             raised
-            containerViewStyle={{width: '100%'}}
+            containerViewStyle={{ width: '100%' }}
             fontWeight={'700'}
             fontSize={15}
             disabled={isLoading}
@@ -97,11 +97,11 @@ const renderError = (errorMessage) => {
       </View>
     );
   }
-}
+};
 
 const styles = {
   errorTextStyle: {
-    fontSize: 15,
+    fontSize: 12,
     alignSelf: 'center',
     color: 'red'
   },

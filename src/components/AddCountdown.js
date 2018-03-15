@@ -31,7 +31,7 @@ class AddCountdown extends Component {
   onSubmit = () => {
     const { eventName, eventDate, eventTime, imageUri } = this.props;
 
-    if (eventName !== '' && eventDate !== null) {
+    if (eventName !== '' && eventDate !== null && eventTime !== null && imageUri !== '') {
       this.props.addEvent({
         name: eventName,
         date: eventDate,
