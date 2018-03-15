@@ -1,9 +1,11 @@
 import Moment from 'moment';
 
 module.exports = {
-  parseDateString: (dateString) => {
+  createDateObject: (dateString, timeString) => {
     const [year, month, day] = dateString.split('-');
-    return new Date(year, month - 1, day);
+    const [hours, minutes] = timeString.split(':');
+
+    return new Date(year, month - 1, day, hours, minutes);
   },
 
   getDateObject: (date, time) => {

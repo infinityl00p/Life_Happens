@@ -46,7 +46,6 @@ class EventOverview extends Component {
 
   handleDelete = () => {
     this.props.deleteEvent(this.props.id);
-    Actions.CountdownList();
   }
 
   render() {
