@@ -11,6 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker';
+import { Overlay } from './';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -25,7 +26,6 @@ const CountdownForm = ({
   imageUri,
   onSubmit
 }) => {
-  const backgroundColor = imageUri ? '#fff' : '#000';
   const color = imageUri ? '#fff' : '#C7C7CD';
 
   const { containerStyle, rowStyle, imageStyle, inputStyle, submitIconStyle } = styles;
@@ -46,14 +46,12 @@ const CountdownForm = ({
 
 
   return (
-    <View style={[containerStyle, { backgroundColor }]}>
-      {imageUri ?
-        <Image
-          style={imageStyle}
-          source={{ uri: imageUri }}
-        /> :
-        <View />
-      }
+    <View style={containerStyle}>
+      <Image
+        style={imageStyle}
+        source={{ uri: imageUri || 'https://images.unsplash.com/photo-1500575351013-6b9af18d7722?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=53954f4acd2b374303fa56c178b9d9fd&auto=format&fit=crop&w=500&q=60' }}
+      />
+      <Overlay backgroundColor={'#000'} opacity={0.4} />
         <View style={rowStyle}>
           <TextInput
             label="Name"

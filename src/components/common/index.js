@@ -3,3 +3,4 @@ export * from './Logo';
 export * from './CountdownForm';
 export * from './Card';
 export * from './CardSection';
+export * from './Overlay';

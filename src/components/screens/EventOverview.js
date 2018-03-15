@@ -14,7 +14,11 @@ import Moment from 'moment';
 import ImageOverview from './ImageOverview';
 import IconBar from '../IconBar';
 import TextOverview from '../TextOverview';
+import { Overlay } from '../common';
 import { deleteEvent } from '../../actions';
+
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 class EventOverview extends Component {
   onEditPress = () => {
@@ -59,6 +63,7 @@ class EventOverview extends Component {
           style={imageStyle}
           source={{ uri: imageUrl }}
         />
+        <Overlay backgroundColor={'black'} opacity={0.4} />
         <Swiper
           dot={<View style={dotStyle} />}
           activeDot={<View style={styles.activeDotStyle} />}
@@ -102,8 +107,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   imageStyle: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT,
     backgroundColor: 'transparent',
     position: 'absolute'
   },
