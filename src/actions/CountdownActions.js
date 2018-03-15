@@ -1,21 +1,13 @@
 import firebase from 'firebase';
-<<<<<<< HEAD
 import { Actions } from 'react-native-router-flux';
-=======
->>>>>>> 6ddcc0d92543fce747751bf41bd3d8e738e6c195
 import { EVENT_NAME_CHANGED,
   EVENT_DATE_CHANGED,
   EVENT_TIME_CHANGED,
   EVENT_IMAGE_CHANGED,
   ADD_EVENT,
-<<<<<<< HEAD
-=======
-  EDIT_EVENT,
->>>>>>> 6ddcc0d92543fce747751bf41bd3d8e738e6c195
   COUNTDOWN_FIELDS_RESET,
   EVENTS_FETCH_SUCCESS
 } from './types';
-import { Actions } from 'react-native-router-flux';
 
 export const updateEventName = (text) => {
   return {
@@ -23,7 +15,6 @@ export const updateEventName = (text) => {
     payload: text
   };
 };
-
 
 export const updateEventDate = (date) => {
   return {
