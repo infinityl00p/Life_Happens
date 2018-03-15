@@ -1,4 +1,8 @@
-import { ADD_EVENT, EDIT_EVENT, EVENTS_FETCH_SUCCESS } from '../actions/types';
+import {
+  ADD_EVENT,
+  EDIT_EVENT,
+  EVENTS_FETCH_SUCCESS
+} from '../actions/types';
 
 const INITIAL_STATE = {};
 

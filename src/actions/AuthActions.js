@@ -47,7 +47,9 @@ export const loginUser = ({ email, password }) => {
     dispatch({ type: LOGIN_USER });
 
     firebase.auth().signInWithEmailAndPassword(email, password)
-      .then(user => { loginUserSuccess(dispatch, user); })
+      .then(user => {
+         loginUserSuccess(dispatch, user);
+      })
       .catch((err) => {
         console.log(err);
         loginUserFail(dispatch);
@@ -64,9 +66,10 @@ export const createUser = ({ name, email, password }) => {
       firebase.database().ref('users').child(account.uid).set({ name })
       .then(() => {
         firebase.auth().signInWithEmailAndPassword(email, password)
-          .then(user => { loginUserSuccess(dispatch, user); })
+          .then(user => {
+            loginUserSuccess(dispatch, user);
+          })
           .catch((err) => {
-            console.log(err);
             loginUserFail(dispatch);
           });
       })

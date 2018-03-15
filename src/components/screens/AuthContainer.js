@@ -17,6 +17,10 @@ import AuthForm from '../AuthForm';
 class AuthContainer extends Component {
   state = { activeForm: 'login' };
 
+  onNameChange = (name) => {
+    this.props.nameChanged(name);
+  }
+
   onEmailChange = (text) => {
     this.props.emailChanged(text);
   }
@@ -27,10 +31,6 @@ class AuthContainer extends Component {
 
   onConfirmPasswordChange = (text) => {
     this.props.confirmPasswordChanged(text);
-  }
-
-  onNameChange = (name) => {
-    this.props.nameChanged(name);
   }
 
   loginUser = () => {
