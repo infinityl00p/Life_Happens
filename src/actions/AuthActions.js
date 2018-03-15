@@ -48,7 +48,10 @@ export const loginUser = ({ email, password }) => {
 
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(user => {
-         loginUserSuccess(dispatch, user);
+        firebase.database().ref(`/users/${user.uid}/name`)
+          .on('value', snapshot => {
+            loginUserSuccess(dispatch, user, snapshot.val());
+          });
       })
       .catch((err) => {
         console.log(err);
@@ -67,16 +70,17 @@ export const createUser = ({ name, email, password }) => {
       .then(() => {
         firebase.auth().signInWithEmailAndPassword(email, password)
           .then(user => {
-            loginUserSuccess(dispatch, user);
+            loginUserSuccess(dispatch, user, name);
           })
           .catch((err) => {
+            console.log(err);
             loginUserFail(dispatch);
           });
       })
-      .catch((err) =>{
+      .catch((err) => {
         console.log(err);
         createUserFail(dispatch);
-      })
+      });
     })
     .catch((err) => {
       console.log(err);
@@ -85,13 +89,13 @@ export const createUser = ({ name, email, password }) => {
   };
 };
 
-const loginUserSuccess = (dispatch, user) => {
+const loginUserSuccess = (dispatch, user, name) => {
+  console.log(name);
   dispatch({
     type: LOGIN_USER_SUCCESS,
     payload: user
   });
-
-  Actions.main();
+  Actions.main({ title: `Hi ${name.split(' ')[0]}` });
 };
 
 const loginUserFail = (dispatch) => {

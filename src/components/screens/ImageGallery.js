@@ -9,10 +9,11 @@ import {
   Platform
 } from 'react-native';
 import { connect } from 'react-redux';
+import { Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import { updateEventImage } from '../../actions';
-import { Button, CardSection } from './../common';
-import images from '../../stock_images/image_list';
+import { CardSection } from './../common';
+import { images } from '../../stock_images/image_list';
 
 //TODO: Add a list view here as it takes a while to load all of the images
 class ImageGallery extends Component {
@@ -91,7 +92,11 @@ class ImageGallery extends Component {
             const uri = this.props.fromGallery ? p.node.image.uri : p;
 
             return (
-              <TouchableHighlight style={imageBorder.style} key={i} onPress={() => this.onImagePress(uri, i)}>
+              <TouchableHighlight
+                style={imageBorder.style}
+                key={i}
+                onPress={() => this.onImagePress(uri, i)}
+              >
                 <Image
                   style={styles.imageStyle}
                   source={{ uri }}
@@ -110,11 +115,18 @@ class ImageGallery extends Component {
       return (
         <View style={{ flex: 1 }}>
           {this.renderImages()}
-          <CardSection style={{ height: 20 }}>
-            <Button onPress={this.onButtonPress}>
-              Save Image
-            </Button>
-          </CardSection>
+          <View style={{ backgroundColor: '#fff', padding: 5, alignItems: 'center' }}>
+            <Button
+              raised
+              onPress={this.onButtonPress}
+              containerViewStyle={{ width: '100%' }}
+              fontWeight={'700'}
+              fontSize={15}
+              borderRadius={5}
+              backgroundColor={'#26de81'}
+              title='Save Image'
+            />
+          </View>
         </View>
     );
     }

@@ -1,8 +1,7 @@
 //All the different routes/screens user can route to
 import React from 'react';
-import { Platform, AsyncStorage } from 'react-native';
+import { Platform } from 'react-native';
 import { Scene, Router, Actions } from 'react-native-router-flux';
-import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CountdownList from './components/CountdownList';
 import AddCountdown from './components/AddCountdown';
@@ -41,10 +40,11 @@ const RouterComponent = () => {
             rightButtonStyle={{ right: 0 }}
             leftTitle={<Logo iosWidth={60} androidWidth={140} />}
             onLeft={() => { }}
-            title={`Your Countdowns`}
             titleStyle={{
-              fontSize: Platform.OS === 'ios' ? 25 : 20,
-              alignSelf: 'flex-start'
+              fontSize: Platform.OS === 'ios' ? 30 : 25,
+              alignSelf: 'flex-start',
+              color: '#bdc3c7',
+              fontWeight: '400'
             }}
             initial
           />
@@ -52,13 +52,17 @@ const RouterComponent = () => {
             key='AddCountdown'
             component={AddCountdown}
             title='Add a Countdown'
-            headerTintColor='#000'
+            headerTintColor='#fff'
+            titleStyle={{ color: '#fff' }}
+            navTransparent={'true'}
           />
           <Scene
             key='EditCountdown'
             component={EditCountdown}
             title='Modify Countdown'
-            headerTintColor='#000'
+            headerTintColor='#fff'
+            titleStyle={{ color: '#fff' }}
+            navTransparent={'true'}
           />
           <Scene
             key='EventOverview'

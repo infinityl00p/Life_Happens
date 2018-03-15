@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import {
   updateEventName,
@@ -36,7 +35,7 @@ class EditCountdown extends Component {
   onSubmit = () => {
     const { id, eventDate, imageUri, eventName, eventTime } = this.props;
 
-    if (eventName !== '' && eventDate !== null) {
+    if (eventName !== '' && eventDate !== null && eventTime !== null && imageUri !== '') {
       this.props.editEvent({
         id,
         name: eventName,

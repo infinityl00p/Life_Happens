@@ -37,7 +37,7 @@ const ImageButton = ({ id, imageUrl, eventName, eventDate, eventTime, gradient }
             />
           </View>
 
-          <View style={{ borderWidth: 0.5, borderColor: '#fff' }} />
+          <View style={{ borderWidth: 0.5, borderColor: 'rgba(255, 255, 255, 0.2)' }} />
 
           <View style={infoContainer}>
             <CountdownDescription

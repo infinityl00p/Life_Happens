@@ -1,28 +1,14 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { eventsFetch } from '../actions';
 import Helper from '../utils/helpers';
 import ImageButton from './ImageButton';
+import { gradients } from '../stock_images/image_list';
 
 /* Display a list of all of the countdowns */
 /*Displaying a Local Image (add to array) {uri: 'assets-library://asset/asset.PNG?id=CE45FFCC-7C26-43AD-B09F-61D2DA7DBB8D&ext=PNG'}*/
-const gradients = [
-  {
-    image: require('../stock_images/SweetMorning.jpg'),
-    textColor: '#ff5f6d'
-  },
-  {
-    image: require('../stock_images/Hazel.jpg'),
-    textColor: '#77a1d3'
-  },
-  {
-    image: require('../stock_images/HarmonicEnergy.jpg'),
-    textColor: '#16A085'
-  }
-];
-
 class CountdownList extends Component {
   state = { countdownList: [] };
 
@@ -43,7 +29,7 @@ class CountdownList extends Component {
   formatListData = (countdownList) => {
     const countdownArray = [];
 
-    _.forEach(countdownList, (eventObject, i) => {
+    _.forEach(countdownList, (eventObject) => {
       _.forEach(eventObject, (event, key) => {
         const { name, image, time, date } = event;
         countdownArray.push({ id: key, name, image, time, date });
@@ -78,9 +64,17 @@ class CountdownList extends Component {
     });
 
     return (
-      <ScrollView style={styles.containerStyle}>
-        {imageButtons}
-      </ScrollView>
+      <View style={styles.containerStyle}>
+        { imageButtons.length ?
+          <ScrollView>
+            {imageButtons}
+          </ScrollView>
+          :
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            <Text style={styles.textStyle}>Add a countdown to get started!</Text>
+          </View>
+        }
+      </View>
     );
   }
 }
@@ -89,6 +83,12 @@ const styles = StyleSheet.create({
   containerStyle: {
     backgroundColor: '#fff',
     flex: 1
+  },
+  textStyle: {
+    textAlign: 'center',
+    color: '#bdc3c7',
+    fontWeight: '800',
+    fontSize: 20
   }
 });
 

@@ -1,13 +1,19 @@
 import React from 'react';
-import { View, Text, Dimensions, StyleSheet, Image } from 'react-native';
+import {
+  View,
+  Text,
+  Dimensions,
+  StyleSheet,
+  Image,
+  TextInput,
+  TouchableOpacity
+} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker';
-import {
-  Card,
-  CardSection,
-  Input,
-  Button,
-} from './';
+
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const CountdownForm = ({
   onNameChange,
@@ -19,137 +25,131 @@ const CountdownForm = ({
   imageUri,
   onSubmit
 }) => {
-  const color = imageUri ? "#fff" : "#000";
+  const backgroundColor = imageUri ? '#fff' : '#000';
+  const color = imageUri ? '#fff' : '#C7C7CD';
 
+  const { containerStyle, rowStyle, imageStyle, inputStyle, submitIconStyle } = styles;
   const datePickerStyles = StyleSheet.create({
     dateText: {
       color,
-      fontSize: 18,
-      lineHeight: 23,
-      flex: 2,
-      paddingTop: 8
+      fontSize: 30,
     },
     placeholderText: {
-      color: '#bfbfbf',
-      fontSize: 18
+      color,
+      fontSize: 30,
     },
     dateInput: {
       borderColor: 'transparent',
-      alignItems: 'flex-start',
-    }
+      alignItems: 'flex-start'
+    },
   });
 
 
   return (
-    <View style={styles.containerStyle}>
+    <View style={[containerStyle, { backgroundColor }]}>
       {imageUri ?
         <Image
-          style={styles.imageStyle}
+          style={imageStyle}
           source={{ uri: imageUri }}
         /> :
         <View />
       }
-      <Card>
-        <CardSection>
-          <Input
+        <View style={rowStyle}>
+          <TextInput
             label="Name"
-            placeholder="New Years"
+            placeholder="Add Description"
             onChangeText={onNameChange}
             value={name}
-            fontColor={color}
+            placeholderTextColor={'#c7c7cd'}
+            style={[inputStyle, { color }]}
           />
-        </CardSection>
+        </View>
 
-        <CardSection>
-            <View style={styles.rowStyle}>
-              <Text style={[styles.labelStyle, { color }]}>Date</Text>
-              <DatePicker
-                style={{ width: 210 }}
-                mode="date"
-                placeholder="Select Date"
-                format="YYYY-MM-DD"
-                date={date || null}
-                minDate={new Date()}
-                maxDate="2100-01-01"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                showIcon={false}
-                customStyles={datePickerStyles}
-                onDateChange={onDateChange}
-              />
-            </View>
-          </CardSection>
+        <View style={rowStyle}>
+          <DatePicker
+            mode="date"
+            style={{ width: SCREEN_WIDTH, paddingLeft: 20 }}
+            placeholder="Set a Date"
+            format="YYYY-MM-DD"
+            date={date || null}
+            minDate={new Date()}
+            maxDate="2100-01-01"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            showIcon={false}
+            customStyles={datePickerStyles}
+            onDateChange={onDateChange}
+          />
+        </View>
 
-          <CardSection>
-            <View style={styles.rowStyle}>
-              <Text style={[styles.labelStyle, { color }]}>Time</Text>
-              <DatePicker
-                style={{ width: 210 }}
-                date={time}
-                mode="time"
-                placeholder="Select Time"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                showIcon={false}
-                customStyles={datePickerStyles}
-                onDateChange={onTimeChange}
-              />
-            </View>
-          </CardSection>
+        <View style={rowStyle}>
+          <DatePicker
+            date={time}
+            style={{ width: SCREEN_WIDTH, paddingLeft: 20 }}
+            mode="time"
+            placeholder="Set a time"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            showIcon={false}
+            customStyles={datePickerStyles}
+            onDateChange={onTimeChange}
+          />
+        </View>
 
-        <CardSection>
-          <Button
-            label="Image"
+        <View style={[rowStyle, { borderBottomWidth: 0 }]}>
+          <TouchableOpacity
             onPress={() => { Actions.ImageGallery({ fromGallery: false }); }}
-            colors={imageUri ? {
-              fontColor: "#fff",
-              backgroundColor: "transparent",
-              borderColor: "#fff"
-            } : null}
+            style={{ backgroundColor: 'transparent', paddingLeft: 20 }}
           >
-            Select a Background
-          </Button>
-        </CardSection>
+            <Text style={{ fontSize: 30, color }}>Select a Background</Text>
+          </TouchableOpacity>
+        </View>
 
-        <CardSection>
-          <Button
-            onPress={onSubmit}
-            colors={imageUri ? {
-                fontColor: "#fff",
-                backgroundColor: "transparent",
-                borderColor: "#fff"
-              } : null
-            }
-          >
-            Save Event
-          </Button>
-        </CardSection>
-      </Card>
+        <View style={{ flex: 1 }}>
+          <View style={submitIconStyle}>
+            <Icon
+              onPress={onSubmit}
+              name='ios-checkmark-circle'
+              size={70}
+              color='#26de81'
+            />
+          </View>
+        </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   containerStyle: {
-    backgroundColor: '#fff',
-    height: Dimensions.get('window').height
+    height: SCREEN_HEIGHT,
+    paddingTop: (SCREEN_HEIGHT / 2) - 100
   },
   imageStyle: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT,
     backgroundColor: 'transparent',
     position: 'absolute'
   },
-  labelStyle: {
-    fontSize: 18,
-    paddingLeft: 20,
-    flex: 1
-  },
   rowStyle: {
-    height: 40,
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderColor: 'rgba(255, 255, 255, 0.8)',
+    borderBottomWidth: 0.5
+  },
+  inputStyle: {
+    fontSize: 40,
+    fontWeight: '900',
+    width: SCREEN_WIDTH,
+    paddingLeft: 20
+  },
+  submitIconStyle: {
+    position: 'absolute',
+    right: 15,
+    bottom: 20,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    backgroundColor: 'transparent'
   }
 });
 

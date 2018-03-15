@@ -29,12 +29,12 @@ const styles = StyleSheet.create({
     paddingLeft: 25
   },
   date: {
-    color: '#fff',
+    color: 'rgba(255, 255, 255, 0.9)',
     fontWeight: '700',
     fontSize: 16
   },
   name: {
-    color: '#fff',
+    color: 'rgba(255, 255, 255, 0.9)',
     fontWeight: '700',
     fontSize: 22
   }
