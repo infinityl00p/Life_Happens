@@ -8,9 +8,10 @@ import {
   TextInput,
   TouchableOpacity
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+//import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker';
+import { Ionicons } from '@expo/vector-icons';
 import { Overlay } from './';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -105,7 +106,7 @@ const CountdownForm = ({
 
         <View style={{ flex: 1 }}>
           <View style={submitIconStyle}>
-            <Icon
+            <Ionicons
               onPress={onSubmit}
               name='ios-checkmark-circle'
               size={70}

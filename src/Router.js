@@ -2,7 +2,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { Scene, Router, Actions } from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Entypo } from '@expo/vector-icons';
 import CountdownList from './components/CountdownList';
 import AddCountdown from './components/AddCountdown';
 import EventOverview from './components/screens/EventOverview';
@@ -36,7 +36,7 @@ const RouterComponent = () => {
               borderBottomColor: 'transparent'
             }}
             onRight={() => Actions.AddCountdown()}
-            rightTitle={<Icon name='md-add-circle' size={50} color='#000' />}
+            rightTitle={<Entypo name="circle-with-plus" size={50} color="#000" />}
             rightButtonStyle={{ right: 0 }}
             leftTitle={<Logo iosWidth={60} androidWidth={140} />}
             onLeft={() => { }}

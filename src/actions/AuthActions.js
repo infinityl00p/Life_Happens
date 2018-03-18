@@ -90,7 +90,6 @@ export const createUser = ({ name, email, password }) => {
 };
 
 const loginUserSuccess = (dispatch, user, name) => {
-  console.log(name);
   dispatch({
     type: LOGIN_USER_SUCCESS,
     payload: user

@@ -1,4 +1,9 @@
 {
   "name": "Life_Happens",
-  "displayName": "Life_Happens"
+  "displayName": "Life_Happens",
+  "expo": {
+    "name": "Life_Happens",
+    "slug": "lifeHappens",
+    "sdkVersion": "23.0.0"
+  }
 }
