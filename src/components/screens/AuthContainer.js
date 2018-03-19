@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Logo } from '../common';
 import {
@@ -8,6 +9,7 @@ import {
   confirmPasswordChanged,
   nameChanged,
   loginUser,
+  facebookLogin,
   createUser,
   resetError,
   createError
@@ -15,7 +17,7 @@ import {
 import AuthForm from '../AuthForm';
 
 class AuthContainer extends Component {
-  state = { activeForm: 'login' };
+  state = { activeForm: 'signinOptions' };
 
   onNameChange = (name) => {
     this.props.nameChanged(name);
@@ -73,38 +75,31 @@ class AuthContainer extends Component {
   };
 
   renderTouchableText = () => {
-    if (this.state.activeForm === 'login') {
-      return (
-        <View style={{ flexDirection: 'row', alignSelf: 'center', paddingTop: 20 }}>
-          <Text>Don't have an account yet?</Text>
-          <TouchableOpacity
-              onPress={() => {
-                this.props.resetError();
-                this.setState({ activeForm: 'signup' });
-              }}
-          >
-            <Text style={{ fontWeight: '700' }}> Create One</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    } else if (this.state.activeForm === 'signup') {
-      return (
-        <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
-          <Text>Woops, take me back to</Text>
-          <TouchableOpacity
+    return (
+      <View style={{ flexDirection: 'row', alignSelf: 'center', paddingTop: 20 }}>
+        <TouchableOpacity
             onPress={() => {
               this.props.resetError();
-              this.setState({ activeForm: 'login' });
+              this.setState({ activeForm: 'emailLogin' });
             }}
-          >
-            <Text style={{ fontWeight: '700' }}> Login</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    }
+        >
+          <Text style={{ fontWeight: '700' }}>Sign In</Text>
+        </TouchableOpacity>
+        <Text> or </Text>
+        <TouchableOpacity
+            onPress={() => {
+              this.props.resetError();
+              this.setState({ activeForm: 'emailSignup' });
+            }}
+        >
+          <Text style={{ fontWeight: '700' }}>Sign Up</Text>
+        </TouchableOpacity>
+        <Text> using an email address.</Text>
+      </View>
+    );
   }
 
-  render() {
+  renderEmailForm = () => {
     const email = { onChange: this.onEmailChange, value: this.props.email };
     const password = { onChange: this.onPasswordChange, value: this.props.password };
     const name = { onChange: this.onNameChange, value: this.props.name };
@@ -113,39 +108,77 @@ class AuthContainer extends Component {
       value: this.props.confirmPassword
     };
 
+    if (this.state.activeForm === 'emailLogin') {
+      return (
+        <AuthForm
+          email={email}
+          password={password}
+          isLoading={this.props.isLoading}
+          buttonText="Login"
+          onButtonPress={this.loginUser}
+          errorMessage={this.props.error}
+        />
+      );
+    } else if (this.state.activeForm === 'emailSignup') {
+      return (
+        <AuthForm
+          email={email}
+          password={password}
+          confirmPassword={confirmPassword}
+          name={name}
+          isLoading={this.props.isLoading}
+          buttonText="Create and Login"
+          onButtonPress={this.signupUser}
+          errorMessage={this.props.error}
+        />
+      );
+    }
+  }
+
+  renderSigninOptions = () => {
+    if (this.state.activeForm === 'signinOptions') {
+      return (
+        <View style={{ marginTop: 140 }}>
+          <Button
+            raised
+            large
+            title='Sign In With Google'
+            borderRadius={5}
+            backgroundColor={'#dd4b39'}
+            containerViewStyle={styles.buttonStyle}
+          />
+          <Button
+            raised
+            large
+            title='Sign In With Facebook'
+            onPress={this.props.facebookLogin}
+            borderRadius={5}
+            backgroundColor={'#3b5998'}
+            containerViewStyle={styles.buttonStyle}
+          />
+          {this.renderTouchableText()}
+        </View>
+      );
+    }
+  }
+
+  render() {
     return (
       <View style={styles.containerStyle}>
         <View style={styles.headerStyle}>
-          <Logo iosWidth={130} androidWidth={130} />
-          <View style={{ flexDirection: 'row', marginTop: 30, marginBottom: 30 }}>
-            <Text style={{ fontSize: 40, color: '#bdc3c7', fontWeight: '900' }}>life</Text>
-            <Text style={{ fontSize: 40, color: '#bdc3c7', fontWeight: '300' }}>happens</Text>
-          </View>
+          <Logo
+            iosHeight={180}
+            iosWidth={150}
+            androidHeight={180}
+            androidWidth={150}
+            withText
+          />
         </View>
 
-        {
-        this.state.activeForm === 'login' ?
-          <AuthForm
-            email={email}
-            password={password}
-            isLoading={this.props.isLoading}
-            buttonText="Login"
-            onButtonPress={this.loginUser}
-            errorMessage={this.props.error}
-          />
-          :
-          <AuthForm
-            email={email}
-            password={password}
-            confirmPassword={confirmPassword}
-            name={name}
-            isLoading={this.props.isLoading}
-            buttonText="Create and Login"
-            onButtonPress={this.signupUser}
-            errorMessage={this.props.error}
-          />
-        }
-        {this.renderTouchableText()}
+        <View>
+          {this.renderSigninOptions()}
+          {this.renderEmailForm()}
+        </View>
       </View>
     );
   }
@@ -158,7 +191,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   headerStyle: {
-    alignItems: 'center'
+    position: 'absolute',
+    alignItems: 'center',
+    top: 70,
+    left: 0,
+    right: 0
+  },
+  buttonStyle: {
+    margin: 10
   }
 });
 
@@ -179,6 +219,7 @@ export default connect(mapStateToProps, {
   confirmPasswordChanged,
   nameChanged,
   loginUser,
+  facebookLogin,
   createUser,
   resetError,
   createError

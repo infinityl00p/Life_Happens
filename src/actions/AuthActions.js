@@ -1,5 +1,8 @@
 import firebase from 'firebase';
+import { AsyncStorage } from 'react-native';
+import { Facebook } from 'expo';
 import { Actions } from 'react-native-router-flux';
+import axios from 'axios';
 import {
   EMAIL_CHANGED,
   PASSWORD_CHANGED,
@@ -59,6 +62,51 @@ export const loginUser = ({ email, password }) => {
       });
   };
 };
+
+export const facebookLogin = () => async dispatch => {
+  await AsyncStorage.removeItem('user_credential');
+  const credential = await AsyncStorage.getItem('user_crediential');
+  if (credential) {
+    //TODO: GET NAME AND USER
+    loginUserSuccess(dispatch);
+  } else {
+    doFacebookLogin(dispatch);
+  }
+};
+
+const doFacebookLogin = async dispatch => {
+  const { type, token } = await Facebook.logInWithReadPermissionsAsync('598956890453300', {
+    permissions: ['public_profile', 'email']
+  });
+
+  if (type === 'cancel') {
+    return loginUserFail(dispatch);
+  }
+
+  if (type === 'success') {
+    const response = await axios.get(`https://graph.facebook.com/me?fields=name,email&access_token=${token}`);
+    const { name, email } = response.data;
+    console.log(token);
+    //check if email exists in firebase
+      //if it doesn't
+        //sign in with credential
+        const credential = await firebase.auth.FacebookAuthProvider.credential(token);
+        try {
+          await firebase.auth().signInWithCredential(credential);
+        } catch (error) {
+          console.log(error);
+        }
+        //add name field to user account
+
+        await AsyncStorage.setItem('user_crediential', credential);
+      //if it does, sign in with firebase credentials
+
+      //loginusersuccess
+
+    loginUserFail(dispatch);
+  }
+};
+
 
 export const createUser = ({ name, email, password }) => {
   return (dispatch) => {

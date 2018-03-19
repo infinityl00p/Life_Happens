@@ -38,7 +38,7 @@ const RouterComponent = () => {
             onRight={() => Actions.AddCountdown()}
             rightTitle={<Entypo name="circle-with-plus" size={50} color="#000" />}
             rightButtonStyle={{ right: 0 }}
-            leftTitle={<Logo iosWidth={60} androidWidth={140} />}
+            leftTitle={<Logo iosWidth={60} androidWidth={140} iosHeight={60} androidHeight={60} />}
             onLeft={() => { }}
             titleStyle={{
               fontSize: Platform.OS === 'ios' ? 30 : 25,

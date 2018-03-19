@@ -16,7 +16,7 @@ const AuthForm = ({
   const { subContainerStyle, inputStyle, buttonContainerStyle } = styles;
 
   return (
-    <View style={{ marginLeft: 15, marginRight: 15 }}>
+    <View style={{ marginLeft: 15, marginRight: 15, marginTop: 140 }}>
       {name ?
         <View style={subContainerStyle}>
           <TextInput
