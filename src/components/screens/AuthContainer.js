@@ -25,11 +25,18 @@ class AuthContainer extends Component {
   }
 
   getLoggedIn = async () => {
+    let email;
+    let password;
+
     if (await AsyncStorage.getItem('loggedIn')) {
       switch (await AsyncStorage.getItem('type')) {
         case 'email':
+          email = await AsyncStorage.getItem('email');
+          password = await AsyncStorage.getItem('password');
+          this.props.loginUser({ email, password });
           break;
         case 'facebook':
+          this.props.facebookLogin();
           break;
         case 'google':
           this.props.googleLogin();
