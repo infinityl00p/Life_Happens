@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, AsyncStorage } from 'react-native';
+import { Actions } from 'react-native-router-flux';
+import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { eventsFetch } from '../actions';
@@ -65,6 +67,19 @@ class CountdownList extends Component {
 
     return (
       <View style={styles.containerStyle}>
+        <Button
+          title='Logout'
+          onPress={async () => {
+            await AsyncStorage.removeItem('loggedIn');
+            if (await AsyncStorage.getItem('type') === 'email') {
+              await AsyncStorage.removeItem('email');
+              await AsyncStorage.removeItem('password');
+            } else {
+              await AsyncStorage.removeItem('token');
+            }
+            Actions.auth();
+          }}
+        />
         { imageButtons.length ?
           <ScrollView>
             {imageButtons}

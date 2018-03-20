@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, AsyncStorage } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Logo } from '../common';
@@ -19,6 +19,26 @@ import AuthForm from '../AuthForm';
 
 class AuthContainer extends Component {
   state = { activeForm: 'signinOptions' };
+
+  componentWillMount() {
+    this.getLoggedIn();
+  }
+
+  getLoggedIn = async () => {
+    if (await AsyncStorage.getItem('loggedIn')) {
+      switch (await AsyncStorage.getItem('type')) {
+        case 'email':
+          break;
+        case 'facebook':
+          break;
+        case 'google':
+          this.props.googleLogin();
+          break;
+        default:
+          break;
+      }
+    }
+  }
 
   onNameChange = (name) => {
     this.props.nameChanged(name);

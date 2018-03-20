@@ -60,6 +60,7 @@ const CountdownForm = ({
             onChangeText={onNameChange}
             value={name}
             placeholderTextColor={'#c7c7cd'}
+            underlineColorAndroid='rgba(0,0,0,0)'
             style={[inputStyle, { color }]}
           />
         </View>

@@ -52,7 +52,11 @@ export const loginUser = ({ email, password }) => {
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(user => {
         firebase.database().ref(`/users/${user.uid}/name`)
-          .on('value', snapshot => {
+          .on('value', async snapshot => {
+            await AsyncStorage.setItem('loggedIn', 'true');
+            await AsyncStorage.setItem('type', 'email');
+            await AsyncStorage.setItem('email', email);
+            await AsyncStorage.setItem('password', password);
             loginUserSuccess(dispatch, user, snapshot.val());
           });
       })
@@ -64,8 +68,7 @@ export const loginUser = ({ email, password }) => {
 };
 
 export const facebookLogin = () => async dispatch => {
-  await AsyncStorage.removeItem('user_credential');
-  const credential = await AsyncStorage.getItem('user_crediential');
+  const credential = await AsyncStorage.getItem('token');
   if (credential) {
     loginUserSuccess(dispatch);
   } else {
@@ -74,9 +77,11 @@ export const facebookLogin = () => async dispatch => {
 };
 
 const doFacebookLogin = async (dispatch) => {
-  const { expires, type, token } = await Facebook.logInWithReadPermissionsAsync('229888080909486', {
+  const { type, token } = await Facebook.logInWithReadPermissionsAsync('229888080909486', {
     permissions: ['public_profile', 'email']
   });
+
+  await AsyncStorage.setItem('token', token);
 
   if (type === 'cancel') {
     return loginUserFail(dispatch);
@@ -86,60 +91,90 @@ const doFacebookLogin = async (dispatch) => {
     const credential = await firebase.auth.FacebookAuthProvider.credential(token);
 
     const { uid } = await firebase.auth().signInWithCredential(credential).catch((error) => {
+      console.log(error);
       loginUserFail(dispatch);
     });
 
     firebase.database().ref(`/users/${uid}`)
-    .on('value', snapshot => {
-      if (snapshot.val() === null) {
-        firebase.database().ref('users').child(uid).set({ name });
-      }
-      loginUserSuccess(dispatch, snapshot.val(), name);
-    });
+      .on('value', async snapshot => {
+        if (snapshot.val() === null) {
+          firebase.database().ref('users').child(uid).set({ name });
+        }
+        await AsyncStorage.setItem('loggedIn', 'true');
+        await AsyncStorage.setItem('type', 'facebook');
+        loginUserSuccess(dispatch, snapshot.val(), name);
+      });
   };
 };
 
 export const googleLogin = () => async dispatch => {
-  await AsyncStorage.removeItem('user_crediential');
-  const credential = await AsyncStorage.getItem('user_crediential');
+  const token = await AsyncStorage.getItem('token');
 
-  if (credential) {
-    loginUserSuccess(dispatch);
+  if (token) {
+    doGoogleLogin(dispatch, token);
   } else {
-    doGoogleLogin(dispatch);
+    doGoogleLogin(dispatch, null);
   }
 };
 
-const doGoogleLogin = async (dispatch) => {
-  const options = {
-    behavior: 'system',
-    scopes: ['profile', 'email'],
-    androidClientId: '176588057111-cmk5jfsjqlkl124l5osc3l3u3ou738f1.apps.googleusercontent.com',
-    iosClientId: '176588057111-lskojrnhidlvs4o5jg97soclfdrf7bu9.apps.googleusercontent.com'
-  };
+const doGoogleLogin = async (dispatch, token) => {
+  if (token === null) {
+    const options = {
+      behavior: 'system',
+      scopes: ['profile', 'email'],
+      androidClientId: '176588057111-cmk5jfsjqlkl124l5osc3l3u3ou738f1.apps.googleusercontent.com',
+      iosClientId: '176588057111-lskojrnhidlvs4o5jg97soclfdrf7bu9.apps.googleusercontent.com'
+    };
 
-  const result = await Expo.Google.logInAsync(options);
-  const { name, email } = result.user;
+    const result = await Expo.Google.logInAsync(options);
+    await AsyncStorage.setItem('token', result.idToken);
 
-  if (result.type === 'cancel') {
-    loginUserFail(dispatch);
-  } else if (result.type === 'success') {
-    const credential = firebase.auth.GoogleAuthProvider.credential(result.idToken);
-    const { uid } = await firebase.auth().signInWithCredential(credential).catch((error) => {
-        console.log(error);
+    const { name } = result.user;
+
+    if (result.type === 'cancel') {
+      loginUserFail(dispatch);
+    } else if (result.type === 'success') {
+      const credential = firebase.auth.GoogleAuthProvider.credential(result.idToken);
+
+      const { uid } = await firebase.auth().signInWithCredential(credential).catch((error) => {
+          console.log(error);
+          return loginUserFail(dispatch);
       });
 
       firebase.database().ref(`/users/${uid}`)
-      .on('value', snapshot => {
+      .on('value', async snapshot => {
         if (snapshot.val() === null) {
           firebase.database().ref('users').child(uid).set({ name });
         }
-        loginUserSuccess(dispatch, snapshot.val(), name);
-      });
 
+        await AsyncStorage.setItem('loggedIn', 'true');
+        await AsyncStorage.setItem('type', 'google');
+
+        return loginUserSuccess(dispatch, snapshot.val(), snapshot.val().name);
+      });
     }
 
-    loginUserFail(dispatch);
+      return loginUserFail(dispatch);
+  }
+
+
+
+  const credential = firebase.auth.GoogleAuthProvider.credential(token);
+
+  const { uid } = await firebase.auth().signInWithCredential(credential).catch((error) => {
+      console.log(error);
+      loginUserFail(dispatch);
+  });
+
+  firebase.database().ref(`/users/${uid}`)
+    .on('value', async snapshot => {
+      await AsyncStorage.setItem('loggedIn', 'true');
+      await AsyncStorage.setItem('type', 'google');
+
+      loginUserSuccess(dispatch, snapshot.val(), 'james gill');
+    });
+
+  loginUserFail(dispatch);
 };
 
 export const createUser = ({ name, email, password }) => {
