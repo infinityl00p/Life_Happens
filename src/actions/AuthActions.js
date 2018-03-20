@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 import { AsyncStorage } from 'react-native';
-import { Facebook } from 'expo';
+import Expo, { Facebook } from 'expo';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 import {
@@ -67,46 +67,80 @@ export const facebookLogin = () => async dispatch => {
   await AsyncStorage.removeItem('user_credential');
   const credential = await AsyncStorage.getItem('user_crediential');
   if (credential) {
-    //TODO: GET NAME AND USER
     loginUserSuccess(dispatch);
   } else {
     doFacebookLogin(dispatch);
   }
 };
 
-const doFacebookLogin = async dispatch => {
-  const { type, token } = await Facebook.logInWithReadPermissionsAsync('598956890453300', {
+const doFacebookLogin = async (dispatch) => {
+  const { expires, type, token } = await Facebook.logInWithReadPermissionsAsync('229888080909486', {
     permissions: ['public_profile', 'email']
   });
 
   if (type === 'cancel') {
     return loginUserFail(dispatch);
-  }
-
-  if (type === 'success') {
+  } else if (type === 'success') {
     const response = await axios.get(`https://graph.facebook.com/me?fields=name,email&access_token=${token}`);
-    const { name, email } = response.data;
-    console.log(token);
-    //check if email exists in firebase
-      //if it doesn't
-        //sign in with credential
-        const credential = await firebase.auth.FacebookAuthProvider.credential(token);
-        try {
-          await firebase.auth().signInWithCredential(credential);
-        } catch (error) {
-          console.log(error);
-        }
-        //add name field to user account
+    const { name } = response.data;
+    const credential = await firebase.auth.FacebookAuthProvider.credential(token);
 
-        await AsyncStorage.setItem('user_crediential', credential);
-      //if it does, sign in with firebase credentials
+    const { uid } = await firebase.auth().signInWithCredential(credential).catch((error) => {
+      loginUserFail(dispatch);
+    });
 
-      //loginusersuccess
+    firebase.database().ref(`/users/${uid}`)
+    .on('value', snapshot => {
+      if (snapshot.val() === null) {
+        firebase.database().ref('users').child(uid).set({ name });
+      }
+      loginUserSuccess(dispatch, snapshot.val(), name);
+    });
+  };
+};
 
-    loginUserFail(dispatch);
+export const googleLogin = () => async dispatch => {
+  await AsyncStorage.removeItem('user_crediential');
+  const credential = await AsyncStorage.getItem('user_crediential');
+
+  if (credential) {
+    loginUserSuccess(dispatch);
+  } else {
+    doGoogleLogin(dispatch);
   }
 };
 
+const doGoogleLogin = async (dispatch) => {
+  const options = {
+    behavior: 'system',
+    scopes: ['profile', 'email'],
+    androidClientId: '176588057111-cmk5jfsjqlkl124l5osc3l3u3ou738f1.apps.googleusercontent.com',
+    iosClientId: '176588057111-lskojrnhidlvs4o5jg97soclfdrf7bu9.apps.googleusercontent.com'
+  };
+
+  const result = await Expo.Google.logInAsync(options);
+  const { name, email } = result.user;
+
+  if (result.type === 'cancel') {
+    loginUserFail(dispatch);
+  } else if (result.type === 'success') {
+    const credential = firebase.auth.GoogleAuthProvider.credential(result.idToken);
+    const { uid } = await firebase.auth().signInWithCredential(credential).catch((error) => {
+        console.log(error);
+      });
+
+      firebase.database().ref(`/users/${uid}`)
+      .on('value', snapshot => {
+        if (snapshot.val() === null) {
+          firebase.database().ref('users').child(uid).set({ name });
+        }
+        loginUserSuccess(dispatch, snapshot.val(), name);
+      });
+
+    }
+
+    loginUserFail(dispatch);
+};
 
 export const createUser = ({ name, email, password }) => {
   return (dispatch) => {

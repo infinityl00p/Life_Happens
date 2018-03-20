@@ -10,6 +10,7 @@ import {
   nameChanged,
   loginUser,
   facebookLogin,
+  googleLogin,
   createUser,
   resetError,
   createError
@@ -143,6 +144,7 @@ class AuthContainer extends Component {
             raised
             large
             title='Sign In With Google'
+            onPress={this.props.googleLogin}
             borderRadius={5}
             backgroundColor={'#dd4b39'}
             containerViewStyle={styles.buttonStyle}
@@ -220,6 +222,7 @@ export default connect(mapStateToProps, {
   nameChanged,
   loginUser,
   facebookLogin,
+  googleLogin,
   createUser,
   resetError,
   createError
