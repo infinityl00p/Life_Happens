@@ -107,23 +107,24 @@ const doFacebookLogin = async (dispatch, userToken) => {
         });
     }
   }
-    const response = await axios.get(`https://graph.facebook.com/me?fields=name,email&access_token=${userToken}`);
-    const { name } = response.data;
-    const credential = await firebase.auth.FacebookAuthProvider.credential(userToken);
 
-    const { uid } = await firebase.auth().signInWithCredential(credential).catch((error) => {
-      console.log(error);
-      loginUserFail(dispatch);
+  const response = await axios.get(`https://graph.facebook.com/me?fields=name,email&access_token=${userToken}`);
+  const { name } = response.data;
+  const credential = await firebase.auth.FacebookAuthProvider.credential(userToken);
+
+  const { uid } = await firebase.auth().signInWithCredential(credential).catch((error) => {
+    console.log(error);
+    loginUserFail(dispatch);
+  });
+
+  firebase.database().ref(`/users/${uid}`)
+    .on('value', async snapshot => {
+      if (snapshot.val() === null) {
+        firebase.database().ref('users').child(uid).set({ name });
+      }
+
+      loginUserSuccess(dispatch, snapshot.val(), name);
     });
-
-    firebase.database().ref(`/users/${uid}`)
-      .on('value', async snapshot => {
-        if (snapshot.val() === null) {
-          firebase.database().ref('users').child(uid).set({ name });
-        }
-
-        loginUserSuccess(dispatch, snapshot.val(), name);
-      });
 };
 
 
