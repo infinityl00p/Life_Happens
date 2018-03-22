@@ -18,13 +18,11 @@ import {
 } from '../../actions';
 
 class AuthContainer extends Component {
-  state = { checkingAuth: null };
+  state = { checkingAuth: true };
 
   componentWillMount() {
-    AsyncStorage.getItem('loggedIn').then(response => console.log(response))
     AsyncStorage.getItem('loggedIn').then(loggedIn => {
       if (loggedIn) {
-        this.setState({ checkingAuth: true });
         this.handleLoggedIn();
       } else {
         this.setState({ checkingAuth: false });
