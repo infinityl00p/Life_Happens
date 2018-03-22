@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import {
   View,
   Text,
@@ -101,7 +102,7 @@ const CountdownForm = ({
             onPress={() => { Actions.ImageGallery({ fromGallery: false }); }}
             style={{ backgroundColor: 'transparent', paddingLeft: 20 }}
           >
-            <Text style={{ fontSize: 30, color }}>Select a Background</Text>
+            <Text style={{ fontSize: 30, color }}>{_.truncate(imageUri, 10) || 'Select A Background'}</Text>
           </TouchableOpacity>
         </View>
 

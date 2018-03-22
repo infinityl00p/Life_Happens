@@ -1,66 +1,65 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, AsyncStorage } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  AsyncStorage,
+  ActivityIndicator
+} from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Logo } from '../common';
 import {
-  emailChanged,
-  passwordChanged,
-  confirmPasswordChanged,
-  nameChanged,
-  loginUser,
   facebookLogin,
   googleLogin,
-  createUser,
-  resetError,
-  createError
+  loginUser
 } from '../../actions';
-import AuthForm from '../AuthForm';
 
 class AuthContainer extends Component {
-  state = { activeForm: 'signinOptions' };
+  state = { checkingAuth: null };
 
   componentWillMount() {
-    this.getLoggedIn();
+    AsyncStorage.getItem('loggedIn').then(response => console.log(response))
+    AsyncStorage.getItem('loggedIn').then(loggedIn => {
+      if (loggedIn) {
+        this.setState({ checkingAuth: true });
+        this.handleLoggedIn();
+      } else {
+        this.setState({ checkingAuth: false });
+      }
+    }).catch((error) => console.log(error));
   }
 
-  getLoggedIn = async () => {
+  componentWillReceiveProps() {
+    this.setState({ checkingAuth: false });
+  }
+
+  handleLoggedIn = async () => {
     let email;
     let password;
-
-    if (await AsyncStorage.getItem('loggedIn')) {
-      switch (await AsyncStorage.getItem('type')) {
-        case 'email':
-          email = await AsyncStorage.getItem('email');
-          password = await AsyncStorage.getItem('password');
+    const accountType = await AsyncStorage.getItem('type');
+    switch (accountType) {
+      case 'email':
+        email = await AsyncStorage.getItem('email');
+        password = await AsyncStorage.getItem('password');
+        if (email && password) {
           this.props.loginUser({ email, password });
-          break;
-        case 'facebook':
-          this.props.facebookLogin();
-          break;
-        case 'google':
-          this.props.googleLogin();
-          break;
-        default:
-          break;
-      }
+        }
+        break;
+
+      case 'facebook':
+        this.props.facebookLogin(true);
+        break;
+
+      case 'google':
+        this.props.googleLogin(true);
+        break;
+
+      default:
+        break;
     }
-  }
-
-  onNameChange = (name) => {
-    this.props.nameChanged(name);
-  }
-
-  onEmailChange = (text) => {
-    this.props.emailChanged(text);
-  }
-
-  onPasswordChange = (text) => {
-    this.props.passwordChanged(text);
-  }
-
-  onConfirmPasswordChange = (text) => {
-    this.props.confirmPasswordChanged(text);
   }
 
   loginUser = () => {
@@ -69,46 +68,12 @@ class AuthContainer extends Component {
     this.props.loginUser({ email, password });
   }
 
-  signupUser = () => {
-    const { name, email, password, confirmPassword } = this.props;
-
-    if (this.validateSignup(name, email, password, confirmPassword)) {
-      this.props.createUser({ name, email, password });
-    }
-  }
-
-  validateSignup = (name, email, password, confirmPassword) => {
-    const emailValid = this.validateEmail(email);
-
-    if (!name || !email || !password || !confirmPassword) {
-      this.props.createError('Please complete all fields');
-      return false;
-    } else if (!emailValid) {
-      this.props.createError('Please enter a valid email');
-      return false;
-    } else if (password !== confirmPassword) {
-      this.props.createError('Passwords do not match');
-      return false;
-    } else if (password.length < 8) {
-      this.props.createError('Password must be at least 8 characters');
-      return false;
-    }
-
-    return true;
-  };
-
-  validateEmail = (email) => {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-  };
-
   renderTouchableText = () => {
     return (
       <View style={{ flexDirection: 'row', alignSelf: 'center', paddingTop: 20 }}>
         <TouchableOpacity
             onPress={() => {
-              this.props.resetError();
-              this.setState({ activeForm: 'emailLogin' });
+              Actions.EmailAuth({ activeForm: 'login' });
             }}
         >
           <Text style={{ fontWeight: '700' }}>Sign In</Text>
@@ -116,8 +81,7 @@ class AuthContainer extends Component {
         <Text> or </Text>
         <TouchableOpacity
             onPress={() => {
-              this.props.resetError();
-              this.setState({ activeForm: 'emailSignup' });
+              Actions.EmailAuth({ activeForm: 'signup' });
             }}
         >
           <Text style={{ fontWeight: '700' }}>Sign Up</Text>
@@ -127,71 +91,40 @@ class AuthContainer extends Component {
     );
   }
 
-  renderEmailForm = () => {
-    const email = { onChange: this.onEmailChange, value: this.props.email };
-    const password = { onChange: this.onPasswordChange, value: this.props.password };
-    const name = { onChange: this.onNameChange, value: this.props.name };
-    const confirmPassword = {
-      onChange: this.onConfirmPasswordChange,
-      value: this.props.confirmPassword
-    };
-
-    if (this.state.activeForm === 'emailLogin') {
-      return (
-        <AuthForm
-          email={email}
-          password={password}
-          isLoading={this.props.isLoading}
-          buttonText="Login"
-          onButtonPress={this.loginUser}
-          errorMessage={this.props.error}
-        />
-      );
-    } else if (this.state.activeForm === 'emailSignup') {
-      return (
-        <AuthForm
-          email={email}
-          password={password}
-          confirmPassword={confirmPassword}
-          name={name}
-          isLoading={this.props.isLoading}
-          buttonText="Create and Login"
-          onButtonPress={this.signupUser}
-          errorMessage={this.props.error}
-        />
-      );
-    }
-  }
-
   renderSigninOptions = () => {
-    if (this.state.activeForm === 'signinOptions') {
-      return (
-        <View style={{ marginTop: 140 }}>
-          <Button
-            raised
-            large
-            title='Sign In With Google'
-            onPress={this.props.googleLogin}
-            borderRadius={5}
-            backgroundColor={'#dd4b39'}
-            containerViewStyle={styles.buttonStyle}
-          />
-          <Button
-            raised
-            large
-            title='Sign In With Facebook'
-            onPress={this.props.facebookLogin}
-            borderRadius={5}
-            backgroundColor={'#3b5998'}
-            containerViewStyle={styles.buttonStyle}
-          />
-          {this.renderTouchableText()}
-        </View>
-      );
-    }
+    return (
+      <View style={{ marginTop: 140 }}>
+        <Button
+          raised
+          large
+          title='Sign In With Google'
+          onPress={() => this.props.googleLogin(false)}
+          borderRadius={5}
+          backgroundColor={'#dd4b39'}
+          containerViewStyle={styles.buttonStyle}
+        />
+        <Button
+          raised
+          large
+          title='Sign In With Facebook'
+          onPress={() => this.props.facebookLogin(false)}
+          borderRadius={5}
+          backgroundColor={'#3b5998'}
+          containerViewStyle={styles.buttonStyle}
+        />
+        {this.renderTouchableText()}
+      </View>
+    );
   }
 
   render() {
+    if (this.state.checkingAuth) {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center'}}>
+          <ActivityIndicator size="large" color="#45aaf2" />
+        </View>
+      );
+    }
     return (
       <View style={styles.containerStyle}>
         <View style={styles.headerStyle}>
@@ -206,7 +139,6 @@ class AuthContainer extends Component {
 
         <View>
           {this.renderSigninOptions()}
-          {this.renderEmailForm()}
         </View>
       </View>
     );
@@ -238,19 +170,13 @@ const mapStateToProps = state => {
     confirmPassword: state.auth.confirmPassword,
     name: state.auth.name,
     error: state.auth.error,
-    isLoading: state.auth.isLoading
+    isLoading: state.auth.isLoading,
+    checkingAuth: true
   };
 };
 
 export default connect(mapStateToProps, {
-  emailChanged,
-  passwordChanged,
-  confirmPasswordChanged,
-  nameChanged,
-  loginUser,
   facebookLogin,
   googleLogin,
-  createUser,
-  resetError,
-  createError
+  loginUser
 })(AuthContainer);

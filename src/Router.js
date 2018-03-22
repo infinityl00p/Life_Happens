@@ -1,7 +1,7 @@
 //All the different routes/screens user can route to
 import React from 'react';
 import { Platform } from 'react-native';
-import { Scene, Router, Actions } from 'react-native-router-flux';
+import { Scene, Router, Actions, ActionConst } from 'react-native-router-flux';
 import { Entypo } from '@expo/vector-icons';
 import CountdownList from './components/CountdownList';
 import AddCountdown from './components/AddCountdown';
@@ -9,29 +9,38 @@ import EventOverview from './components/screens/EventOverview';
 import EditCountdown from './components/EditCountdown';
 import ImageGallery from './components/screens/ImageGallery';
 import AuthContainer from './components/screens/AuthContainer';
+import LoadingScreen from './components/screens/LoadingScreen';
+import EmailAuth from './components/screens/EmailAuth';
 import { Logo } from './components/common';
 
 const RouterComponent = () => {
   return (
     <Router>
       <Scene key='root' tabBar='hide' hideNavBar>
-        <Scene key='auth' hideNavBar>
+        <Scene key='auth' hideNavBar type={ActionConst.RESET}>
 
           <Scene
             key='AuthContainer'
             component={AuthContainer}
           />
-
+          <Scene
+            key='EmailAuth'
+            component={EmailAuth}
+          />
+          <Scene
+            key='LoadingScreen'
+            component={LoadingScreen}
+          />
         </Scene>
 
-        <Scene key='main'>
+        <Scene key='main' type={ActionConst.RESET}>
 
           <Scene
             key='CountdownList'
             component={CountdownList}
             navigationBarStyle={{
               height: 100,
-              paddingTop: 10,
+              paddingTop: Platform.os === 'ios' ? 10 : 20,
               backgroundColor: '#fff',
               borderBottomColor: 'transparent'
             }}

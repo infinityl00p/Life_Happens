@@ -67,53 +67,61 @@ export const loginUser = ({ email, password }) => {
   };
 };
 
-export const facebookLogin = () => async dispatch => {
-  const token = await AsyncStorage.getItem('token');
-  if (token) {
-    doFacebookLogin(dispatch, token);
-  } else {
-    doFacebookLogin(dispatch, null);
+export const facebookLogin = (loggedIn) => async dispatch => {
+  loggedIn ? autoFacebookLogin(dispatch) : manualFacebookLogin(dispatch);
+};
+
+const manualFacebookLogin = async (dispatch) => {
+  const { type, token } = await Facebook.logInWithReadPermissionsAsync('229888080909486', {
+    permissions: ['public_profile', 'email']
+  }).catch((error) => console.log(error));
+
+  Actions.LoadingScreen();
+
+  await AsyncStorage.setItem('fb_token', token);
+
+  if (type === 'cancel') {
+    return loginUserFail(dispatch);
+  } else if (type === 'success') {
+    const response = await axios.get(`https://graph.facebook.com/me?fields=name,email&access_token=${token}`);
+    const { name } = response.data;
+    const credential = await firebase.auth.FacebookAuthProvider.credential(token);
+
+    const { uid } = await firebase.auth().signInWithCredential(credential).catch((error) => {
+      console.log(error);
+      loginUserFail(dispatch);
+    });
+
+    firebase.database().ref(`/users/${uid}`)
+      .on('value', async snapshot => {
+        if (snapshot.val() === null) {
+          firebase.database().ref('users').child(uid).set({ name });
+        }
+        await AsyncStorage.setItem('loggedIn', 'true');
+        await AsyncStorage.setItem('type', 'facebook');
+        loginUserSuccess(dispatch, snapshot.val(), name);
+      });
   }
 };
 
-const doFacebookLogin = async (dispatch, userToken) => {
-  if (userToken === null) {
-    const { type, token } = await Facebook.logInWithReadPermissionsAsync('229888080909486', {
-      permissions: ['public_profile', 'email']
-    });
-
-    await AsyncStorage.setItem('token', token);
-
-    if (type === 'cancel') {
-      return loginUserFail(dispatch);
-    } else if (type === 'success') {
-      const response = await axios.get(`https://graph.facebook.com/me?fields=name,email&access_token=${token}`);
-      const { name } = response.data;
-      const credential = await firebase.auth.FacebookAuthProvider.credential(token);
-
-      const { uid } = await firebase.auth().signInWithCredential(credential).catch((error) => {
-        console.log(error);
-        loginUserFail(dispatch);
-      });
-
-      firebase.database().ref(`/users/${uid}`)
-        .on('value', async snapshot => {
-          if (snapshot.val() === null) {
-            firebase.database().ref('users').child(uid).set({ name });
-          }
-          await AsyncStorage.setItem('loggedIn', 'true');
-          await AsyncStorage.setItem('type', 'facebook');
-          loginUserSuccess(dispatch, snapshot.val(), name);
-        });
-    }
-  }
-
-  const response = await axios.get(`https://graph.facebook.com/me?fields=name,email&access_token=${userToken}`);
-  const { name } = response.data;
-  const credential = await firebase.auth.FacebookAuthProvider.credential(userToken);
-
-  const { uid } = await firebase.auth().signInWithCredential(credential).catch((error) => {
+const autoFacebookLogin = async (dispatch) => {
+  const token = await AsyncStorage.getItem('fb_token').catch(error => {
     console.log(error);
+    loginUserFail(dispatch);
+  });
+
+  const response = await axios.get(`https://graph.facebook.com/me?fields=name,email&access_token=${token}`).catch(error => {
+    console.log(error);
+    removeStorage();
+    loginUserFail(dispatch);
+  });
+
+  const { name } = response.data;
+  const credential = await firebase.auth.FacebookAuthProvider.credential(token);
+
+  const { uid } = await firebase.auth().signInWithCredential(credential).catch(error => {
+    console.log(error);
+    removeStorage();
     loginUserFail(dispatch);
   });
 
@@ -127,75 +135,71 @@ const doFacebookLogin = async (dispatch, userToken) => {
     });
 };
 
+export const googleLogin = (loggedIn) => async dispatch => {
+  loggedIn ? autoGoogleLogin(dispatch) : manualGoogleLogin(dispatch);
+};
 
-export const googleLogin = () => async dispatch => {
-  const token = await AsyncStorage.getItem('token');
+const manualGoogleLogin = async (dispatch) => {
+  const options = {
+    behavior: 'system',
+    scopes: ['profile', 'email'],
+    androidClientId: '176588057111-cmk5jfsjqlkl124l5osc3l3u3ou738f1.apps.googleusercontent.com',
+    iosClientId: '176588057111-lskojrnhidlvs4o5jg97soclfdrf7bu9.apps.googleusercontent.com'
+  };
 
-  if (token) {
-    doGoogleLogin(dispatch, token);
-  } else {
-    doGoogleLogin(dispatch, null);
+  const { type, idToken, user } = await Expo.Google.logInAsync(options).catch((error) => console.log(error));
+
+  Actions.LoadingScreen();
+
+  await AsyncStorage.setItem('google_token', idToken).catch(error => (console.log(error)));
+
+  const { name } = user;
+
+  if (type === 'cancel') {
+    loginUserFail(dispatch);
+  } else if (type === 'success') {
+    const credential = firebase.auth.GoogleAuthProvider.credential(idToken);
+
+    const { uid } = await firebase.auth().signInWithCredential(credential).catch((error) => {
+        console.log(error);
+        return loginUserFail(dispatch);
+    });
+
+    firebase.database().ref(`/users/${uid}`)
+    .on('value', async snapshot => {
+      if (snapshot.val() === null) {
+        firebase.database().ref('users').child(uid).set({ name });
+      }
+
+      await AsyncStorage.setItem('loggedIn', 'true');
+      await AsyncStorage.setItem('type', 'google');
+
+      return loginUserSuccess(dispatch, snapshot.val(), snapshot.val().name);
+    });
   }
 };
 
-const doGoogleLogin = async (dispatch, token) => {
-  if (token === null) {
-    const options = {
-      behavior: 'system',
-      scopes: ['profile', 'email'],
-      androidClientId: '176588057111-cmk5jfsjqlkl124l5osc3l3u3ou738f1.apps.googleusercontent.com',
-      iosClientId: '176588057111-lskojrnhidlvs4o5jg97soclfdrf7bu9.apps.googleusercontent.com'
-    };
+const autoGoogleLogin = async (dispatch) => {
+  const token = await AsyncStorage.getItem('google_token').catch(error => {
+    console.log(error);
+    loginUserFail(dispatch);
+  });
 
-    const result = await Expo.Google.logInAsync(options);
-    await AsyncStorage.setItem('token', result.idToken);
-
-    const { name } = result.user;
-
-    if (result.type === 'cancel') {
-      loginUserFail(dispatch);
-    } else if (result.type === 'success') {
-      const credential = firebase.auth.GoogleAuthProvider.credential(result.idToken);
-
-      const { uid } = await firebase.auth().signInWithCredential(credential).catch((error) => {
-          console.log(error);
-          return loginUserFail(dispatch);
-      });
-
-      firebase.database().ref(`/users/${uid}`)
-      .on('value', async snapshot => {
-        if (snapshot.val() === null) {
-          firebase.database().ref('users').child(uid).set({ name });
-        }
-
-        await AsyncStorage.setItem('loggedIn', 'true');
-        await AsyncStorage.setItem('type', 'google');
-
-        return loginUserSuccess(dispatch, snapshot.val(), snapshot.val().name);
-      });
-    }
-
-      return loginUserFail(dispatch);
-  }
-
-
-
-  const credential = firebase.auth.GoogleAuthProvider.credential(token);
+  const credential = await firebase.auth.GoogleAuthProvider.credential(token);
 
   const { uid } = await firebase.auth().signInWithCredential(credential).catch((error) => {
       console.log(error);
       loginUserFail(dispatch);
   });
 
+
   firebase.database().ref(`/users/${uid}`)
     .on('value', async snapshot => {
       await AsyncStorage.setItem('loggedIn', 'true');
       await AsyncStorage.setItem('type', 'google');
 
-      loginUserSuccess(dispatch, snapshot.val(), 'james gill');
+      return loginUserSuccess(dispatch, snapshot.val(), snapshot.val().name);
     });
-
-  loginUserFail(dispatch);
 };
 
 export const createUser = ({ name, email, password }) => {
@@ -258,3 +262,11 @@ export const createError = (text) => {
     payload: text
   };
 };
+
+const removeStorage = async () => {
+  await AsyncStorage.removeItem('loggedIn');
+  await AsyncStorage.removeItem('google_token');
+  await AsyncStorage.removeItem('fb_token');
+  await AsyncStorage.removeItem('email');
+  await AsyncStorage.removeItem('password');
+}

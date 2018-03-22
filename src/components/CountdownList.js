@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ScrollView, StyleSheet, Text, View, AsyncStorage } from 'react-native';
+import Moment from 'moment';
 import { Actions } from 'react-native-router-flux';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
@@ -34,7 +35,11 @@ class CountdownList extends Component {
     _.forEach(countdownList, (eventObject) => {
       _.forEach(eventObject, (event, key) => {
         const { name, image, time, date } = event;
-        countdownArray.push({ id: key, name, image, time, date });
+        const dateTimeString = Moment(`${date}T${time}Z`);
+        //TODO: Moment and date are adding 7 hours to current time
+        if (Moment(dateTimeString).isAfter(Moment())) {
+          countdownArray.push({ id: key, name, image, time, date });
+        }
       });
     });
 
@@ -52,34 +57,22 @@ class CountdownList extends Component {
 
   render() {
     const imageButtons = this.state.countdownList.map((event, i) => {
-      return (
-        <ImageButton
-          key={event.id}
-          id={event.id}
-          imageUrl={event.image}
-          eventName={event.name}
-          eventDate={event.date}
-          eventTime={event.time}
-          gradient={gradients[i % 3]}
-        />
-      );
+      const { id, image, name, date, time } = event;
+        return (
+          <ImageButton
+            key={id}
+            id={id}
+            imageUrl={image}
+            eventName={name}
+            eventDate={date}
+            eventTime={time}
+            gradient={gradients[i % 3]}
+          />
+        );
     });
 
     return (
       <View style={styles.containerStyle}>
-        <Button
-          title='Logout'
-          onPress={async () => {
-            await AsyncStorage.removeItem('loggedIn');
-            if (await AsyncStorage.getItem('type') === 'email') {
-              await AsyncStorage.removeItem('email');
-              await AsyncStorage.removeItem('password');
-            } else {
-              await AsyncStorage.removeItem('token');
-            }
-            Actions.auth();
-          }}
-        />
         { imageButtons.length ?
           <ScrollView>
             {imageButtons}
@@ -89,6 +82,24 @@ class CountdownList extends Component {
             <Text style={styles.textStyle}>Add a countdown to get started!</Text>
           </View>
         }
+        <View style={{ alignItems: 'flex-end', paddingBottom: 2 }}>
+          <Button
+            title='Logout'
+            borderRadius={100}
+            onPress={async () => {
+              await AsyncStorage.removeItem('loggedIn');
+              if (await AsyncStorage.getItem('type') === 'email') {
+                await AsyncStorage.removeItem('email');
+                await AsyncStorage.removeItem('password');
+              } else {
+                await AsyncStorage.removeItem('google_token');
+                await AsyncStorage.removeItem('fb_token');
+              }
+              Actions.auth();
+            }}
+          />
+        </View>
+
       </View>
     );
   }

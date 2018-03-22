@@ -38,7 +38,7 @@ class AddCountdown extends Component {
         time: eventTime,
         image: imageUri
       });
-      //TODO: This should be changed automatically
+
       this.props.resetCountdownFields();
       Actions.pop();
     }
