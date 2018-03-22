@@ -76,13 +76,12 @@ const manualFacebookLogin = async (dispatch) => {
     permissions: ['public_profile', 'email']
   }).catch((error) => console.log(error));
 
-  Actions.LoadingScreen();
-
   await AsyncStorage.setItem('fb_token', token);
 
   if (type === 'cancel') {
     return loginUserFail(dispatch);
   } else if (type === 'success') {
+    Actions.LoadingScreen();
     const response = await axios.get(`https://graph.facebook.com/me?fields=name,email&access_token=${token}`);
     const { name } = response.data;
     const credential = await firebase.auth.FacebookAuthProvider.credential(token);
@@ -149,8 +148,6 @@ const manualGoogleLogin = async (dispatch) => {
 
   const { type, idToken, user } = await Expo.Google.logInAsync(options).catch((error) => console.log(error));
 
-  Actions.LoadingScreen();
-
   await AsyncStorage.setItem('google_token', idToken).catch(error => (console.log(error)));
 
   const { name } = user;
@@ -158,6 +155,7 @@ const manualGoogleLogin = async (dispatch) => {
   if (type === 'cancel') {
     loginUserFail(dispatch);
   } else if (type === 'success') {
+    Actions.LoadingScreen();
     const credential = firebase.auth.GoogleAuthProvider.credential(idToken);
 
     const { uid } = await firebase.auth().signInWithCredential(credential).catch((error) => {
