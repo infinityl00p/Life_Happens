@@ -20,6 +20,10 @@ class EditCountdown extends Component {
     this.props.updateEventImage(this.props.imageUrl);
   }
 
+  componentWillUnmount() {
+    this.props.resetCountdownFields();
+  }
+
   onEventNameChange = (text) => {
     this.props.updateEventName(text);
   }

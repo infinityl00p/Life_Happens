@@ -1,14 +1,13 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import FAIcon from 'react-native-vector-icons/FontAwesome';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 
 const IconBar = ({ onEditPress, onTrashPress }) => {
   return (
     <View style={{ flex: 1 }}>
 
       <TouchableOpacity style={styles.editContainer}>
-        <FAIcon
+        <FontAwesome
           name='pencil'
           size={30}
           color='#fff'
@@ -17,7 +16,7 @@ const IconBar = ({ onEditPress, onTrashPress }) => {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.trashContainer}>
-        <Icon
+        <Ionicons
           name='ios-trash'
           size={40}
           color='#fff'

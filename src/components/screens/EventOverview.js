@@ -9,11 +9,9 @@ import { ScrollView,
         } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
-import Swiper from 'react-native-swiper';
 import Moment from 'moment';
 import ImageOverview from './ImageOverview';
 import IconBar from '../IconBar';
-import TextOverview from '../TextOverview';
 import { Overlay } from '../common';
 import { deleteEvent } from '../../actions';
 
@@ -54,7 +52,7 @@ class EventOverview extends Component {
 
   render() {
     const { imageUrl, eventName, eventDate, eventTime, dateObject } = this.props;
-    const { container, imageStyle, dotStyle, slide } = styles;
+    const { container, imageStyle, overview } = styles;
 
     return (
       <ScrollView style={container}>
@@ -64,18 +62,8 @@ class EventOverview extends Component {
           source={{ uri: imageUrl }}
         />
         <Overlay backgroundColor={'black'} opacity={0.4} />
-        <Swiper
-          dot={<View style={dotStyle} />}
-          activeDot={<View style={styles.activeDotStyle} />}
-          paginationStyle={{
-            bottom: 30
-          }}
-          loop={false}
-          height={Dimensions.get('window').height}
-          width={Dimensions.get('window').width}
-        >
 
-          <View style={slide}>
+          <View style={overview}>
             <ImageOverview
               eventName={eventName}
               eventDate={eventDate}
@@ -87,15 +75,6 @@ class EventOverview extends Component {
               onTrashPress={this.onTrashPress}
             />
           </View>
-
-          <View style={styles.slide}>
-            <TextOverview
-              eventName={eventName}
-              dateObject={Moment(dateObject)}
-            />
-          </View>
-
-        </Swiper>
 
       </ScrollView>
     );
@@ -112,25 +91,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     position: 'absolute'
   },
-  slide: {
+  overview: {
     flex: 1,
-    backgroundColor: 'transparent'
-  },
-  dotStyle: {
-    backgroundColor: 'rgba(255,255,255,.3)',
-    width: 13,
-    height: 13,
-    borderRadius: 7,
-    marginLeft: 7,
-    marginRight: 7
-  },
-  activeDotStyle: {
-    backgroundColor: '#fff',
-    width: 13,
-    height: 13,
-    borderRadius: 7,
-    marginLeft: 7,
-    marginRight: 7
+    backgroundColor: 'transparent',
+    height: SCREEN_HEIGHT,
+    width: SCREEN_WIDTH
   }
 });
 

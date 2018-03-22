@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import {
   View,
   Text,
@@ -8,9 +9,10 @@ import {
   TextInput,
   TouchableOpacity
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+//import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker';
+import { Ionicons } from '@expo/vector-icons';
 import { Overlay } from './';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -59,6 +61,7 @@ const CountdownForm = ({
             onChangeText={onNameChange}
             value={name}
             placeholderTextColor={'#c7c7cd'}
+            underlineColorAndroid='rgba(0,0,0,0)'
             style={[inputStyle, { color }]}
           />
         </View>
@@ -99,13 +102,13 @@ const CountdownForm = ({
             onPress={() => { Actions.ImageGallery({ fromGallery: false }); }}
             style={{ backgroundColor: 'transparent', paddingLeft: 20 }}
           >
-            <Text style={{ fontSize: 30, color }}>Select a Background</Text>
+            <Text style={{ fontSize: 30, color }}>{_.truncate(imageUri, 10) || 'Select A Background'}</Text>
           </TouchableOpacity>
         </View>
 
         <View style={{ flex: 1 }}>
           <View style={submitIconStyle}>
-            <Icon
+            <Ionicons
               onPress={onSubmit}
               name='ios-checkmark-circle'
               size={70}

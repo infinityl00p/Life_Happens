@@ -1,44 +1,53 @@
 //All the different routes/screens user can route to
 import React from 'react';
 import { Platform } from 'react-native';
-import { Scene, Router, Actions } from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Scene, Router, Actions, ActionConst } from 'react-native-router-flux';
+import { Entypo } from '@expo/vector-icons';
 import CountdownList from './components/CountdownList';
 import AddCountdown from './components/AddCountdown';
 import EventOverview from './components/screens/EventOverview';
 import EditCountdown from './components/EditCountdown';
 import ImageGallery from './components/screens/ImageGallery';
 import AuthContainer from './components/screens/AuthContainer';
+import LoadingScreen from './components/screens/LoadingScreen';
+import EmailAuth from './components/screens/EmailAuth';
 import { Logo } from './components/common';
 
 const RouterComponent = () => {
   return (
     <Router>
       <Scene key='root' tabBar='hide' hideNavBar>
-        <Scene key='auth' hideNavBar>
+        <Scene key='auth' hideNavBar type={ActionConst.RESET}>
 
           <Scene
             key='AuthContainer'
             component={AuthContainer}
           />
-
+          <Scene
+            key='EmailAuth'
+            component={EmailAuth}
+          />
+          <Scene
+            key='LoadingScreen'
+            component={LoadingScreen}
+          />
         </Scene>
 
-        <Scene key='main'>
+        <Scene key='main' type={ActionConst.RESET}>
 
           <Scene
             key='CountdownList'
             component={CountdownList}
             navigationBarStyle={{
               height: 100,
-              paddingTop: 10,
+              paddingTop: Platform.os === 'ios' ? 10 : 20,
               backgroundColor: '#fff',
               borderBottomColor: 'transparent'
             }}
             onRight={() => Actions.AddCountdown()}
-            rightTitle={<Icon name='md-add-circle' size={50} color='#000' />}
+            rightTitle={<Entypo name="circle-with-plus" size={50} color="#000" />}
             rightButtonStyle={{ right: 0 }}
-            leftTitle={<Logo iosWidth={60} androidWidth={140} />}
+            leftTitle={<Logo iosWidth={70} androidWidth={180} iosHeight={70} androidHeight={180} />}
             onLeft={() => { }}
             titleStyle={{
               fontSize: Platform.OS === 'ios' ? 30 : 25,
