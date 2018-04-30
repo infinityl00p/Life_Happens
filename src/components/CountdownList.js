@@ -83,6 +83,7 @@ class CountdownList extends Component {
           </View>
         }
         <View style={{ alignItems: 'flex-end', paddingBottom: 2 }}>
+        {/*
           <Button
             title='Logout'
             borderRadius={100}
@@ -98,6 +99,7 @@ class CountdownList extends Component {
               Actions.auth();
             }}
           />
+          */}
         </View>
 
       </View>
