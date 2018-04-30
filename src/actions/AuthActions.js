@@ -3,6 +3,7 @@ import { AsyncStorage } from 'react-native';
 import Expo, { Facebook } from 'expo';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
+import { iosClientId, androidClientId } from '../../config/oauth';
 import {
   EMAIL_CHANGED,
   PASSWORD_CHANGED,
@@ -142,8 +143,8 @@ const manualGoogleLogin = async (dispatch) => {
   const options = {
     behavior: 'system',
     scopes: ['profile', 'email'],
-    androidClientId: '176588057111-cmk5jfsjqlkl124l5osc3l3u3ou738f1.apps.googleusercontent.com',
-    iosClientId: '176588057111-lskojrnhidlvs4o5jg97soclfdrf7bu9.apps.googleusercontent.com'
+    androidClientId,
+    iosClientId
   };
 
   const { type, idToken, user } = await Expo.Google.logInAsync(options).catch((error) => console.log(error));
