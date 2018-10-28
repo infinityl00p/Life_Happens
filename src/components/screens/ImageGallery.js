@@ -6,7 +6,7 @@ import {
   View,
   StyleSheet,
   TouchableHighlight,
-  Platform
+  Platform,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Button } from 'react-native-elements';
@@ -41,20 +41,24 @@ class ImageGallery extends Component {
     Actions.pop();
   }
 
-  getPhotos = () => {
+  getPhotos = async () => {
     if (this.props.fromGallery) {
-      CameraRoll.getPhotos({
-        first: 30,
-        assetType: 'Photos',
-      })
-      .then(r => {
-        this.setState({
-          galleryPhotos: r.edges
-        });
-      })
-      .catch((err) => {
-         console.log(err);
-      });
+      const { status } = await Expo.Permissions.askAsync(Expo.Permissions.CAMERA_ROLL);
+
+      if (status) {
+        CameraRoll.getPhotos({
+          first: 30,
+          assetType: 'Photos',
+        })
+          .then(r => {
+            this.setState({
+              galleryPhotos: r.edges
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     } else {
       this.setState({
         stockPhotos: images
@@ -86,25 +90,25 @@ class ImageGallery extends Component {
     return (
       <ScrollView style={styles.container}>
         <View style={styles.imageContainer}>
-        {
-          photos.map((p, i) => {
-            const imageBorder = this.getImageStyle(i);
-            const uri = this.props.fromGallery ? p.node.image.uri : p;
+          {
+            photos.map((p, i) => {
+              const imageBorder = this.getImageStyle(i);
+              const uri = this.props.fromGallery ? p.node.image.uri : p;
 
-            return (
-              <TouchableHighlight
-                style={imageBorder.style}
-                key={i}
-                onPress={() => this.onImagePress(uri, i)}
-              >
-                <Image
-                  style={styles.imageStyle}
-                  source={{ uri }}
-                />
-              </TouchableHighlight>
-            );
-          })
-        }
+              return (
+                <TouchableHighlight
+                  style={imageBorder.style}
+                  key={i}
+                  onPress={() => this.onImagePress(uri, i)}
+                >
+                  <Image
+                    style={styles.imageStyle}
+                    source={{ uri }}
+                  />
+                </TouchableHighlight>
+              );
+            })
+          }
         </View>
       </ScrollView>
     );
@@ -128,7 +132,7 @@ class ImageGallery extends Component {
             />
           </View>
         </View>
-    );
+      );
     }
     return (
       <ScrollView />

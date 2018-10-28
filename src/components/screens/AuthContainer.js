@@ -70,17 +70,17 @@ class AuthContainer extends Component {
     return (
       <View style={{ flexDirection: 'row', alignSelf: 'center', paddingTop: 20 }}>
         <TouchableOpacity
-            onPress={() => {
-              Actions.EmailAuth({ activeForm: 'login' });
-            }}
+          onPress={() => {
+            Actions.EmailAuth({ activeForm: 'login' });
+          }}
         >
           <Text style={{ fontWeight: '700' }}>Sign In</Text>
         </TouchableOpacity>
         <Text> or </Text>
         <TouchableOpacity
-            onPress={() => {
-              Actions.EmailAuth({ activeForm: 'signup' });
-            }}
+          onPress={() => {
+            Actions.EmailAuth({ activeForm: 'signup' });
+          }}
         >
           <Text style={{ fontWeight: '700' }}>Sign Up</Text>
         </TouchableOpacity>
@@ -118,7 +118,7 @@ class AuthContainer extends Component {
   render() {
     if (this.state.checkingAuth) {
       return (
-        <View style={{ flex: 1, justifyContent: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
           <ActivityIndicator size="large" color="#45aaf2" />
         </View>
       );

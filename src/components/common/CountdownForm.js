@@ -9,11 +9,10 @@ import {
   TextInput,
   TouchableOpacity
 } from 'react-native';
-//import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
 import DatePicker from 'react-native-datepicker';
 import { Ionicons } from '@expo/vector-icons';
-import { Overlay } from './';
+import { Overlay } from './Overlay';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -54,68 +53,71 @@ const CountdownForm = ({
         source={{ uri: imageUri || 'https://images.unsplash.com/photo-1500575351013-6b9af18d7722?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=53954f4acd2b374303fa56c178b9d9fd&auto=format&fit=crop&w=500&q=60' }}
       />
       <Overlay backgroundColor={'#000'} opacity={0.4} />
-        <View style={rowStyle}>
-          <TextInput
-            label="Name"
-            placeholder="Add Description"
-            onChangeText={onNameChange}
-            value={name}
-            placeholderTextColor={'#c7c7cd'}
-            underlineColorAndroid='rgba(0,0,0,0)'
-            style={[inputStyle, { color }]}
-          />
-        </View>
+      <View style={rowStyle}>
+        <TextInput
+          label="Name"
+          placeholder="Add Description"
+          onChangeText={onNameChange}
+          value={name}
+          placeholderTextColor={'#c7c7cd'}
+          underlineColorAndroid='rgba(0,0,0,0)'
+          style={[inputStyle, { color }]}
+        />
+      </View>
 
-        <View style={rowStyle}>
-          <DatePicker
-            mode="date"
-            style={{ width: SCREEN_WIDTH, paddingLeft: 20 }}
-            placeholder="Set a Date"
-            format="YYYY-MM-DD"
-            date={date || null}
-            minDate={new Date()}
-            maxDate="2100-01-01"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            showIcon={false}
-            customStyles={datePickerStyles}
-            onDateChange={onDateChange}
-          />
-        </View>
+      <View style={rowStyle}>
+        <DatePicker
+          mode="date"
+          style={{ width: SCREEN_WIDTH, paddingLeft: 20 }}
+          placeholder="Set a Date"
+          format="YYYY-MM-DD"
+          date={date || null}
+          minDate={new Date()}
+          maxDate="2100-01-01"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          showIcon={false}
+          customStyles={datePickerStyles}
+          onDateChange={onDateChange}
+        />
+      </View>
 
-        <View style={rowStyle}>
-          <DatePicker
-            date={time}
-            style={{ width: SCREEN_WIDTH, paddingLeft: 20 }}
-            mode="time"
-            placeholder="Set a time"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            showIcon={false}
-            customStyles={datePickerStyles}
-            onDateChange={onTimeChange}
-          />
-        </View>
+      <View style={rowStyle}>
+        <DatePicker
+          date={time}
+          style={{ width: SCREEN_WIDTH, paddingLeft: 20 }}
+          mode="time"
+          placeholder="Set a time"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          showIcon={false}
+          customStyles={datePickerStyles}
+          onDateChange={onTimeChange}
+        />
+      </View>
 
-        <View style={[rowStyle, { borderBottomWidth: 0 }]}>
-          <TouchableOpacity
-            onPress={() => { Actions.ImageGallery({ fromGallery: false }); }}
-            style={{ backgroundColor: 'transparent', paddingLeft: 20 }}
-          >
-            <Text style={{ fontSize: 30, color }}>{_.truncate(imageUri, 10) || 'Select A Background'}</Text>
+      <View style={[rowStyle, { borderBottomWidth: 0 }]}>
+        <TouchableOpacity
+          onPress={() => { Actions.ImageGallery({ fromGallery: false }); }}
+          style={{ backgroundColor: 'transparent', paddingLeft: 20 }}
+        >
+          <Text style={{ fontSize: 30, color }}>{_.truncate(imageUri, 10) || 'Select A Background'}</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={{ flex: 1 }}>
+        <View style={submitIconStyle}>
+          {/* <Ionicons
+            onPress={onSubmit}
+            name='ios-checkmark-circle'
+            size={70}
+            color='#26de81'
+          /> */}
+          <TouchableOpacity onPress={onSubmit}>
+            <Text style={{ fontSize: 22, backgroundColor: '#26de81', color: '#ffffff', paddingLeft: 20, paddingRight: 20, borderRadius: 5 }}>Save</Text>
           </TouchableOpacity>
         </View>
-
-        <View style={{ flex: 1 }}>
-          <View style={submitIconStyle}>
-            <Ionicons
-              onPress={onSubmit}
-              name='ios-checkmark-circle'
-              size={70}
-              color='#26de81'
-            />
-          </View>
-        </View>
+      </View>
     </View>
   );
 };

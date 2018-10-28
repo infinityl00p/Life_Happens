@@ -1,27 +1,29 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 
 const IconBar = ({ onEditPress, onTrashPress }) => {
   return (
     <View style={{ flex: 1 }}>
 
-      <TouchableOpacity style={styles.editContainer}>
-        <FontAwesome
+      <TouchableOpacity style={styles.editContainer} onPress={onEditPress}>
+        {/* <FontAwesome
           name='pencil'
           size={30}
           color='#fff'
           onPress={onEditPress}
-        />
+        /> */}
+        <Text style={{ fontSize: 22, backgroundColor: '#26de81', color: '#ffffff', paddingLeft: 20, paddingRight: 20, borderRadius: 5 }}>Edit</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.trashContainer}>
-        <Ionicons
+      <TouchableOpacity style={styles.trashContainer} onPress={onTrashPress}>
+        {/* <Ionicons
           name='ios-trash'
           size={40}
           color='#fff'
           onPress={onTrashPress}
-        />
+        /> */}
+        <Text style={{ fontSize: 22, backgroundColor: '#f44336', color: '#ffffff', paddingLeft: 20, paddingRight: 20, borderRadius: 5 }}>Delete</Text>
       </TouchableOpacity>
 
     </View>

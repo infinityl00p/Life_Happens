@@ -1,8 +1,12 @@
 //All the different routes/screens user can route to
 import React from 'react';
-import { Platform } from 'react-native';
+import {
+  Platform,
+  Text,
+} from 'react-native';
+
 import { Scene, Router, Actions, ActionConst } from 'react-native-router-flux';
-import { Entypo } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import CountdownList from './components/CountdownList';
 import AddCountdown from './components/AddCountdown';
 import EventOverview from './components/screens/EventOverview';
@@ -45,7 +49,8 @@ const RouterComponent = () => {
               borderBottomColor: 'transparent'
             }}
             onRight={() => Actions.AddCountdown()}
-            rightTitle={<Entypo name="circle-with-plus" size={50} color="#000" />}
+            // rightTitle={<Ionicons name="md-checkmark-circle" size={50} color="#000" />}
+            rightTitle={<Text>Add an Event</Text>}
             rightButtonStyle={{ right: 0 }}
             leftTitle={<Logo iosWidth={70} androidWidth={180} iosHeight={70} androidHeight={180} />}
             onLeft={() => { }}

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { ScrollView, StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import Moment from 'moment';
-import { Actions } from 'react-native-router-flux';
-import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { eventsFetch } from '../actions';
@@ -58,22 +56,22 @@ class CountdownList extends Component {
   render() {
     const imageButtons = this.state.countdownList.map((event, i) => {
       const { id, image, name, date, time } = event;
-        return (
-          <ImageButton
-            key={id}
-            id={id}
-            imageUrl={image}
-            eventName={name}
-            eventDate={date}
-            eventTime={time}
-            gradient={gradients[i % 3]}
-          />
-        );
+      return (
+        <ImageButton
+          key={id}
+          id={id}
+          imageUrl={image}
+          eventName={name}
+          eventDate={date}
+          eventTime={time}
+          gradient={gradients[i % 3]}
+        />
+      );
     });
 
     return (
       <View style={styles.containerStyle}>
-        { imageButtons.length ?
+        {imageButtons.length ?
           <ScrollView>
             {imageButtons}
           </ScrollView>
@@ -83,7 +81,7 @@ class CountdownList extends Component {
           </View>
         }
         <View style={{ alignItems: 'flex-end', paddingBottom: 2 }}>
-        {/*
+          {/*
           <Button
             title='Logout'
             borderRadius={100}
