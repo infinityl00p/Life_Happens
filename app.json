@@ -4,7 +4,7 @@
   "expo": {
     "name": "lifeHappens",
     "slug": "lifeHappens",
-    "sdkVersion": "23.0.0",
+    "sdkVersion": "30.0.0",
     "icon": "./src/stock_images/icon.png",
     "description": "Life Happens, keep track of all of life's important events with a beautiful list of countdowns."
   }

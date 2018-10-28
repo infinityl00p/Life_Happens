@@ -87,7 +87,7 @@ const manualFacebookLogin = async (dispatch) => {
     const { name } = response.data;
     const credential = await firebase.auth.FacebookAuthProvider.credential(token);
 
-    const { uid } = await firebase.auth().signInWithCredential(credential).catch((error) => {
+    const { uid } = await firebase.auth().signInAndRetrieveDataWithCredential(credential).catch((error) => {
       console.log(error);
       loginUserFail(dispatch);
     });
@@ -119,7 +119,7 @@ const autoFacebookLogin = async (dispatch) => {
   const { name } = response.data;
   const credential = await firebase.auth.FacebookAuthProvider.credential(token);
 
-  const { uid } = await firebase.auth().signInWithCredential(credential).catch(error => {
+  const { uid } = await firebase.auth().signInAndRetrieveDataWithCredential(credential).catch(error => {
     console.log(error);
     removeStorage();
     loginUserFail(dispatch);
@@ -158,11 +158,13 @@ const manualGoogleLogin = async (dispatch) => {
   } else if (type === 'success') {
     Actions.LoadingScreen();
     const credential = firebase.auth.GoogleAuthProvider.credential(idToken);
+    console.log(credential);
 
-    const { uid } = await firebase.auth().signInWithCredential(credential).catch((error) => {
+    const { uid } = await firebase.auth().signInAndRetrieveDataWithCredential(credential).catch((error) => { p
         console.log(error);
         return loginUserFail(dispatch);
     });
+    console.log(uid);
 
     firebase.database().ref(`/users/${uid}`)
     .on('value', async snapshot => {
@@ -186,7 +188,7 @@ const autoGoogleLogin = async (dispatch) => {
 
   const credential = await firebase.auth.GoogleAuthProvider.credential(token);
 
-  const { uid } = await firebase.auth().signInWithCredential(credential).catch((error) => {
+  const { uid } = await firebase.auth().signInAndRetrieveDataWithCredential(credential).catch((error) => {
       console.log(error);
       loginUserFail(dispatch);
   });
